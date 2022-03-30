@@ -28,8 +28,8 @@ import java.io.*;
 public class ConfigProperties extends Properties {
 
 
-// =========== Public Constructors ===================================
-// ===================================================================
+	// =========== Public Constructors ===================================
+	// ===================================================================
 
 
 	/**
@@ -39,7 +39,7 @@ public class ConfigProperties extends Properties {
 		super();
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Constructs a ConfigProperty object from a parameter list.
