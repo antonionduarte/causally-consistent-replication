@@ -47,8 +47,8 @@ public class ConfigContainer {
 	 */
 	private static final int DEBUG_CONTEXT = 2;
 
-	//========================== fields =================================
-	//===================================================================
+	// ========================== fields =================================
+	// ===================================================================
 
 	/**
 	 * The properties object that stores all configuration information.
