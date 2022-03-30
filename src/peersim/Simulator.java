@@ -49,8 +49,8 @@ import peersim.edsim.*;
  */
 public class Simulator {
 
-// ========================== static constants ==========================
-// ======================================================================
+	// ========================== static constants ==========================
+	// ======================================================================
 
 	/**
 	 * {@link CDSimulator}
@@ -93,16 +93,16 @@ public class Simulator {
 	 */
 	public static final String PAR_REDIRECT = "simulation.stdout";
 
-// ==================== static fields ===================================
-// ======================================================================
+	// ==================== static fields ===================================
+	// ======================================================================
 
 	/**
 	 *
 	 */
 	private static int simID = UNKNOWN;
 
-//========================== methods ===================================
-//======================================================================
+	// ========================== methods ===================================
+	// ======================================================================
 
 	/**
 	 * Returns the numeric id of the simulator to invoke. At the moment this can
@@ -119,7 +119,7 @@ public class Simulator {
 		return simID;
 	}
 
-// ----------------------------------------------------------------------
+	// ----------------------------------------------------------------------
 
 	/**
 	 * Loads the configuration and executes the experiments.
@@ -211,8 +211,6 @@ public class Simulator {
 		if (Configuration.contains("__t"))
 			System.out.println(System.currentTimeMillis() - time);
 		if (Configuration.contains("__x")) Network.test();
-
-
 	}
 
 }

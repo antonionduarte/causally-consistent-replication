@@ -57,8 +57,8 @@ import peersim.core.*;
  */
 public class CDSimulator {
 
-// ============== fields ===============================================
-// =====================================================================
+	// ============== fields ===============================================
+	// =====================================================================
 
 	/**
 	 * Parameter representing the maximum number of cycles to be performed
@@ -98,7 +98,7 @@ public class CDSimulator {
 	 */
 	private static final String PAR_CTRL = "control";
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The maximum number of cycles to be performed
@@ -115,8 +115,8 @@ public class CDSimulator {
 	 */
 	private static Scheduler[] ctrlSchedules = null;
 
-// =============== initialization ======================================
-// =====================================================================
+	// =============== initialization ======================================
+	// =====================================================================
 
 	/**
 	 * to prevent construction
@@ -124,8 +124,8 @@ public class CDSimulator {
 	private CDSimulator() {
 	}
 
-// =============== private methods =====================================
-// =====================================================================
+	// =============== private methods =====================================
+	// =====================================================================
 
 	/**
 	 * Load and run initializers.
@@ -141,7 +141,7 @@ public class CDSimulator {
 		}
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	private static String[] loadControls() {
 		boolean noMachineCycle = Configuration.contains(PAR_NOMAIN);
@@ -165,7 +165,7 @@ public class CDSimulator {
 		return names;
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * This method is used to check whether the current configuration can be
@@ -176,7 +176,7 @@ public class CDSimulator {
 		return Configuration.contains(PAR_CYCLES);
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Runs an experiment, resetting everything except the random seed.

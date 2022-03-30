@@ -221,8 +221,8 @@ import java.util.*;
  */
 public class Configuration {
 
-// =================== static fields =================================
-// ===================================================================
+	// =================== static fields =================================
+	// ===================================================================
 
 	/**
 	 * Default max depth limit to avoid recursive definitions
@@ -282,8 +282,8 @@ public class Configuration {
 	 */
 	static final String PAR_INCLUDE = "include";
 
-// XXX it's ugly because it replicates the definition of Node.PAR_PROT, but
-// this would be the only dependence on the rest of the core...
+	// XXX it's ugly because it replicates the definition of Node.PAR_PROT, but
+	// this would be the only dependence on the rest of the core...
 	/**
 	 * The type name of components describing protocols. This is the only point
 	 * at which the class is not blind to the actual semantics of the
@@ -296,8 +296,8 @@ public class Configuration {
 	 */
 	private static ConfigContainer config = null;
 
-// =================== initialization ================================
-// ===================================================================
+	// =================== initialization ================================
+	// ===================================================================
 
 	/**
 	 * to prevent construction
@@ -305,8 +305,8 @@ public class Configuration {
 	private Configuration() {
 	}
 
-// =================== static public methods =========================
-// ===================================================================
+	// =================== static public methods =========================
+	// ===================================================================
 
 	/**
 	 * Sets the system-wide configuration in Properties format. It can be
@@ -323,7 +323,7 @@ public class Configuration {
 		config = new ConfigContainer(p, false);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Sets the system-wide configuration in Properties format. It can be
@@ -340,7 +340,7 @@ public class Configuration {
 		config = new ConfigContainer(p, check);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * @return true if and only if name is a specified (existing) property.
@@ -349,7 +349,7 @@ public class Configuration {
 		return config.contains(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -362,7 +362,7 @@ public class Configuration {
 		return config.getBoolean(name, def);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given property. If not found, or the value is empty string then
@@ -377,7 +377,7 @@ public class Configuration {
 		return config.getBoolean(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -390,7 +390,7 @@ public class Configuration {
 		return config.getInt(name, def);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -402,7 +402,7 @@ public class Configuration {
 		return config.getInt(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -415,7 +415,7 @@ public class Configuration {
 		return config.getLong(name, def);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -427,7 +427,7 @@ public class Configuration {
 		return config.getLong(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -440,7 +440,7 @@ public class Configuration {
 		return config.getDouble(name, def);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -452,7 +452,7 @@ public class Configuration {
 		return config.getDouble(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -465,7 +465,7 @@ public class Configuration {
 		return config.getString(name, def);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -477,7 +477,7 @@ public class Configuration {
 		return config.getString(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads the given property from the configuration interpreting it as a
@@ -493,7 +493,7 @@ public class Configuration {
 		return config.getPid(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Calls {@link #getPid(String)}, and returns the default if no property
@@ -508,7 +508,7 @@ public class Configuration {
 		return config.getPid(name, pid);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns the numeric protocol identifier of the given protocol name.
@@ -520,7 +520,7 @@ public class Configuration {
 		return config.lookupPid(protname);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns the name of a protocol that has the given identifier.
@@ -536,7 +536,7 @@ public class Configuration {
 		return config.lookupPid(pid);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -550,7 +550,7 @@ public class Configuration {
 		return config.getClass(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -564,7 +564,7 @@ public class Configuration {
 		return config.getClass(name, def);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property for a class name. It returns an
@@ -581,7 +581,7 @@ public class Configuration {
 		return config.getInstance(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property for a class name. It returns an
@@ -600,7 +600,7 @@ public class Configuration {
 		return config.getInstance(name, def);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * It returns an array of class instances. The instances are constructed by
@@ -614,7 +614,7 @@ public class Configuration {
 		return config.getInstanceArray(name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns an array of names prefixed by the specified name. The array is

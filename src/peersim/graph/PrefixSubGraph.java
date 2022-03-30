@@ -32,8 +32,8 @@ import java.util.*;
 public class PrefixSubGraph implements Graph {
 
 
-// ====================== private fileds ========================
-// ==============================================================
+	// ====================== private fileds ========================
+	// ==============================================================
 
 
 	private final Graph g;
@@ -44,36 +44,33 @@ public class PrefixSubGraph implements Graph {
 	private int prefSize;
 
 
-// ====================== public constructors ===================
-// ==============================================================
+	// ====================== public constructors ===================
+	// ==============================================================
 
 
 	/**
-	 * Constructs an initially max size subgraph of g. That is, the subgraph will
+	 * Constructs an initial max size subgraph of g. That is, the subgraph will
 	 * contain all nodes.
 	 */
 	public PrefixSubGraph(Graph g) {
-
 		this.g = g;
 		prefSize = g.size();
 	}
 
 
-// ======================= Graph implementations ================
-// ==============================================================
+	// ======================= Graph implementations ================
+	// ==============================================================
 
 
 	public boolean isEdge(int i, int j) {
-
 		if (i < 0 || i >= prefSize) throw new IndexOutOfBoundsException();
 		if (j < 0 || j >= prefSize) throw new IndexOutOfBoundsException();
 		return g.isEdge(i, j);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public Collection<Integer> getNeighbours(int i) {
-
 		if (i < 0 || i >= prefSize) throw new IndexOutOfBoundsException();
 
 		List<Integer> result = new LinkedList<>();
@@ -84,69 +81,64 @@ public class PrefixSubGraph implements Graph {
 		return Collections.unmodifiableCollection(result);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public Object getNode(int i) {
-
 		if (i < 0 || i >= prefSize) throw new IndexOutOfBoundsException();
 		return g.getNode(i);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns the edge in the original graph if both i and j are smaller than
 	 * size().
 	 */
 	public Object getEdge(int i, int j) {
-
 		if (isEdge(i, j)) return g.getEdge(i, j);
 		return null;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public int size() {
 		return prefSize;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean directed() {
 		return g.directed();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean setEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean clearEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public int degree(int i) {
-
 		if (i < 0 || i >= prefSize) throw new IndexOutOfBoundsException();
 		return g.degree(i);
 	}
 
 
-// ================= public functions =================================
-// ====================================================================
+	// ================= public functions =================================
+	// ====================================================================
 
 
 	/**
@@ -157,7 +149,6 @@ public class PrefixSubGraph implements Graph {
 	 * @return old size.
 	 */
 	public int setSize(int i) {
-
 		int was = prefSize;
 		if (i < 0) i = 0;
 		if (i > g.size()) i = g.size();

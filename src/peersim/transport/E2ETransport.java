@@ -36,9 +36,9 @@ import peersim.edsim.*;
  */
 public class E2ETransport implements Transport, RouterInfo {
 
-//---------------------------------------------------------------------
-// Parameters
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Parameters
+	//---------------------------------------------------------------------
 
 	/**
 	 * The delay that corresponds to the time spent on the source (and destination)
@@ -50,9 +50,9 @@ public class E2ETransport implements Transport, RouterInfo {
 	 */
 	private static final String PAR_LOCAL = "local";
 
-//---------------------------------------------------------------------
-// Static fields
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Static fields
+	//---------------------------------------------------------------------
 
 	/**
 	 * Identifier of this transport protocol
@@ -64,18 +64,18 @@ public class E2ETransport implements Transport, RouterInfo {
 	 */
 	private static long local;
 
-//---------------------------------------------------------------------
-// Fields
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Fields
+	//---------------------------------------------------------------------
 
 	/**
 	 * Identifier of the internal node
 	 */
 	private int router = -1;
 
-//---------------------------------------------------------------------
-// Initialization
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Initialization
+	//---------------------------------------------------------------------
 
 	/**
 	 * Reads configuration parameters.
@@ -85,7 +85,7 @@ public class E2ETransport implements Transport, RouterInfo {
 		local = Configuration.getLong(prefix + "." + PAR_LOCAL, 0);
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * Clones the object.
@@ -99,9 +99,9 @@ public class E2ETransport implements Transport, RouterInfo {
 		return e2e;
 	}
 
-//---------------------------------------------------------------------
-// Methods inherited by Transport
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Methods inherited by Transport
+	//---------------------------------------------------------------------
 
 	/**
 	 * Delivers the message reliably, with the latency calculated by
@@ -116,7 +116,7 @@ public class E2ETransport implements Transport, RouterInfo {
 		EDSimulator.add(latency, msg, dest, pid);
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * Calculates latency using the static singleton {@link E2ENetwork}.
@@ -132,9 +132,9 @@ public class E2ETransport implements Transport, RouterInfo {
 	}
 
 
-//---------------------------------------------------------------------
-// Methods inherited by RouterInfo
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Methods inherited by RouterInfo
+	//---------------------------------------------------------------------
 
 	/**
 	 * Associates the node hosting this transport protocol instance with
@@ -146,7 +146,7 @@ public class E2ETransport implements Transport, RouterInfo {
 		this.router = router;
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * @return the router associated to this transport protocol.

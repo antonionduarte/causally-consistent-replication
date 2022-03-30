@@ -36,9 +36,9 @@ import peersim.core.*;
  */
 public class VectAngle implements Control {
 
-// --------------------------------------------------------------------------
-// Parameters
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Parameters
+	// --------------------------------------------------------------------------
 
 	/**
 	 * The first protocol to be observed.
@@ -78,9 +78,9 @@ public class VectAngle implements Control {
 	 */
 	private static final String PAR_METHOD2 = "getter2";
 
-// --------------------------------------------------------------------------
-// Fields
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Fields
+	// --------------------------------------------------------------------------
 
 	/**
 	 * The prefix for this observer
@@ -91,9 +91,9 @@ public class VectAngle implements Control {
 
 	private final Getter getter2;
 
-// --------------------------------------------------------------------------
-// Initialization
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Initialization
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -107,9 +107,9 @@ public class VectAngle implements Control {
 		getter2 = new Getter(prefix, PAR_PROT2, PAR_METHOD2);
 	}
 
-// --------------------------------------------------------------------------
-// Methods
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Methods
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Observes the cosine angle between two vectors. The printed values
@@ -119,7 +119,6 @@ public class VectAngle implements Control {
 	 * @return always false
 	 */
 	public boolean execute() {
-
 		double sqrsum1 = 0, sqrsum2 = 0, prod = 0;
 		for (int i = 0; i < Network.size(); ++i) {
 			double v1 = getter1.get(i).doubleValue();
@@ -141,6 +140,6 @@ public class VectAngle implements Control {
 		return false;
 	}
 
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 
 }

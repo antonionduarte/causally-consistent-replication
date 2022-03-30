@@ -41,9 +41,9 @@ import peersim.core.*;
  */
 public class TriangularMatrixParser implements Control {
 
-// ---------------------------------------------------------------------
-// Parameters
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
+	// Parameters
+	// ---------------------------------------------------------------------
 
 	/**
 	 * This configuration parameter identifies the filename of the file
@@ -64,9 +64,9 @@ public class TriangularMatrixParser implements Control {
 	 */
 	private static final String PAR_RATIO = "ratio";
 
-// ---------------------------------------------------------------------
-// Fields
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
+	// Fields
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Name of the file containing the measurements.
@@ -78,9 +78,9 @@ public class TriangularMatrixParser implements Control {
 	 */
 	private final double ratio;
 
-// ---------------------------------------------------------------------
-// Initialization
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
+	// Initialization
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Read the configuration parameters.
@@ -90,9 +90,9 @@ public class TriangularMatrixParser implements Control {
 		ratio = Configuration.getDouble(prefix + "." + PAR_RATIO);
 	}
 
-// ---------------------------------------------------------------------
-// Methods
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
+	// Methods
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Initializes static singleton {@link E2ENetwork} by reading a king data set.

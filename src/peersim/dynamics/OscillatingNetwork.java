@@ -34,9 +34,9 @@ import peersim.core.*;
  */
 public class OscillatingNetwork implements Control {
 
-//--------------------------------------------------------------------------
-//Parameters
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Parameters
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Config parameter which gives the prefix of node initializers. An arbitrary
@@ -88,9 +88,9 @@ public class OscillatingNetwork implements Control {
 	private static final String PAR_PERIOD = "period";
 
 
-//--------------------------------------------------------------------------
-//Fields
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Fields
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Period
@@ -113,9 +113,9 @@ public class OscillatingNetwork implements Control {
 	private final NodeInitializer[] inits;
 
 
-//--------------------------------------------------------------------------
-// Initialization
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Initialization
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters. Invoked by the
@@ -138,9 +138,9 @@ public class OscillatingNetwork implements Control {
 		}
 	}
 
-//--------------------------------------------------------------------------
-// Methods
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Methods
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Adds n nodes to the network. Extending classes can implement any algorithm to
@@ -159,7 +159,7 @@ public class OscillatingNetwork implements Control {
 		}
 	}
 
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
 
 	/**
 	 * Removes n nodes from the network. Extending classes can implement any
@@ -174,7 +174,7 @@ public class OscillatingNetwork implements Control {
 		}
 	}
 
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
 
 	/**
 	 * Takes the current time and sets the network size according to a periodic

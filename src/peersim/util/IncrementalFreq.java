@@ -31,8 +31,8 @@ import java.io.PrintStream;
 public class IncrementalFreq implements Cloneable {
 
 
-// ===================== fields ========================================
-// =====================================================================
+	// ===================== fields ========================================
+	// =====================================================================
 
 	/**
 	 * The number of items inserted.
@@ -51,8 +51,8 @@ public class IncrementalFreq implements Cloneable {
 	private final int N;
 
 
-// ====================== initialization ==============================
-// ====================================================================
+	// ====================== initialization ==============================
+	// ====================================================================
 
 
 	/**
@@ -60,12 +60,11 @@ public class IncrementalFreq implements Cloneable {
 	 *                 However, if it is negative, no values are ignored.
 	 */
 	public IncrementalFreq(int maxvalue) {
-
 		N = maxvalue + 1;
 		reset();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Calls <code>this(-1)</code>, that is, no values will be ignored.
@@ -73,26 +72,24 @@ public class IncrementalFreq implements Cloneable {
 	 * @see #IncrementalFreq(int)
 	 */
 	public IncrementalFreq() {
-
 		this(-1);
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Reset the state of the object. After calling this, all public methods
 	 * behave the same as they did after constructing the object.
 	 */
 	public void reset() {
-
 		if (freq == null || N == 0) freq = new int[0];
 		else for (int i = 0; i < freq.length; ++i) freq[i] = 0;
 		n = 0;
 	}
 
 
-// ======================== methods ===================================
-// ====================================================================
+	// ======================== methods ===================================
+	// ====================================================================
 
 	/**
 	 * Adds item <code>i</code> to the input set.
@@ -105,7 +102,7 @@ public class IncrementalFreq implements Cloneable {
 	}
 
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Adds item <code>i</code> to the input set <code>k</code> times.
@@ -114,7 +111,6 @@ public class IncrementalFreq implements Cloneable {
 	 * at construction time (if a maximum was set at all) the operation is ignored.
 	 */
 	public void add(int i, int k) {
-
 		if (N > 0 && i >= N) return;
 		if (i < 0 || k <= 0) return;
 
@@ -133,7 +129,7 @@ public class IncrementalFreq implements Cloneable {
 		freq[i] += k;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns number of processed data items.
@@ -143,19 +139,17 @@ public class IncrementalFreq implements Cloneable {
 		return n;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns the number of occurrences of the given integer.
 	 */
 	public int getFreq(int i) {
-
 		if (i >= 0 && i < freq.length) return freq[i];
 		else return 0;
 	}
 
-// --------------------------------------------------------------------
-
+	// --------------------------------------------------------------------
 
 	/**
 	 * Performs an element-by-element vector subtraction of the
@@ -170,7 +164,6 @@ public class IncrementalFreq implements Cloneable {
 	 * @param strict See above explanation
 	 */
 	public void remove(IncrementalFreq other, boolean strict) {
-
 		// check if other has non-zero elements in non-overlapping part
 		if (strict && other.freq.length > freq.length) {
 			for (int i = other.freq.length - 1; i >= freq.length; --i) {
@@ -189,7 +182,7 @@ public class IncrementalFreq implements Cloneable {
 		}
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Prints current frequency information. Prints a separate line for
@@ -201,13 +194,12 @@ public class IncrementalFreq implements Cloneable {
 	 * That is, numbers with zero occurrences will also be printed.
 	 */
 	public void printAll(PrintStream out) {
-
 		for (int i = 0; i < freq.length; ++i) {
 			out.println(i + " " + freq[i]);
 		}
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Prints current frequency information. Prints a separate line for
@@ -218,16 +210,14 @@ public class IncrementalFreq implements Cloneable {
 	 * </pre>
 	 */
 	public void print(PrintStream out) {
-
 		for (int i = 0; i < freq.length; ++i) {
 			if (freq[i] != 0) out.println(i + " " + freq[i]);
 		}
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	public String toString() {
-
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < freq.length; ++i) {
 			if (freq[i] != 0)
@@ -237,13 +227,12 @@ public class IncrementalFreq implements Cloneable {
 		return result.toString();
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * An alternative method to convert the object to String
 	 */
 	public String toArithmeticExpression() {
-
 		StringBuilder result = new StringBuilder();
 		for (int i = freq.length - 1; i >= 0; i--) {
 			if (freq[i] != 0)
@@ -257,16 +246,15 @@ public class IncrementalFreq implements Cloneable {
 			return result.substring(0, result.length() - 1);
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	public Object clone() throws CloneNotSupportedException {
-
 		IncrementalFreq result = (IncrementalFreq) super.clone();
 		if (freq != null) result.freq = freq.clone();
 		return result;
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Tests equality between two IncrementalFreq instances.
@@ -275,7 +263,6 @@ public class IncrementalFreq implements Cloneable {
 	 * these numbers.
 	 */
 	public boolean equals(Object obj) {
-
 		if (!(obj instanceof IncrementalFreq)) return false;
 		IncrementalFreq other = (IncrementalFreq) obj;
 		final int minlength = Math.min(other.freq.length, freq.length);
@@ -292,24 +279,23 @@ public class IncrementalFreq implements Cloneable {
 		return true;
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Hashcode (consistent with {@link #equals}). Probably you will never want to
 	 * use this, but since we have {@link #equals}, we must implement it.
 	 */
 	public int hashCode() {
-
 		int sum = 0;
 		for (int i = 0; i < freq.length; ++i) sum += freq[i] * i;
 		return sum;
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 /*
 public static void main(String[] pars) {
-	
+
 	IncrementalFreq ifq = new IncrementalFreq(Integer.parseInt(pars[0]));
 	for(int i=1; i<pars.length; ++i)
 	{

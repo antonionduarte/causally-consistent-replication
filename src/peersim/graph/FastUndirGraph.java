@@ -36,8 +36,8 @@ public class FastUndirGraph extends ConstUndirGraph {
 	private BitSet[] triangle;
 
 
-// ======================= initializarion ==========================
-// =================================================================
+	// ======================= initialization ==========================
+	// =================================================================
 
 
 	/**
@@ -47,7 +47,7 @@ public class FastUndirGraph extends ConstUndirGraph {
 		super(graph);
 	}
 
-// -----------------------------------------------------------------
+	// -----------------------------------------------------------------
 
 	protected void initGraph() {
 		final int max = g.size();
@@ -72,8 +72,8 @@ public class FastUndirGraph extends ConstUndirGraph {
 	}
 
 
-// ============================ Graph functions ====================
-// =================================================================
+	// ============================ Graph functions ====================
+	// =================================================================
 
 
 	public boolean isEdge(int i, int j) {

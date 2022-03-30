@@ -39,9 +39,9 @@ public class VectorObserver extends VectControl {
 	private final String prefix;
 
 
-//--------------------------------------------------------------------------
-//Initialization
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Initialization
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -50,14 +50,13 @@ public class VectorObserver extends VectControl {
 	 * @param prefix the configuration prefix for this class
 	 */
 	public VectorObserver(String prefix) {
-
 		super(prefix);
 		this.prefix = prefix;
 	}
 
-//--------------------------------------------------------------------------
-// Methods
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Methods
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Prints statistics information about a vector.
@@ -68,7 +67,6 @@ public class VectorObserver extends VectControl {
 	 * @return always false
 	 */
 	public boolean execute() {
-
 		IncrementalStats stats = new IncrementalStats();
 
 		for (int j = 0; j < Network.size(); j++) {

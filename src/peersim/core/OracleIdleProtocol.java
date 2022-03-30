@@ -27,8 +27,8 @@ package peersim.core;
  */
 public final class OracleIdleProtocol implements Protocol, Linkable {
 
-// =================== initialization, creation ======================
-// ===================================================================
+	// =================== initialization, creation ======================
+	// ===================================================================
 
 
 	/**
@@ -37,7 +37,7 @@ public final class OracleIdleProtocol implements Protocol, Linkable {
 	public OracleIdleProtocol(String prefix) {
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns <tt>this</tt> to maximize memory saving. It contains no fields.
@@ -47,8 +47,8 @@ public final class OracleIdleProtocol implements Protocol, Linkable {
 	}
 
 
-// ===================== public methods ===============================
-// ====================================================================
+	// ===================== public methods ===============================
+	// ====================================================================
 
 
 	/**
@@ -64,7 +64,7 @@ public final class OracleIdleProtocol implements Protocol, Linkable {
 		return false;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Unsupported operation
@@ -73,7 +73,7 @@ public final class OracleIdleProtocol implements Protocol, Linkable {
 		throw new UnsupportedOperationException();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The neighborhood contains the node itself, ie it contains the loop
@@ -83,23 +83,23 @@ public final class OracleIdleProtocol implements Protocol, Linkable {
 		return Network.node[i];
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public int degree() {
 		return Network.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public void pack() {
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public void onKill() {
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public String toString() {
 		return degree() + " [all the nodes of the overlay network]";

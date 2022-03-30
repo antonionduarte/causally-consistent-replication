@@ -38,8 +38,8 @@ import peersim.core.*;
  */
 public class Setter {
 
-// ============================ fields ===================================
-// =======================================================================
+	// ============================ fields ===================================
+	// =======================================================================
 
 	private final String protocol;
 	private final String methodn;
@@ -66,8 +66,8 @@ public class Setter {
 	private Class type;
 
 
-// ========================== initialization =============================
-// =======================================================================
+	// ========================== initialization =============================
+	// =======================================================================
 
 
 	/**
@@ -87,16 +87,14 @@ public class Setter {
 	 *                 value <code>setValue</code>.
 	 */
 	public Setter(String prefix, String protocol, String methodn) {
-
 		this.prefix = prefix;
 		this.protocol = protocol;
 		this.methodn = methodn;
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	private void init() {
-
 		if (method != null) return;
 
 		// Read configuration parameter
@@ -115,31 +113,29 @@ public class Setter {
 	}
 
 
-// =============================== methods =============================
-// =====================================================================
+	// =============================== methods =============================
+	// =====================================================================
 
 
 	/**
 	 * @return type of parameter of setter method
 	 */
 	public Class getType() {
-
 		init();
 		return type;
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * @return true if the setter type is long or int
 	 */
 	public boolean isInteger() {
-
 		init();
 		return type == long.class || type == int.class;
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Sets the given integer value.
@@ -149,7 +145,6 @@ public class Setter {
 	 * @param val the value to set.
 	 */
 	public void set(Node n, long val) {
-
 		init();
 
 		try {
@@ -169,7 +164,7 @@ public class Setter {
 		throw new RuntimeException("type has to be int or long");
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Sets the given real value.
@@ -179,7 +174,6 @@ public class Setter {
 	 * @param val the value to set.
 	 */
 	public void set(Node n, double val) {
-
 		init();
 
 		try {
@@ -198,7 +192,7 @@ public class Setter {
 		throw new RuntimeException("type has to be double or float");
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Sets the given integer value.
@@ -212,7 +206,7 @@ public class Setter {
 		set(Network.get(i), val);
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Sets the given real value.

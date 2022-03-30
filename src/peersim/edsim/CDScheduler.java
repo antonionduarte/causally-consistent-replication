@@ -41,8 +41,8 @@ import peersim.dynamics.NodeInitializer;
  */
 public class CDScheduler implements Control, NodeInitializer {
 
-// ============================== fields ==============================
-// ====================================================================
+	// ============================== fields ==============================
+	// ====================================================================
 
 	/**
 	 * Parameter that is used to define the class that is used to schedule
@@ -90,8 +90,8 @@ public class CDScheduler implements Control, NodeInitializer {
 
 	private final boolean randstart;
 
-// =============================== initialization ======================
-// =====================================================================
+	// =============================== initialization ======================
+	// =====================================================================
 
 
 	/*
@@ -108,7 +108,7 @@ public class CDScheduler implements Control, NodeInitializer {
 		}
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Initialization based on configuration parameters.
@@ -134,8 +134,8 @@ public class CDScheduler implements Control, NodeInitializer {
 	}
 
 
-// ========================== methods ==================================
-// =====================================================================
+	// ========================== methods ==================================
+	// =====================================================================
 
 	/**
 	 * Schedules the protocol at all nodes
@@ -154,7 +154,7 @@ public class CDScheduler implements Control, NodeInitializer {
 		return false;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Schedules the protocol at given node
@@ -200,7 +200,7 @@ public class CDScheduler implements Control, NodeInitializer {
 		}
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns the time (through giving the delay from the current time)

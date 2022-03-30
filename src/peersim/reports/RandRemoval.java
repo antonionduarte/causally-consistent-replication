@@ -37,10 +37,10 @@ import java.util.Iterator;
  */
 public class RandRemoval extends GraphObserver {
 
-// ===================== fields =======================================
-// ====================================================================
+	// ===================== fields =======================================
+	// ====================================================================
 
-// XXX remove side effect
+	// XXX remove side effect
 	/**
 	 * This parameter defines the number of runs of the iterative removal procedure
 	 * to get statistics. Look out: if set to a value larger than 1 then as a side
@@ -52,8 +52,8 @@ public class RandRemoval extends GraphObserver {
 
 	private final int n;
 
-// ===================== initialization ================================
-// =====================================================================
+	// ===================== initialization ================================
+	// =====================================================================
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -66,8 +66,8 @@ public class RandRemoval extends GraphObserver {
 		n = Configuration.getInt(name + "." + PAR_N, 1);
 	}
 
-// ====================== methods ======================================
-// =====================================================================
+	// ====================== methods ======================================
+	// =====================================================================
 
 	/**
 	 * Prints results of node removal tests. The following experiment is

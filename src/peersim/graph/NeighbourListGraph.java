@@ -28,8 +28,8 @@ import java.util.*;
  */
 public class NeighbourListGraph implements Graph, java.io.Serializable {
 
-// =================== private fields ============================
-// ===============================================================
+	// =================== private fields ============================
+	// ===============================================================
 
 	/**
 	 * Contains the objects associated with the node indeces.
@@ -56,8 +56,8 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 	 */
 	private final boolean directed;
 
-// =================== public constructors ======================
-// ===============================================================
+	// =================== public constructors ======================
+	// ===============================================================
 
 	/**
 	 * Constructs an empty graph. That is, the graph has zero nodes, but any
@@ -66,14 +66,13 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 	 * @param directed if true the graph will be directed
 	 */
 	public NeighbourListGraph(boolean directed) {
-
 		nodes = new ArrayList<>(1000);
 		neighbors = new ArrayList<>(1000);
 		nodeindex = new HashMap<>(1000);
 		this.directed = directed;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Constructs a graph with a fixed size without edges. If the graph is
@@ -83,7 +82,6 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 	 * @param directed if true the graph will be directed
 	 */
 	public NeighbourListGraph(int size, boolean directed) {
-
 		nodes = null;
 		neighbors = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) neighbors.add(new HashSet<>());
@@ -91,8 +89,8 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 		this.directed = directed;
 	}
 
-// =================== public methods =============================
-// ================================================================
+	// =================== public methods =============================
+	// ================================================================
 
 	/**
 	 * If the given object is not associated with a node yet, adds a new
@@ -103,7 +101,6 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 	 * @throws NullPointerException if the size was specified at construction time.
 	 */
 	public int addNode(Object o) {
-
 		Integer index = nodeindex.get(o);
 		if (index == null) {
 			index = nodes.size();
@@ -116,41 +113,37 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 	}
 
 
-// =================== graph implementations ======================
-// ================================================================
+	// =================== graph implementations ======================
+	// ================================================================
 
 
 	public boolean setEdge(int i, int j) {
-
 		boolean ret = neighbors.get(i).add(j);
 		if (ret && !directed) neighbors.get(j).add(i);
 		return ret;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public boolean clearEdge(int i, int j) {
-
 		boolean ret = neighbors.get(i).remove(j);
 		if (ret && !directed) neighbors.get(j).remove(i);
 		return ret;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public boolean isEdge(int i, int j) {
-
 		return neighbors.get(i).contains(j);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public Collection<Integer> getNeighbours(int i) {
-
 		return Collections.unmodifiableCollection(neighbors.get(i));
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * If the graph was gradually grown using {@link #addNode}, returns the
@@ -160,7 +153,7 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 		return (nodes == null ? null : nodes.get(i));
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns null always.
@@ -169,19 +162,19 @@ public class NeighbourListGraph implements Graph, java.io.Serializable {
 		return null;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public int size() {
 		return neighbors.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean directed() {
 		return directed;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public int degree(int i) {
 		return neighbors.get(i).size();

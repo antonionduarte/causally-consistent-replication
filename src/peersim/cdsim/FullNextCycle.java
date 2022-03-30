@@ -30,8 +30,8 @@ import peersim.util.RandPermutation;
 public class FullNextCycle implements Control {
 
 
-// ============== fields ===============================================
-// =====================================================================
+	// ============== fields ===============================================
+	// =====================================================================
 
 
 	/**
@@ -56,7 +56,7 @@ public class FullNextCycle implements Control {
 	 */
 	private static final String PAR_SHUFFLE = "shuffle";
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	protected final boolean getpair_rand;
 
@@ -72,8 +72,8 @@ public class FullNextCycle implements Control {
 	 */
 	protected RandPermutation rperm = new RandPermutation(CDState.r);
 
-// =============== initialization ======================================
-// =====================================================================
+	// =============== initialization ======================================
+	// =====================================================================
 
 	/**
 	 * Reads config parameters and {@link Scheduler}s.
@@ -90,8 +90,8 @@ public class FullNextCycle implements Control {
 		}
 	}
 
-// =============== methods =============================================
-// =====================================================================
+	// =============== methods =============================================
+	// =====================================================================
 
 	/**
 	 * Execute all the {@link CDProtocol}s on all nodes that are up.

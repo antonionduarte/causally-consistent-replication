@@ -37,8 +37,8 @@ import java.util.Random;
 public class WeightedRandPerm implements IndexIterator {
 
 
-// ======================= private fields ============================
-// ===================================================================
+	// ======================= private fields ============================
+	// ===================================================================
 
 	/**
 	 * Holds the weights that are used to initialize the permutation
@@ -66,8 +66,8 @@ public class WeightedRandPerm implements IndexIterator {
 	private final Random r;
 
 
-// ======================= initialization ============================
-// ===================================================================
+	// ======================= initialization ============================
+	// ===================================================================
 
 
 	/**
@@ -83,7 +83,6 @@ public class WeightedRandPerm implements IndexIterator {
 	 *                The vector elements must be positive, that is, zero is not accepted either.
 	 */
 	public WeightedRandPerm(Random r, double[] weights) {
-
 		this.r = r;
 		w = weights.clone();
 		wsum = weights.clone();
@@ -99,8 +98,8 @@ public class WeightedRandPerm implements IndexIterator {
 	}
 
 
-// ======================= public methods ============================
-// ===================================================================
+	// ======================= public methods ============================
+	// ===================================================================
 
 
 	/**
@@ -119,7 +118,6 @@ public class WeightedRandPerm implements IndexIterator {
 	 * @param k the set is defined as 0,...,k-1
 	 */
 	public void reset(int k) {
-
 		if (k < 0 || k > w.length)
 			throw new IllegalArgumentException(
 					"k should be non-negative and <= " + w.length);
@@ -137,7 +135,7 @@ public class WeightedRandPerm implements IndexIterator {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * The first sample is drawn according to the probability distribution
@@ -150,7 +148,6 @@ public class WeightedRandPerm implements IndexIterator {
 	 * @see #reset
 	 */
 	public int next() {
-
 		if (pointer < 1) throw new NoSuchElementException();
 
 		double d = sum * r.nextDouble();
@@ -170,13 +167,13 @@ public class WeightedRandPerm implements IndexIterator {
 		return buffer[--pointer];
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	public boolean hasNext() {
 		return pointer > 0;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 /*
 public static void main( String pars[] ) throws Exception {

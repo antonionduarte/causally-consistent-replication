@@ -26,8 +26,8 @@ package peersim.config;
  */
 public class IllegalParameterException extends RuntimeException {
 
-// ================== initialization =====================================
-// =======================================================================
+	// ================== initialization =====================================
+	// =======================================================================
 
 	/**
 	 * Calls super constructor. It passes a string message which is the given
@@ -40,8 +40,8 @@ public class IllegalParameterException extends RuntimeException {
 		super("Parameter \"" + name + "\": " + message);
 	}
 
-// ================== methods ============================================
-// =======================================================================
+	// ================== methods ============================================
+	// =======================================================================
 
 	/**
 	 * Extends message with info from stack trace.

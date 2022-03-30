@@ -37,10 +37,9 @@ import peersim.dynamics.*;
  */
 public class VectCopy extends VectControl implements NodeInitializer {
 
-
-//--------------------------------------------------------------------------
-//Parameters
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Parameters
+	//--------------------------------------------------------------------------
 
 	/**
 	 * The identifier of the protocol to be copied.
@@ -51,18 +50,18 @@ public class VectCopy extends VectControl implements NodeInitializer {
 	private static final String PAR_SOURCE = "source";
 
 
-// --------------------------------------------------------------------------
-// Variables
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Variables
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Source getter
 	 */
 	private final Getter source;
 
-//--------------------------------------------------------------------------
-//Initialization
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Initialization
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -75,9 +74,9 @@ public class VectCopy extends VectControl implements NodeInitializer {
 		source = new Getter(prefix, PAR_SOURCE, PAR_GETTER);
 	}
 
-//--------------------------------------------------------------------------
-//Method
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Method
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Sets values in a protocol vector by copying the values of another
@@ -87,7 +86,6 @@ public class VectCopy extends VectControl implements NodeInitializer {
 	 * @return always false
 	 */
 	public boolean execute() {
-
 		int size = Network.size();
 		for (int i = 0; i < size; i++) {
 			Number ret = source.get(i);
@@ -98,7 +96,7 @@ public class VectCopy extends VectControl implements NodeInitializer {
 		return false;
 	}
 
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Sets the value by copying the value of another
@@ -108,12 +106,11 @@ public class VectCopy extends VectControl implements NodeInitializer {
 	 * @param n the node to initialize
 	 */
 	public void initialize(Node n) {
-
 		Number ret = source.get(n);
 		if (setter.isInteger()) setter.set(n, ret.longValue());
 		else setter.set(n, ret.doubleValue());
 	}
 
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 
 }

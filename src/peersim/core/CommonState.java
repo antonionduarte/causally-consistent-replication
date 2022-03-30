@@ -36,8 +36,8 @@ import peersim.util.*;
  */
 public class CommonState {
 
-//======================= constants ===============================
-//=================================================================
+	// ======================= constants ===============================
+	// =================================================================
 
 	/**
 	 * Constant that can be used as a value of simulation phase.
@@ -55,8 +55,8 @@ public class CommonState {
 	 */
 	public static final int PHASE_UNKNOWN = 0;
 
-// ======================= fields ==================================
-// =================================================================
+	// ======================= fields ==================================
+	// =================================================================
 
 	/**
 	 * Current time. Note that this value is simulator independent, all simulation
@@ -69,13 +69,13 @@ public class CommonState {
 	/**
 	 * The maximal value {@link #time} can ever take.
 	 */
-	private static long endtime = -1;
+	private static long entTime = -1;
 
 	/**
 	 * Number of used bits in the long representation of time, calculated
 	 * based on the endtime.
 	 */
-	private static int toshift = -1;
+	private static int toShift = -1;
 
 	/**
 	 * Information about where exactly the simulation is.
@@ -103,8 +103,8 @@ public class CommonState {
 	public static ExtendedRandom r = null;
 
 
-// ======================== initialization =========================
-// =================================================================
+	// ======================== initialization =========================
+	// =================================================================
 
 	/**
 	 * Configuration parameter used to define which random generator
@@ -143,8 +143,8 @@ public class CommonState {
 	protected CommonState() {
 	}
 
-// ======================= methods =================================
-// =================================================================
+	// ======================= methods =================================
+	// =================================================================
 
 
 	/**
@@ -157,7 +157,7 @@ public class CommonState {
 		return time;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns current time in integer format. The purpose is to enhance the
@@ -170,10 +170,10 @@ public class CommonState {
 	 * integer, so no precision is lost.
 	 */
 	public static int getIntTime() {
-		return (int) (time >> toshift);
+		return (int) (time >> toShift);
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Sets the current time.
@@ -182,7 +182,7 @@ public class CommonState {
 		time = t;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns endtime.
@@ -190,26 +190,26 @@ public class CommonState {
 	 * means the endtime is not known.
 	 */
 	public static long getEndTime() {
-		return endtime;
+		return entTime;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Sets the endtime.
 	 */
 	public static void setEndTime(long t) {
-		if (endtime >= 0)
+		if (entTime >= 0)
 			throw new RuntimeException("You can set endtime only once");
 		if (t < 0)
 			throw new RuntimeException("No negative values are allowed");
 
-		endtime = t;
-		toshift = 32 - Long.numberOfLeadingZeros(t);
-		if (toshift < 0) toshift = 0;
+		entTime = t;
+		toShift = 32 - Long.numberOfLeadingZeros(t);
+		if (toShift < 0) toShift = 0;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns the simulation phase. Currently the following phases are
@@ -223,13 +223,13 @@ public class CommonState {
 		return phase;
 	}
 
-// -----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	public static void setPhase(int p) {
 		phase = p;
 	}
 
-// -----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns the current protocol identifier. In other words, control is
@@ -239,7 +239,7 @@ public class CommonState {
 		return pid;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Sets the current protocol identifier.
@@ -248,7 +248,7 @@ public class CommonState {
 		pid = p;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns the current node. When a protocol is executing, it is the node
@@ -258,7 +258,7 @@ public class CommonState {
 		return node;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Sets the current node
@@ -267,7 +267,7 @@ public class CommonState {
 		node = n;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	public static void initializeRandom(long seed) {
 		if (r == null) {
@@ -276,16 +276,8 @@ public class CommonState {
 		r.setSeed(seed);
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
-/*
-public static void main(String pars[]) {
-	
-	setEndTime(Long.parseLong(pars[0]));
-	setTime(Long.parseLong(pars[1]));
-	System.err.println(getTime()+" "+getIntTime());
-}
-*/
 }
 
 

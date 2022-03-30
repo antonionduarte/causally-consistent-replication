@@ -29,8 +29,8 @@ import org.lsmp.djep.groupJep.*;
  */
 public class ConfigContainer {
 
-// =================== static fields =================================
-// ===================================================================
+	// =================== static fields =================================
+	// ===================================================================
 
 	/**
 	 * Symbolic constant for no debug
@@ -47,8 +47,8 @@ public class ConfigContainer {
 	 */
 	private static final int DEBUG_CONTEXT = 2;
 
-//========================== fields =================================
-//===================================================================
+	//========================== fields =================================
+	//===================================================================
 
 	/**
 	 * The properties object that stores all configuration information.
@@ -79,8 +79,8 @@ public class ConfigContainer {
 	 */
 	private boolean check = false;
 
-// =================== initialization ================================
-// ===================================================================
+	// =================== initialization ================================
+	// ===================================================================
 
 	public ConfigContainer(Properties config, boolean check) {
 		this.config = config;
@@ -117,8 +117,8 @@ public class ConfigContainer {
 		}
 	}
 
-// =================== static public methods =========================
-// ===================================================================
+	// =================== static public methods =========================
+	// ===================================================================
 
 	/**
 	 * @return true if and only if name is a specified (existing) property.
@@ -129,7 +129,7 @@ public class ConfigContainer {
 		return ret;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -147,7 +147,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 
 	/**
@@ -168,7 +168,7 @@ public class ConfigContainer {
 		}
 	}
 
-//-------------------------------------------------------------------
+	//-------------------------------------------------------------------
 
 	/**
 	 * The actual methods that implements getBoolean.
@@ -176,7 +176,7 @@ public class ConfigContainer {
 	private boolean getBool(String name) {
 		if (config.getProperty(name) == null) {
 			throw new MissingParameterException(name);
-//				"\nPossibly incorrect property: " + getSimilarProperty(name));
+				// "\nPossibly incorrect property: " + getSimilarProperty(name));
 		}
 		if (config.getProperty(name).matches("\\p{Blank}*")) {
 			throw new MissingParameterException(name,
@@ -187,7 +187,7 @@ public class ConfigContainer {
 		return ret;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -207,7 +207,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -226,7 +226,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -246,7 +246,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -265,7 +265,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -285,7 +285,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -304,7 +304,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Read numeric property values, parsing expression if necessary.
@@ -325,7 +325,7 @@ public class ConfigContainer {
 		if (s == null || s.equals("")) {
 			throw new MissingParameterException(property,
 					" when evaluating property " + initial);
-//						+ "\nPossibly incorrect property: " + getSimilarProperty(property));
+						// + "\nPossibly incorrect property: " + getSimilarProperty(property));
 		}
 
 		GroupJep jep = new GroupJep(new Operators());
@@ -343,7 +343,7 @@ public class ConfigContainer {
 		return (Number) ret;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns an array of string, containing the symbols contained in the
@@ -363,7 +363,7 @@ public class ConfigContainer {
 		return ret;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -381,7 +381,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -412,7 +412,7 @@ public class ConfigContainer {
 		return result.trim();
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads the given property from the configuration interpreting it as a
@@ -434,7 +434,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Calls {@link #getPid(String)}, and returns the default if no property
@@ -455,7 +455,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns the numeric protocol identifier of the given protocol name.
@@ -473,7 +473,7 @@ public class ConfigContainer {
 		return ret.intValue();
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns the name of a protocol that has the given identifier.
@@ -498,7 +498,7 @@ public class ConfigContainer {
 		return null;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, throws a
@@ -582,7 +582,7 @@ public class ConfigContainer {
 		return c;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property. If not found, returns the default
@@ -593,7 +593,6 @@ public class ConfigContainer {
 	 * @see #getClass(String)
 	 */
 	public Class getClass(String name, Class def) {
-
 		try {
 			return Configuration.getClass(name);
 		} catch (RuntimeException e) {
@@ -602,7 +601,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property for a class name. It returns an
@@ -653,7 +652,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Reads given configuration property for a class name. It returns an
@@ -679,7 +678,7 @@ public class ConfigContainer {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * It returns an array of class instances. The instances are constructed by
@@ -701,7 +700,7 @@ public class ConfigContainer {
 		return result;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns an array of names prefixed by the specified name. The array is
@@ -729,7 +728,7 @@ public class ConfigContainer {
 		return order(ret, name);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * The input of this method is a set of property <code>names</code> (e.g.
@@ -790,7 +789,7 @@ public class ConfigContainer {
 		return ret;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Print debug information for configuration. The amount of information
@@ -839,7 +838,7 @@ public class ConfigContainer {
 		System.err.println(buffer);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * @return an array of adjacent letter pairs contained in the input string
@@ -854,7 +853,7 @@ public class ConfigContainer {
 		return pairs;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * @return an ArrayList of 2-character Strings.
@@ -875,7 +874,7 @@ public class ConfigContainer {
 		return allPairs;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * @return lexical similarity value in the range [0,1]
@@ -899,7 +898,7 @@ public class ConfigContainer {
 		return (2.0 * intersection) / union_;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Among the defined properties, returns the one more similar to String
@@ -920,7 +919,7 @@ public class ConfigContainer {
 		return bestProperty;
 	}
 
-//-------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	private void manageDefault(String name, Object def,
 							   RuntimeException e) {
@@ -936,7 +935,7 @@ public class ConfigContainer {
 		}
 	}
 
-//-------------------------------------------------------------------
+	//-------------------------------------------------------------------
 
 	private void manageException(String name, RuntimeException e) {
 		if (check) {
@@ -956,6 +955,6 @@ public class ConfigContainer {
 		}
 	}
 
-//-------------------------------------------------------------------
+	//-------------------------------------------------------------------
 
 }

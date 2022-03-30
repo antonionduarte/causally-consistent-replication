@@ -26,16 +26,15 @@ import java.util.*;
  */
 public class BitMatrixGraph implements Graph {
 
-
-// ====================== private fileds ========================
-// ==============================================================
+	// ====================== private fileds ========================
+	// ==============================================================
 
 	private final List<BitSet> sets;
 
 	private final boolean directed;
 
-// ====================== public constructors ===================
-// ==============================================================
+	// ====================== public constructors ===================
+	// ==============================================================
 
 
 	/**
@@ -45,11 +44,10 @@ public class BitMatrixGraph implements Graph {
 	 * @param n size of graph
 	 */
 	public BitMatrixGraph(int n) {
-
 		this(n, true);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Constructs an graph with the given number of nodes.
@@ -59,15 +57,14 @@ public class BitMatrixGraph implements Graph {
 	 * @param directed if true graph is directed
 	 */
 	public BitMatrixGraph(int n, boolean directed) {
-
 		sets = new ArrayList<BitSet>(n);
 		for (int i = 0; i < n; ++i) sets.add(new BitSet());
 		this.directed = directed;
 	}
 
 
-// ======================= Graph implementations ================
-// ==============================================================
+	// ======================= Graph implementations ================
+	// ==============================================================
 
 
 	public boolean isEdge(int i, int j) {
@@ -75,10 +72,9 @@ public class BitMatrixGraph implements Graph {
 		return sets.get(i).get(j);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public Collection<Integer> getNeighbours(int i) {
-
 		Set<Integer> result = new HashSet<Integer>();
 		BitSet neighb = sets.get(i);
 		final int max = size();
@@ -89,7 +85,7 @@ public class BitMatrixGraph implements Graph {
 		return Collections.unmodifiableCollection(result);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns null always
@@ -98,7 +94,7 @@ public class BitMatrixGraph implements Graph {
 		return null;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns null always.
@@ -107,22 +103,21 @@ public class BitMatrixGraph implements Graph {
 		return null;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public int size() {
 		return sets.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean directed() {
 		return directed;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean setEdge(int i, int j) {
-
 		if (i > size() || j > size() || i < 0 || j < 0) throw new
 				IndexOutOfBoundsException();
 
@@ -138,10 +133,9 @@ public class BitMatrixGraph implements Graph {
 		return !old;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean clearEdge(int i, int j) {
-
 		if (i > size() || j > size() || i < 0 || j < 0) throw new
 				IndexOutOfBoundsException();
 
@@ -157,10 +151,9 @@ public class BitMatrixGraph implements Graph {
 		return old;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public int degree(int i) {
-
 		BitSet neighb = sets.get(i);
 		return neighb.cardinality(); // only from jdk 1.4
 	}

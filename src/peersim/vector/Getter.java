@@ -38,8 +38,8 @@ import peersim.core.*;
  */
 public class Getter {
 
-// ============================ fields ===================================
-// =======================================================================
+	// ============================ fields ===================================
+	// =======================================================================
 
 	private final String protocol;
 	private final String methodn;
@@ -66,8 +66,8 @@ public class Getter {
 	private Class type;
 
 
-// ========================== initialization =============================
-// =======================================================================
+	// ========================== initialization =============================
+	// =======================================================================
 
 
 	/**
@@ -86,19 +86,17 @@ public class Getter {
 	 *                 value <code>getValue</code>.
 	 */
 	public Getter(String prefix, String protocol, String methodn) {
-
 		this.prefix = prefix;
 		this.protocol = protocol;
 		this.methodn = methodn;
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Performs actual initialization
 	 */
 	private void init() {
-
 		if (method != null) return;
 
 		// Read configuration parameter
@@ -117,19 +115,18 @@ public class Getter {
 	}
 
 
-// =============================== methods =============================
-// =====================================================================
+	// =============================== methods =============================
+	// =====================================================================
 
 	/**
 	 * @return type of return value of getter method
 	 */
 	public Class getType() {
-
 		init();
 		return type;
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Gets the given value as a Number.
@@ -139,7 +136,6 @@ public class Getter {
 	 * @return the read value.
 	 */
 	public Number get(Node n) {
-
 		init();
 
 		try {
@@ -153,7 +149,7 @@ public class Getter {
 		}
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Gets the given integer value.
@@ -163,7 +159,6 @@ public class Getter {
 	 * @return the read value.
 	 */
 	public long getLong(Node n) {
-
 		init();
 
 		if (type == long.class || type == int.class) {
@@ -177,7 +172,7 @@ public class Getter {
 		} else throw new RuntimeException("type has to be int or long");
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Gets the given real value.
@@ -187,7 +182,6 @@ public class Getter {
 	 * @return the read value.
 	 */
 	public double getDouble(Node n) {
-
 		init();
 
 		if (type == double.class || type == float.class) {
@@ -202,7 +196,7 @@ public class Getter {
 				"type has to be double or float");
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Gets the given value as a Number.
@@ -216,7 +210,7 @@ public class Getter {
 		return get(Network.get(i));
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Gets the given integer value.
@@ -230,7 +224,7 @@ public class Getter {
 		return getLong(Network.get(i));
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Gets the given real value.

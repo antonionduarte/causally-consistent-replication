@@ -33,40 +33,37 @@ import java.util.*;
 public class UndirectedGraph implements Graph {
 
 
-// ====================== private fileds ========================
-// ==============================================================
+	// ====================== private fileds ========================
+	// ==============================================================
 
 
 	private final Graph g;
 
 
-// ====================== public constructors ===================
-// ==============================================================
+	// ====================== public constructors ===================
+	// ==============================================================
 
 
 	public UndirectedGraph(Graph g) {
-
 		this.g = g;
 	}
 
 
-// ======================= Graph implementations ================
-// ==============================================================
+	// ======================= Graph implementations ================
+	// ==============================================================
 
 
 	public boolean isEdge(int i, int j) {
-
 		return g.isEdge(i, j) || g.isEdge(j, i);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Uses sets as collection so does not support multiple edges now, even if
 	 * the underlying directed graph does.
 	 */
 	public Collection<Integer> getNeighbours(int i) {
-
 		Set<Integer> result = new HashSet<>();
 		result.addAll(g.getNeighbours(i));
 		final int max = g.size();
@@ -77,13 +74,13 @@ public class UndirectedGraph implements Graph {
 		return Collections.unmodifiableCollection(result);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public Object getNode(int i) {
 		return g.getNode(i);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * If there is an (i,j) edge, returns that, otherwise if there is a (j,i)
@@ -96,46 +93,43 @@ public class UndirectedGraph implements Graph {
 		return null;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public int size() {
 		return g.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean directed() {
 		return false;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean setEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean clearEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public int degree(int i) {
-
 		return getNeighbours(i).size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 /*
 public static void main( String[] args ) {
 

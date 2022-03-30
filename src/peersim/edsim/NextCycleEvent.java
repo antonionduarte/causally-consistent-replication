@@ -63,7 +63,6 @@ public class NextCycleEvent implements Cloneable {
 	 * on which you can perform optional deep cloning operations (arrays, etc).
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
 		return super.clone();
 	}
 
@@ -81,7 +80,6 @@ public class NextCycleEvent implements Cloneable {
 	 * the next event after the next event is scheduled by the next event.
 	 */
 	public final void execute() {
-
 		int pid = CommonState.getPid();
 		Node node = CommonState.getNode();
 		CDProtocol cdp = (CDProtocol) node.getProtocol(pid);
@@ -102,7 +100,6 @@ public class NextCycleEvent implements Cloneable {
 	 * (as set in the config file).
 	 */
 	protected long nextDelay(long step) {
-
 		return step;
 	}
 

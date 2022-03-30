@@ -31,9 +31,9 @@ import peersim.dynamics.*;
  */
 public class UniformDistribution extends VectControl implements NodeInitializer {
 
-//--------------------------------------------------------------------------
-//Parameter names
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Parameter names
+	//--------------------------------------------------------------------------
 
 	/**
 	 * The upper bound of the uniform random variable, exclusive.
@@ -50,9 +50,9 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 	 */
 	private static final String PAR_MIN = "min";
 
-// --------------------------------------------------------------------------
-// Fields
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Fields
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Minimum value
@@ -64,9 +64,9 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 	 */
 	private final Number max;
 
-// --------------------------------------------------------------------------
-// Initialization
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Initialization
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -89,9 +89,9 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 		}
 	}
 
-// --------------------------------------------------------------------------
-// Methods
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Methods
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Initializes the values drawing uniform random samples from the range
@@ -100,7 +100,6 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 	 * @return always false
 	 */
 	public boolean execute() {
-
 		if (setter.isInteger()) {
 			long d = max.longValue() - min.longValue();
 			for (int i = 0; i < Network.size(); ++i) {
@@ -117,7 +116,7 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 		return false;
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Initializes the value drawing a uniform random sample from the range
@@ -126,7 +125,6 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 	 * @param n the node to initialize
 	 */
 	public void initialize(Node n) {
-
 		if (setter.isInteger()) {
 			long d = max.longValue() - min.longValue();
 			setter.set(n, CommonState.r.nextLong(d) + min.longValue());
@@ -136,6 +134,6 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 		}
 	}
 
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 }

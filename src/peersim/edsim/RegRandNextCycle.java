@@ -27,8 +27,8 @@ import peersim.core.*;
  */
 public class RegRandNextCycle extends NextCycleEvent {
 
-// ============================== fields ==============================
-// ====================================================================
+	// ============================== fields ==============================
+	// ====================================================================
 
 	/**
 	 * Indicates the start of the next cycle for a particular protocol
@@ -36,8 +36,8 @@ public class RegRandNextCycle extends NextCycleEvent {
 	 */
 	private long nextCycleStart = -1;
 
-// =============================== initialization ======================
-// =====================================================================
+	// =============================== initialization ======================
+	// =====================================================================
 
 
 	/**
@@ -48,7 +48,7 @@ public class RegRandNextCycle extends NextCycleEvent {
 		super(n);
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Calls super.clone().
@@ -59,8 +59,8 @@ public class RegRandNextCycle extends NextCycleEvent {
 	}
 
 
-// ========================== methods ==================================
-// =====================================================================
+	// ========================== methods ==================================
+	// =====================================================================
 
 
 	/**
@@ -70,7 +70,6 @@ public class RegRandNextCycle extends NextCycleEvent {
 	 * {@link CDScheduler} that initiates the protocol in question.
 	 */
 	protected long nextDelay(long step) {
-
 		// at this point nextCycleStart points to the start of the next cycle
 		// (the cycle after the one in which this execution is taking place)
 		// (note that the start of the cycle is included in the cycle)

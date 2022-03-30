@@ -29,8 +29,8 @@ import peersim.util.IncrementalStats;
  */
 public class Clustering extends GraphObserver {
 
-// ===================== fields =======================================
-// ====================================================================
+	// ===================== fields =======================================
+	// ====================================================================
 
 	/**
 	 * The number of nodes to collect info about. Defaults to the size of the graph.
@@ -41,8 +41,8 @@ public class Clustering extends GraphObserver {
 
 	private final int n;
 
-// ===================== initialization ================================
-// =====================================================================
+	// ===================== initialization ================================
+	// =====================================================================
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -55,8 +55,8 @@ public class Clustering extends GraphObserver {
 		n = Configuration.getInt(name + "." + PAR_N, Integer.MAX_VALUE);
 	}
 
-// ====================== methods ======================================
-// =====================================================================
+	// ====================== methods ======================================
+	// =====================================================================
 
 	/**
 	 * Prints information about the clustering coefficient.

@@ -30,8 +30,8 @@ package peersim.config;
  */
 public class FastConfig {
 
-// ======================= fields ===========================================
-// ===========================================================================
+	// ======================= fields ===========================================
+	// ===========================================================================
 
 	/**
 	 * Parameter name in configuration that attaches a linkable protocol to a
@@ -63,13 +63,13 @@ public class FastConfig {
 	protected static final int[] transports;
 
 
-// ======================= initialization ===================================
-// ==========================================================================
+	// ======================= initialization ===================================
+	// ==========================================================================
 
 
 	/*
 	  This static initialization block reads the configuration for information that
-	  it understands. Currently it understands property {@value #PAR_LINKABLE}
+	  it understands. Currently, it understands property {@value #PAR_LINKABLE}
 	  and {@value #PAR_TRANSPORT}.
 
 	  Protocols' linkable and transport definitions are prefetched
@@ -104,7 +104,7 @@ public class FastConfig {
 		}
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * to prevent construction
@@ -112,8 +112,8 @@ public class FastConfig {
 	private FastConfig() {
 	}
 
-// ======================= methods ==========================================
-// ==========================================================================
+	// ======================= methods ==========================================
+	// ==========================================================================
 
 
 	/**
@@ -124,7 +124,7 @@ public class FastConfig {
 		return numLinkables(pid) > 0;
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Returns the number of linkable protocols associated with a given protocol.
@@ -133,7 +133,7 @@ public class FastConfig {
 		return links[pid].length;
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Returns the protocol id of the <code>linkIndex</code>-th linkable used by
@@ -152,7 +152,7 @@ public class FastConfig {
 		return links[pid][linkIndex];
 	}
 
-//---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Invokes <code>getLinkable(pid, 0)</code>.
@@ -161,7 +161,7 @@ public class FastConfig {
 		return getLinkable(pid, 0);
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Returns true if the given protocol has a transport protocol associated with
@@ -171,7 +171,7 @@ public class FastConfig {
 		return transports[pid] >= 0;
 	}
 
-// ---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Returns the id of the transport protocol used by the protocol identified

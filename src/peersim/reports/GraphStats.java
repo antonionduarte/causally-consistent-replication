@@ -34,9 +34,8 @@ import peersim.util.IncrementalStats;
  */
 public class GraphStats extends GraphObserver {
 
-
-// ===================== fields =======================================
-// ====================================================================
+	// ===================== fields =======================================
+	// ====================================================================
 
 	/**
 	 * The number of nodes to use for
@@ -69,10 +68,8 @@ public class GraphStats extends GraphObserver {
 
 	private final int nl;
 
-
-// ===================== initialization ================================
-// =====================================================================
-
+	// ===================== initialization ================================
+	// =====================================================================
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -81,15 +78,13 @@ public class GraphStats extends GraphObserver {
 	 * @param name the configuration prefix for this class
 	 */
 	public GraphStats(String name) {
-
 		super(name);
 		nl = Configuration.getInt(name + "." + PAR_NL, 0);
 		nc = Configuration.getInt(name + "." + PAR_NC, 0);
 	}
 
-
-// ====================== methods ======================================
-// =====================================================================
+	// ====================== methods ======================================
+	// =====================================================================
 
 	/**
 	 * Returns statistics over minimal path length and clustering.
@@ -107,7 +102,6 @@ public class GraphStats extends GraphObserver {
 	 * @see Clustering
 	 */
 	public boolean execute() {
-
 		System.out.print(name + ": ");
 
 		IncrementalStats stats = new IncrementalStats();

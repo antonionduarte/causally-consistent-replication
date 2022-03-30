@@ -97,7 +97,7 @@ public class ConfigProperties extends Properties {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Constructs a ConfigProperty object by loading a file by calling
@@ -109,7 +109,7 @@ public class ConfigProperties extends Properties {
 		load(fileName);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Calls super constructor.
@@ -118,7 +118,7 @@ public class ConfigProperties extends Properties {
 		super(props);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Calls {@link #ConfigProperties(String[], String)} with resource set to null.
@@ -128,8 +128,8 @@ public class ConfigProperties extends Properties {
 	}
 
 
-// =========== Public methods ========================================
-// ===================================================================
+	// =========== Public methods ========================================
+	// ===================================================================
 
 
 	/**
@@ -142,7 +142,7 @@ public class ConfigProperties extends Properties {
 		fis.close();
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Adds the properties from the given property file. Searches in the class path
@@ -153,7 +153,7 @@ public class ConfigProperties extends Properties {
 		load(cl.getResourceAsStream(n));
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Appends a property defined in the given string.

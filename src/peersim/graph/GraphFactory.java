@@ -33,8 +33,8 @@ public class GraphFactory {
 	private GraphFactory() {
 	}
 
-// ===================== public static methods ======================
-// ==================================================================
+	// ===================== public static methods ======================
+	// ==================================================================
 
 	/**
 	 * Wires a ring lattice.
@@ -53,7 +53,6 @@ public class GraphFactory {
 	 * @return returns g for convenience
 	 */
 	public static Graph wireRingLattice(Graph g, int k) {
-
 		final int n = g.size();
 
 		int pred = k / 2;
@@ -68,7 +67,7 @@ public class GraphFactory {
 		return g;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Watts-Strogatz model. A bit modified though: by default assumes a directed
@@ -92,7 +91,7 @@ public class GraphFactory {
 	 * @return returns g for convenience
 	 */
 	public static Graph wireWS(Graph g, int k, double p, Random r) {
-//XXX unintuitive to call it WS due to the slight mods
+	//XXX unintuitive to call it WS due to the slight mods
 		final int n = g.size();
 		for (int i = 0; i < n; ++i)
 			for (int j = -k / 2; j <= k / 2; ++j) {
@@ -107,7 +106,7 @@ public class GraphFactory {
 		return g;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Random graph. Generates randomly k directed edges out of each node.
@@ -123,7 +122,6 @@ public class GraphFactory {
 	 * @return returns g for convenience
 	 */
 	public static Graph wireKOut(Graph g, int k, Random r) {
-
 		final int n = g.size();
 		if (n < 2) return g;
 		if (n <= k) k = n - 1;
@@ -145,7 +143,7 @@ public class GraphFactory {
 		return g;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * A sink star.
@@ -155,13 +153,12 @@ public class GraphFactory {
 	 * @return returns g for convenience
 	 */
 	public static Graph wireStar(Graph g) {
-
 		final int n = g.size();
 		for (int i = 1; i < n; ++i) g.setEdge(i, 0);
 		return g;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * A regular rooted tree.
@@ -175,7 +172,6 @@ public class GraphFactory {
 	 * @return returns g for convenience
 	 */
 	public static Graph wireRegRootedTree(Graph g, int k) {
-
 		if (k == 0) return g;
 		final int n = g.size();
 		int i = 0; // node we wire
@@ -187,7 +183,7 @@ public class GraphFactory {
 		return g;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * A hypercube.
@@ -200,7 +196,6 @@ public class GraphFactory {
 	 * @return returns g for convenience
 	 */
 	public static Graph wireHypercube(Graph g) {
-
 		final int n = g.size();
 		if (n <= 1) return g;
 		final int highestone = Integer.highestOneBit(n - 1); // not zero
@@ -216,7 +211,7 @@ public class GraphFactory {
 		return g;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * This contains the implementation of the Barabasi-Albert model
@@ -237,7 +232,6 @@ public class GraphFactory {
 	 * @return returns g for convenience
 	 */
 	public static Graph wireScaleFreeBA(Graph g, int k, Random r) {
-
 		final int nodes = g.size();
 		if (nodes <= k) return g;
 

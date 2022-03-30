@@ -30,9 +30,9 @@ import peersim.core.*;
  */
 public class LinearDistribution extends VectControl {
 
-//--------------------------------------------------------------------------
-//Parameters
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Parameters
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Upper end of the interval..
@@ -48,9 +48,9 @@ public class LinearDistribution extends VectControl {
 	 */
 	private static final String PAR_MIN = "min";
 
-// --------------------------------------------------------------------------
-// Fields
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Fields
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Minimum value
@@ -67,9 +67,9 @@ public class LinearDistribution extends VectControl {
 	 */
 	private final double step;
 
-// --------------------------------------------------------------------------
-// Initialization
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Initialization
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -95,9 +95,9 @@ public class LinearDistribution extends VectControl {
 		}
 	}
 
-// --------------------------------------------------------------------------
-// Methods
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Methods
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Initializes a protocol vector with values in the range [{@value #PAR_MIN},
@@ -106,7 +106,6 @@ public class LinearDistribution extends VectControl {
 	 * @return always false
 	 */
 	public boolean execute() {
-
 		if (setter.isInteger()) {
 			for (int i = 0; i < Network.size(); ++i) {
 				// we avoid the entire expression being cast to double

@@ -83,9 +83,9 @@ import peersim.core.*;
  */
 public class EDSimulator {
 
-//---------------------------------------------------------------------
-// Parameters
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Parameters
+	//---------------------------------------------------------------------
 
 	/**
 	 * The ending time for simulation. Only events that have a strictly smaller
@@ -143,9 +143,9 @@ public class EDSimulator {
 	private static final String PAR_CTRL = "control";
 
 
-//---------------------------------------------------------------------
-//Fields
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Fields
+	//---------------------------------------------------------------------
 
 	/**
 	 * Maximum time for simulation
@@ -174,8 +174,8 @@ public class EDSimulator {
 
 	private static long nextlog = 0;
 
-// =============== initialization ======================================
-// =====================================================================
+	// =============== initialization ======================================
+	// =====================================================================
 
 	/**
 	 * to prevent construction
@@ -183,9 +183,9 @@ public class EDSimulator {
 	private EDSimulator() {
 	}
 
-//---------------------------------------------------------------------
-//Private methods
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Private methods
+	//---------------------------------------------------------------------
 
 	/**
 	 * Load and run initializers.
@@ -225,7 +225,7 @@ public class EDSimulator {
 		}
 	}
 
-//---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Adds a new event to be scheduled, specifying the number of time units
@@ -238,13 +238,13 @@ public class EDSimulator {
 	 * @param event The control event
 	 */
 	static void addControlEvent(long time, int order, ControlEvent event) {
-// we don't check whether time is negative or in the past: we trust
-// the caller, which must be from this package
+	// we don't check whether time is negative or in the past: we trust
+	// the caller, which must be from this package
 		if (time >= endtime) return;
 		heap.add(time, event, null, (byte) 0, order);
 	}
 
-//---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * This method is used to check whether the current configuration can
@@ -255,7 +255,7 @@ public class EDSimulator {
 		return Configuration.contains(PAR_ENDTIME);
 	}
 
-//---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Execute and remove the next event from the ordered event list.
@@ -263,7 +263,6 @@ public class EDSimulator {
 	 * @return true if the execution should be stopped.
 	 */
 	private static boolean executeNext() {
-
 		PriorityQ.Event ev = heap.removeFirst();
 		if (ev == null) {
 			System.err.println("EDSimulator: queue is empty, quitting" +
@@ -320,9 +319,9 @@ public class EDSimulator {
 		return false;
 	}
 
-//---------------------------------------------------------------------
-//Public methods
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Public methods
+	//---------------------------------------------------------------------
 
 	/**
 	 * Runs an experiment, resetting everything except the random seed.
@@ -369,7 +368,7 @@ public class EDSimulator {
 
 	}
 
-//---------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 
 	/**
 	 * Adds a new event to be scheduled, specifying the number of time units

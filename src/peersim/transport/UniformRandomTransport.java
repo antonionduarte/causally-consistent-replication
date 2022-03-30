@@ -33,9 +33,9 @@ import peersim.edsim.*;
  */
 public final class UniformRandomTransport implements Transport {
 
-//---------------------------------------------------------------------
-// Parameters
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Parameters
+	//---------------------------------------------------------------------
 
 	/**
 	 * String name of the parameter used to configure the minimum latency.
@@ -52,9 +52,9 @@ public final class UniformRandomTransport implements Transport {
 	 */
 	private static final String PAR_MAXDELAY = "maxdelay";
 
-//---------------------------------------------------------------------
-// Fields
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Fields
+	//---------------------------------------------------------------------
 
 	/**
 	 * Minimum delay for message sending
@@ -68,9 +68,9 @@ public final class UniformRandomTransport implements Transport {
 	private final long range;
 
 
-//---------------------------------------------------------------------
-// Initialization
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Initialization
+	//---------------------------------------------------------------------
 
 	/**
 	 * Reads configuration parameter.
@@ -84,7 +84,7 @@ public final class UniformRandomTransport implements Transport {
 		range = max - min + 1;
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * Returns <code>this</code>. This way only one instance exists in the system
@@ -95,9 +95,9 @@ public final class UniformRandomTransport implements Transport {
 		return this;
 	}
 
-//---------------------------------------------------------------------
-// Methods
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Methods
+	//---------------------------------------------------------------------
 
 	/**
 	 * Delivers the message with a random

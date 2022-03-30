@@ -36,17 +36,16 @@ import java.util.*;
  */
 public class ConstUndirGraph implements Graph {
 
-
-// ====================== private fileds ========================
-// ==============================================================
+	// ====================== private fileds ========================
+	// ==============================================================
 
 
 	protected final Graph g;
 
 	protected final List<Integer>[] in;
 
-// ====================== public constructors ===================
-// ==============================================================
+	// ====================== public constructors ===================
+	// ==============================================================
 
 	/**
 	 * Initialization based on given graph. Stores the graph and if necessary
@@ -55,7 +54,6 @@ public class ConstUndirGraph implements Graph {
 	 * not be modified while this object is in use.
 	 */
 	public ConstUndirGraph(Graph g) {
-
 		this.g = g;
 		if (!g.directed()) {
 			in = null;
@@ -66,13 +64,12 @@ public class ConstUndirGraph implements Graph {
 		initGraph();
 	}
 
-// --------------------------------------------------------------
+	// --------------------------------------------------------------
 
 	/**
 	 * Finds and stores incoming edges
 	 */
 	protected void initGraph() {
-
 		final int max = g.size();
 		for (int i = 0; i < max; ++i) in[i] = new ArrayList<>();
 		for (int i = 0; i < max; ++i) {
@@ -83,30 +80,28 @@ public class ConstUndirGraph implements Graph {
 	}
 
 
-// ======================= Graph implementations ================
-// ==============================================================
+	// ======================= Graph implementations ================
+	// ==============================================================
 
 
 	public boolean isEdge(int i, int j) {
-
 		return g.isEdge(i, j) || g.isEdge(j, i);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Uses sets as collection so does not support multiple edges now, even if
 	 * the underlying directed graph does.
 	 */
 	public Collection<Integer> getNeighbours(int i) {
-
 		List<Integer> result = new ArrayList<>();
 		result.addAll(g.getNeighbours(i));
 		if (in != null) result.addAll(in[i]);
 		return Collections.unmodifiableCollection(result);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns the node from the underlying graph
@@ -115,58 +110,55 @@ public class ConstUndirGraph implements Graph {
 		return g.getNode(i);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * If there is an (i,j) edge, returns that, otherwise if there is a (j,i)
 	 * edge, returns that, otherwise returns null.
 	 */
 	public Object getEdge(int i, int j) {
-
 		if (g.isEdge(i, j)) return g.getEdge(i, j);
 		if (g.isEdge(j, i)) return g.getEdge(j, i);
 		return null;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public int size() {
 		return g.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean directed() {
 		return false;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean setEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean clearEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public int degree(int i) {
 		return g.degree(i) + (in == null ? 0 : in[i].size());
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 /*
 public static void main( String[] args ) {
 

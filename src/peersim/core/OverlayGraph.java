@@ -42,8 +42,8 @@ import java.util.Collections;
 public class OverlayGraph implements Graph {
 
 
-// ====================== fields ================================
-// ==============================================================
+	// ====================== fields ================================
+	// ==============================================================
 
 	/**
 	 * The protocol ID that selects the Linkable protocol to convert to a graph.
@@ -57,8 +57,8 @@ public class OverlayGraph implements Graph {
 	 */
 	public final boolean wireDirected;
 
-// ====================== public constructors ===================
-// ==============================================================
+	// ====================== public constructors ===================
+	// ==============================================================
 
 	/**
 	 * @param protocolID The protocol on which this adaptor is supposed
@@ -69,7 +69,7 @@ public class OverlayGraph implements Graph {
 		wireDirected = true;
 	}
 
-// --------------------------------------------------------------
+	// --------------------------------------------------------------
 
 	/**
 	 * @param protocolID   The protocol on which this adaptor is supposed
@@ -83,8 +83,8 @@ public class OverlayGraph implements Graph {
 	}
 
 
-// ======================= Graph implementations ================
-// ==============================================================
+	// ======================= Graph implementations ================
+	// ==============================================================
 
 
 	public boolean isEdge(int i, int j) {
@@ -95,7 +95,7 @@ public class OverlayGraph implements Graph {
 						Network.node[i].isUp();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns those neighbors that are up. If node i is not up, it returns
@@ -114,7 +114,7 @@ public class OverlayGraph implements Graph {
 		return Collections.unmodifiableList(al);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns <code>Network.node[i]</code>
@@ -123,7 +123,7 @@ public class OverlayGraph implements Graph {
 		return Network.node[i];
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns null always
@@ -132,7 +132,7 @@ public class OverlayGraph implements Graph {
 		return null;
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns <code>Network.size()</code>
@@ -141,7 +141,7 @@ public class OverlayGraph implements Graph {
 		return Network.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns always true
@@ -150,7 +150,7 @@ public class OverlayGraph implements Graph {
 		return true;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Sets given edge.
@@ -169,7 +169,7 @@ public class OverlayGraph implements Graph {
 	 * If it is false, then the opposite edge is set too.
 	 */
 	public boolean setEdge(int i, int j) {
-// XXX slightly unintuitive behavior but makes sense when understood
+	// XXX slightly unintuitive behavior but makes sense when understood
 		if (!wireDirected)
 			((Linkable) Network.node[j].getProtocol(protocolID)
 			).addNeighbor(Network.node[i]);
@@ -179,7 +179,7 @@ public class OverlayGraph implements Graph {
 				).addNeighbor(Network.node[j]);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Not supported
@@ -188,7 +188,7 @@ public class OverlayGraph implements Graph {
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * Returns number of neighbors that are up. If node i is down, returns 0.
@@ -206,8 +206,8 @@ public class OverlayGraph implements Graph {
 	}
 
 
-// ========================= other methods =======================
-// ===============================================================
+	// ========================= other methods =======================
+	// ===============================================================
 
 
 	/**

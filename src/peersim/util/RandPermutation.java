@@ -27,9 +27,8 @@ import java.util.Random;
  */
 public class RandPermutation implements IndexIterator {
 
-
-// ======================= private fields ============================
-// ===================================================================
+	// ======================= private fields ============================
+	// ===================================================================
 
 
 	private int[] buffer = null;
@@ -41,8 +40,8 @@ public class RandPermutation implements IndexIterator {
 	private final Random r;
 
 
-// ======================= initialization ============================
-// ===================================================================
+	// ======================= initialization ============================
+	// ===================================================================
 
 
 	/**
@@ -55,7 +54,7 @@ public class RandPermutation implements IndexIterator {
 		this.r = r;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Sets source of randomness and initial size. It calls
@@ -66,14 +65,13 @@ public class RandPermutation implements IndexIterator {
 	 * @param k size of permutation
 	 */
 	public RandPermutation(int k, Random r) {
-
 		this.r = r;
 		setPermutation(k);
 	}
 
 
-// ======================= public methods ============================
-// ===================================================================
+	// ======================= public methods ============================
+	// ===================================================================
 
 
 	/**
@@ -87,7 +85,6 @@ public class RandPermutation implements IndexIterator {
 	 * The idea is to use this method only in connection with {@link #get}.
 	 */
 	public void setPermutation(int k) {
-
 		reset(k);
 
 		for (int i = len; i > 1; i--) {
@@ -98,7 +95,7 @@ public class RandPermutation implements IndexIterator {
 		}
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns the ith element of the permutation set by {@link #setPermutation}.
@@ -106,12 +103,11 @@ public class RandPermutation implements IndexIterator {
 	 * this method, then the behavior of this method is unspecified.
 	 */
 	public int get(int i) {
-
 		if (i >= len) throw new IndexOutOfBoundsException();
 		return buffer[i];
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * It initiates a random permutation of the integers from 0 to k-1.
@@ -121,7 +117,6 @@ public class RandPermutation implements IndexIterator {
 	 * If the previous permutation was of the same length, it is more efficient.
 	 */
 	public void reset(int k) {
-
 		pointer = k;
 		if (len == k) return;
 
@@ -133,13 +128,12 @@ public class RandPermutation implements IndexIterator {
 		for (int i = 0; i < len; ++i) buffer[i] = i;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Next random sample without replacement
 	 */
 	public int next() {
-
 		if (pointer < 1) throw new NoSuchElementException();
 
 		int j = r.nextInt(pointer);
@@ -150,13 +144,13 @@ public class RandPermutation implements IndexIterator {
 		return buffer[--pointer];
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	public boolean hasNext() {
 		return pointer > 0;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 /*
 public static void main( String pars[] ) throws Exception {

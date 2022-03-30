@@ -29,8 +29,8 @@ public class GraphIO {
 	}
 
 
-// ================== public static methods =========================
-// ==================================================================
+	// ================== public static methods =========================
+	// ==================================================================
 
 
 	/**
@@ -47,7 +47,7 @@ public class GraphIO {
 		}
 	}
 
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
 
 	/**
 	 * Prints graph in neighbor list format. Each line starts with the
@@ -67,14 +67,13 @@ public class GraphIO {
 		}
 	}
 
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
 
 	/**
 	 * Saves the given graph to
 	 * the given stream in DOT format. Good for the graphviz package.
 	 */
 	public static void writeDOT(Graph g, PrintStream out) {
-
 		out.println((g.directed() ? "digraph" : "graph") + " {");
 
 		for (int i = 0; i < g.size(); ++i) {
@@ -91,14 +90,13 @@ public class GraphIO {
 		out.println("}");
 	}
 
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
 
 	/**
 	 * Saves the given graph to
 	 * the given stream in GML format.
 	 */
 	public static void writeGML(Graph g, PrintStream out) {
-
 		out.println("graph [ directed " + (g.directed() ? "1" : "0"));
 
 		for (int i = 0; i < g.size(); ++i)
@@ -115,7 +113,7 @@ public class GraphIO {
 		out.println("]");
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Saves the given graph to
@@ -138,7 +136,7 @@ public class GraphIO {
 		out.println("*Edges");
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Saves the given graph to
@@ -159,14 +157,13 @@ public class GraphIO {
 		out.println();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Saves the given graph to
 	 * the given stream in UCINET DL matrix format.
 	 */
 	public static void writeUCINET_DLMatrix(Graph g, PrintStream out) {
-
 		out.println("DL\nN=" + g.size() + "\nDATA:");
 
 		for (int i = 0; i < g.size(); ++i) {
@@ -183,7 +180,7 @@ public class GraphIO {
 		out.println();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Saves the given graph to
@@ -192,7 +189,6 @@ public class GraphIO {
 	 * Note that this format is designed for undirected graphs only.
 	 */
 	public static void writeChaco(Graph g, PrintStream out) {
-
 		if (g.directed()) System.err.println(
 				"warning: you're saving a directed graph in Chaco format");
 
@@ -212,7 +208,7 @@ public class GraphIO {
 		out.println();
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Read a graph in newscast graph format.
@@ -253,7 +249,7 @@ public class GraphIO {
 		final int CACHESIZE = dis.readInt();
 		final int GRAPHSIZE = dis.readInt();
 
-//System.out.println("header: "+MODE+" "+CACHESIZE+" "+GRAPHSIZE);
+		//System.out.println("header: "+MODE+" "+CACHESIZE+" "+GRAPHSIZE);
 
 		for (int i = 1; i <= GRAPHSIZE; ++i) {
 			int iind = gr.addNode(i);
@@ -272,7 +268,5 @@ public class GraphIO {
 
 		return gr;
 	}
-
-
 }
 

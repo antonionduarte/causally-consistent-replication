@@ -29,9 +29,9 @@ package peersim.transport;
  */
 public class E2ENetwork {
 
-//---------------------------------------------------------------------
-// Fields
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Fields
+	//---------------------------------------------------------------------
 
 	/**
 	 * True if latency between nodes is considered symmetric. False otherwise.
@@ -48,9 +48,9 @@ public class E2ENetwork {
 	 */
 	private static int[][] array;
 
-//---------------------------------------------------------------------
-// Initialization
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Initialization
+	//---------------------------------------------------------------------
 
 	/**
 	 * Disable instance construction
@@ -58,9 +58,9 @@ public class E2ENetwork {
 	private E2ENetwork() {
 	}
 
-//---------------------------------------------------------------------
-// Methods
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Methods
+	//---------------------------------------------------------------------
 
 	/**
 	 * Resets the network, by creating a triangular (if symm is true) or
@@ -82,7 +82,7 @@ public class E2ENetwork {
 		}
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * Returns the latency associated to the specified (sender, receiver)
@@ -96,7 +96,7 @@ public class E2ENetwork {
 	public static int getLatency(int sender, int receiver) {
 		if (sender == receiver)
 			return 0;
-		// XXX There should be the possibility to fix the delay.
+			// XXX There should be the possibility to fix the delay.
 		if (symm) {
 			// Symmetric network
 			if (sender < receiver) {
@@ -108,7 +108,7 @@ public class E2ENetwork {
 		return array[sender][receiver];
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * Sets the latency associated to the specified (sender, receiver)
@@ -130,7 +130,7 @@ public class E2ENetwork {
 		array[sender][receiver] = latency;
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * Returns the current size of the underlying network (i.e., the number of

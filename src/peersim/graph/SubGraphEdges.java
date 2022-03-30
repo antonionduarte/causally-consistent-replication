@@ -33,8 +33,8 @@ import java.util.*;
 public class SubGraphEdges implements Graph {
 
 
-// ====================== private fields ========================
-// ==============================================================
+	// ====================== private fields ========================
+	// ==============================================================
 
 
 	private final Graph g;
@@ -42,8 +42,8 @@ public class SubGraphEdges implements Graph {
 	private final BitSet nodes;
 
 
-// ====================== public constructors ===================
-// ==============================================================
+	// ====================== public constructors ===================
+	// ==============================================================
 
 
 	/**
@@ -51,25 +51,22 @@ public class SubGraphEdges implements Graph {
 	 * contain no nodes.
 	 */
 	public SubGraphEdges(Graph g) {
-
 		this.g = g;
 		nodes = new BitSet(g.size());
 	}
 
 
-// ======================= Graph implementations ================
-// ==============================================================
+	// ======================= Graph implementations ================
+	// ==============================================================
 
 
 	public boolean isEdge(int i, int j) {
-
 		return nodes.get(i) && nodes.get(j) && g.isEdge(i, j);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public Collection<Integer> getNeighbours(int i) {
-
 		List<Integer> result = new LinkedList<>();
 		if (nodes.get(i)) {
 			for (Integer in : g.getNeighbours(i)) {
@@ -80,13 +77,13 @@ public class SubGraphEdges implements Graph {
 		return Collections.unmodifiableCollection(result);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public Object getNode(int i) {
 		return g.getNode(i);
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * If both i and j are within the node set of the subgraph and the original
@@ -98,42 +95,39 @@ public class SubGraphEdges implements Graph {
 		return null;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public int size() {
 		return g.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	public boolean directed() {
 		return g.directed();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean setEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	/**
 	 * not supported
 	 */
 	public boolean clearEdge(int i, int j) {
-
 		throw new UnsupportedOperationException();
 	}
 
-// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
 
 	public int degree(int i) {
-
 		int degree = 0;
 		if (nodes.get(i)) {
 			for (Integer in : g.getNeighbours(i)) {
@@ -144,8 +138,8 @@ public class SubGraphEdges implements Graph {
 	}
 
 
-// ================= public functions =================================
-// ====================================================================
+	// ================= public functions =================================
+	// ====================================================================
 
 
 	/**
@@ -156,7 +150,7 @@ public class SubGraphEdges implements Graph {
 		return nodes.cardinality();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Removes given node from subgraph.
@@ -164,13 +158,12 @@ public class SubGraphEdges implements Graph {
 	 * @return true if the node was already in the subgraph otherwise false.
 	 */
 	public boolean removeNode(int i) {
-
 		boolean was = nodes.get(i);
 		nodes.clear(i);
 		return was;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Adds given node to subgraph.
@@ -178,7 +171,6 @@ public class SubGraphEdges implements Graph {
 	 * @return true if the node was already in the subgraph otherwise false.
 	 */
 	public boolean addNode(int i) {
-
 		boolean was = nodes.get(i);
 		nodes.set(i);
 		return was;

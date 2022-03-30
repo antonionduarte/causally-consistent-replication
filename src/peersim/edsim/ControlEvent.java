@@ -30,9 +30,9 @@ import peersim.core.Scheduler;
  */
 class ControlEvent {
 
-//---------------------------------------------------------------------
-//Fields
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Fields
+	//---------------------------------------------------------------------
 
 	/**
 	 * The reference to the dynamics to be executed; null if this cycle event
@@ -46,9 +46,9 @@ class ControlEvent {
 	private final int order;
 
 
-//---------------------------------------------------------------------
-//Initialization
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Initialization
+	//---------------------------------------------------------------------
 
 	/**
 	 * Scheduler object to obtain the next schedule time of this event
@@ -68,16 +68,15 @@ class ControlEvent {
 		if (next >= 0) EDSimulator.addControlEvent(next, order, this);
 	}
 
-//---------------------------------------------------------------------
-//Methods
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Methods
+	//---------------------------------------------------------------------
 
 	/**
 	 * Executes the control object, and schedules the object for the next execution
 	 * adding it to the priority queue of the event driven simulation.
 	 */
 	public boolean execute() {
-
 		boolean ret = control.execute();
 		long next = scheduler.getNext();
 		if (next >= 0) EDSimulator.addControlEvent(next, order, this);

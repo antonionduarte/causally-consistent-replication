@@ -26,8 +26,8 @@ package peersim.util;
 public class IncrementalStats {
 
 
-// ===================== fields ========================================
-// =====================================================================
+	// ===================== fields ========================================
+	// =====================================================================
 
 
 	private double min;
@@ -44,8 +44,8 @@ public class IncrementalStats {
 
 	private int countmax;
 
-// ====================== initialization ==============================
-// ====================================================================
+	// ====================== initialization ==============================
+	// ====================================================================
 
 
 	/**
@@ -55,14 +55,13 @@ public class IncrementalStats {
 		reset();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Resets the statistics to reflect the zero elements set.
 	 * Min and max are set to positive and negative infinity, respectively.
 	 */
 	public void reset() {
-
 		countmin = 0;
 		countmax = 0;
 		min = Double.POSITIVE_INFINITY;
@@ -73,8 +72,8 @@ public class IncrementalStats {
 	}
 
 
-// ======================== methods ===================================
-// ====================================================================
+	// ======================== methods ===================================
+	// ====================================================================
 
 
 	/**
@@ -87,14 +86,13 @@ public class IncrementalStats {
 		add(item, 1);
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Updates the statistics assuming element <code>item</code> is added
 	 * <code>k</code> times.
 	 */
 	public void add(double item, int k) {
-
 		if (item < min) {
 			min = item;
 			countmin = 0;
@@ -115,7 +113,7 @@ public class IncrementalStats {
 		}
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The number of data items processed so far
@@ -124,7 +122,7 @@ public class IncrementalStats {
 		return n;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The maximum of the data items
@@ -133,7 +131,7 @@ public class IncrementalStats {
 		return max;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The minimum of the data items
@@ -142,7 +140,7 @@ public class IncrementalStats {
 		return min;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns the number of data items whose value equals the maximum.
@@ -151,7 +149,7 @@ public class IncrementalStats {
 		return countmax;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns the number of data items whose value equals the minimum.
@@ -160,7 +158,7 @@ public class IncrementalStats {
 		return countmin;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The sum of the data items
@@ -169,7 +167,7 @@ public class IncrementalStats {
 		return sum;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The sum of the squares of the data items
@@ -178,7 +176,7 @@ public class IncrementalStats {
 		return sqrsum;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The average of the data items
@@ -187,7 +185,7 @@ public class IncrementalStats {
 		return sum / n;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The empirical variance of the data items. Guaranteed to be larger or
@@ -195,7 +193,6 @@ public class IncrementalStats {
 	 * it returns 0.0.
 	 */
 	public double getVar() {
-
 		double var =
 				(((double) n) / (n - 1)) * (sqrsum / n - getAverage() * getAverage());
 		return (var >= 0.0 ? var : 0.0);
@@ -205,7 +202,7 @@ public class IncrementalStats {
 		// statistics and store the data in some intelligent structure
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * the empirical standard deviation of the data items
@@ -214,7 +211,7 @@ public class IncrementalStats {
 		return Math.sqrt(getVar());
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Prints the following quantities separated by spaces in a single line
@@ -223,7 +220,6 @@ public class IncrementalStats {
 	 * items, number of maximal items.
 	 */
 	public String toString() {
-
 		return min + " " + max + " " + n + " " + sum / n + " " + getVar() + " " +
 				countmin + " " + countmax;
 	}

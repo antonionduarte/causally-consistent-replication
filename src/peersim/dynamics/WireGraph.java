@@ -31,9 +31,9 @@ import peersim.config.Configuration;
  */
 public abstract class WireGraph implements Control {
 
-// --------------------------------------------------------------------------
-// Parameters
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Parameters
+	// --------------------------------------------------------------------------
 
 	/**
 	 * The {@link Linkable} protocol to operate on. If it is not specified,
@@ -69,9 +69,9 @@ public abstract class WireGraph implements Control {
 	 */
 	private static final String PAR_UNDIR_ALT = "undirected";
 
-// --------------------------------------------------------------------------
-// Fields
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Fields
+	// --------------------------------------------------------------------------
 
 	/**
 	 * The protocol we want to wire. It is negative if no protocol was set
@@ -96,9 +96,9 @@ public abstract class WireGraph implements Control {
 	 */
 	public Graph g = null;
 
-// --------------------------------------------------------------------------
-// Initialization
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Initialization
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters. Normally
@@ -117,9 +117,9 @@ public abstract class WireGraph implements Control {
 	}
 
 
-//--------------------------------------------------------------------------
-//Public methods
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
+	// Public methods
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Calls method {@link #wire} with the graph {@link #g},
@@ -150,7 +150,7 @@ public abstract class WireGraph implements Control {
 		return false;
 	}
 
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 
 	/**
 	 * The method that should wire (add edges to) the given graph. Has to

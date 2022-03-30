@@ -31,9 +31,8 @@ import java.io.IOException;
  */
 public class GraphPrinter extends GraphObserver {
 
-
-// ===================== fields =======================================
-// ====================================================================
+	// ===================== fields =======================================
+	// ====================================================================
 
 	/**
 	 * This is the prefix of the filename where the graph is saved.
@@ -71,8 +70,8 @@ public class GraphPrinter extends GraphObserver {
 	private final String format;
 
 
-// ===================== initialization ================================
-// =====================================================================
+	// ===================== initialization ================================
+	// =====================================================================
 
 
 	/**
@@ -82,7 +81,6 @@ public class GraphPrinter extends GraphObserver {
 	 * @param name the configuration prefix for this class
 	 */
 	public GraphPrinter(String name) {
-
 		super(name);
 		baseName = Configuration.getString(name + "." + PAR_BASENAME, null);
 		format = Configuration.getString(name + "." + PAR_FORMAT, "neighborlist");
@@ -91,8 +89,8 @@ public class GraphPrinter extends GraphObserver {
 	}
 
 
-// ====================== methods ======================================
-// =====================================================================
+	// ====================== methods ======================================
+	// =====================================================================
 
 
 	/**

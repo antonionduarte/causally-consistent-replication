@@ -29,8 +29,8 @@ import peersim.core.CommonState;
 public class CDState extends CommonState {
 
 
-// ======================= fields ==================================
-// =================================================================
+	// ======================= fields ==================================
+	// =================================================================
 
 	/**
 	 * Current time within the current cycle.
@@ -47,8 +47,8 @@ public class CDState extends CommonState {
 	private static int cycle = -1;
 
 
-// ======================== initialization =========================
-// =================================================================
+	// ======================== initialization =========================
+	// =================================================================
 
 
 	static {
@@ -60,8 +60,8 @@ public class CDState extends CommonState {
 	private CDState() {
 	}
 
-// ======================= methods =================================
-// =================================================================
+	// ======================= methods =================================
+	// =================================================================
 
 
 	/**
@@ -71,7 +71,7 @@ public class CDState extends CommonState {
 		return cycle >= 0;
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns the current cycle.
@@ -86,7 +86,7 @@ public class CDState extends CommonState {
 						"no cycle state information is available.");
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Sets current cycle. Resets also cycle time to 0. It also calls
@@ -99,7 +99,7 @@ public class CDState extends CommonState {
 		setTime(t);
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns current cycle as an Integer object.
@@ -113,7 +113,7 @@ public class CDState extends CommonState {
 						"no cycle state information is available.");
 	}
 
-//-----------------------------------------------------------------
+	//-----------------------------------------------------------------
 
 	/**
 	 * Returns the current time within the current cycle.
@@ -130,7 +130,7 @@ public class CDState extends CommonState {
 						"no cycle state information is available.");
 	}
 
-// -----------------------------------------------------------------
+	// -----------------------------------------------------------------
 
 	public static void setCycleT(int t) {
 		ctime = t;

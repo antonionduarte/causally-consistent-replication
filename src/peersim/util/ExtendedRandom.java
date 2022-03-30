@@ -28,19 +28,18 @@ public class ExtendedRandom extends Random {
 
 	private long lastSeed;
 
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Calls super constructor. Also stores the seed to be returned by
 	 * {@link #getLastSeed}.
 	 */
 	public ExtendedRandom(long seed) {
-
 		super(seed);
 		lastSeed = seed;
 	}
 
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Extracts the next integer, according to a Poisson distribution.
@@ -49,7 +48,6 @@ public class ExtendedRandom extends Random {
 	 * @return An integer Poisson extraction.
 	 */
 	public int nextPoisson(double mean) {
-
 		double emean = Math.exp(-1 * mean);
 		double product = 1;
 		int count = 0;
@@ -62,7 +60,7 @@ public class ExtendedRandom extends Random {
 		return result;
 	}
 
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Implements nextLong(long) the same way nexInt(int) is implemented in
@@ -73,7 +71,6 @@ public class ExtendedRandom extends Random {
 	 * (inclusive) and n (exclusive).
 	 */
 	public long nextLong(long n) {
-
 		if (n <= 0)
 			throw new IllegalArgumentException("n must be positive");
 
@@ -92,19 +89,18 @@ public class ExtendedRandom extends Random {
 		return val;
 	}
 
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Sets random seed. Calls super method but also stores the seed to be
 	 * returned by {@link #getLastSeed}.
 	 */
 	public void setSeed(long seed) {
-
 		super.setSeed(seed);
 		lastSeed = seed;
 	}
 
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Returns the last random seed that was set explicitly. Either at
@@ -114,7 +110,7 @@ public class ExtendedRandom extends Random {
 		return lastSeed;
 	}
 
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 /*
 public static void main(String[] args) {

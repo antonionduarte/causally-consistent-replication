@@ -37,9 +37,9 @@ import peersim.core.*;
  */
 public final class UnreliableTransport implements Transport {
 
-//---------------------------------------------------------------------
-// Parameters
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Parameters
+	//---------------------------------------------------------------------
 
 	/**
 	 * The name of the underlying transport protocol. This transport is
@@ -58,9 +58,9 @@ public final class UnreliableTransport implements Transport {
 	private static final String PAR_DROP = "drop";
 
 
-//---------------------------------------------------------------------
-// Fields
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Fields
+	//---------------------------------------------------------------------
 
 	/**
 	 * Protocol identifier for the support transport protocol
@@ -72,9 +72,9 @@ public final class UnreliableTransport implements Transport {
 	 */
 	private final float loss;
 
-//---------------------------------------------------------------------
-// Initialization
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Initialization
+	//---------------------------------------------------------------------
 
 	/**
 	 * Reads configuration parameter.
@@ -84,7 +84,7 @@ public final class UnreliableTransport implements Transport {
 		loss = (float) Configuration.getDouble(prefix + "." + PAR_DROP);
 	}
 
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 
 	/**
 	 * Returns <code>this</code>. This way only one instance exists in the system
@@ -95,9 +95,9 @@ public final class UnreliableTransport implements Transport {
 		return this;
 	}
 
-//---------------------------------------------------------------------
-// Methods
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
+	// Methods
+	//---------------------------------------------------------------------
 
 	/**
 	 * Sends the message according to the underlying transport protocol.

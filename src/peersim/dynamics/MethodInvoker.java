@@ -40,9 +40,9 @@ import java.util.ArrayList;
 public class MethodInvoker implements Control, NodeInitializer {
 
 
-// --------------------------------------------------------------------------
-// Parameter names
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Parameter names
+	// --------------------------------------------------------------------------
 
 	/**
 	 * The protocol to operate on.
@@ -62,9 +62,9 @@ public class MethodInvoker implements Control, NodeInitializer {
 	private static final String PAR_METHOD = "method";
 
 
-// --------------------------------------------------------------------------
-// Fields
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Fields
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Identifiers of the protocols to be initialized
@@ -82,9 +82,9 @@ public class MethodInvoker implements Control, NodeInitializer {
 	private final Method[] method;
 
 
-// --------------------------------------------------------------------------
-// Initialization
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Initialization
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -139,9 +139,9 @@ public class MethodInvoker implements Control, NodeInitializer {
 		}
 	}
 
-// --------------------------------------------------------------------------
-// Methods
-// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Methods
+	// --------------------------------------------------------------------------
 
 	private static Method getMethod(Class cl, String methodName)
 			throws NoSuchMethodException {
@@ -165,7 +165,7 @@ public class MethodInvoker implements Control, NodeInitializer {
 		return list.get(0);
 	}
 
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Invokes method on all the nodes.
@@ -178,7 +178,7 @@ public class MethodInvoker implements Control, NodeInitializer {
 		return false;
 	}
 
-//--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 
 	/**
 	 * Invokes method on given node.

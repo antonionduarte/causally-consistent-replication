@@ -27,8 +27,8 @@ import java.util.NoSuchElementException;
 public class LinearIterator implements IndexIterator {
 
 
-// ======================= private fields ============================
-// ===================================================================
+	// ======================= private fields ============================
+	// ===================================================================
 
 	private final boolean reverse;
 
@@ -37,8 +37,8 @@ public class LinearIterator implements IndexIterator {
 	private int pointer = 0;
 
 
-// ======================= initialization ============================
-// ===================================================================
+	// ======================= initialization ============================
+	// ===================================================================
 
 
 	/**
@@ -50,7 +50,7 @@ public class LinearIterator implements IndexIterator {
 		reverse = false;
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Construct an interator for an empty set of numbers.
@@ -63,8 +63,8 @@ public class LinearIterator implements IndexIterator {
 	}
 
 
-// ======================= public methods ============================
-// ===================================================================
+	// ======================= public methods ============================
+	// ===================================================================
 
 
 	public void reset(int k) {
@@ -73,7 +73,7 @@ public class LinearIterator implements IndexIterator {
 		pointer = (reverse ? len - 1 : 0);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	/**
 	 * Returns next index. The indices are returned in increasing or decreasing
@@ -86,13 +86,13 @@ public class LinearIterator implements IndexIterator {
 		return (reverse ? pointer-- : pointer++);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 	public boolean hasNext() {
 		return (reverse ? pointer >= 0 : pointer < len);
 	}
 
-// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
 
 /*
 public static void main( String pars[] ) throws Exception {

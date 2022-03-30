@@ -124,7 +124,7 @@ public class StringListParser {
 			sum = true;
 		}
 
-		if (vstart instanceof BigInteger && vstart instanceof BigInteger && vinc instanceof BigInteger) {
+		if (vstart instanceof BigInteger && vinc instanceof BigInteger) {
 			long vvstart = vstart.longValue();
 			long vvstop = vstop.longValue();
 			long vvinc = vinc.longValue();

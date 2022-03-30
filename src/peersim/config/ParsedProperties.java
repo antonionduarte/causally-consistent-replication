@@ -28,11 +28,11 @@ import java.util.*;
  */
 public class ParsedProperties extends ConfigProperties {
 
-//================= variables ======================================
-//==================================================================
+	// ================= variables ======================================
+	// ==================================================================
 
-// ================= initialization =================================
-// ==================================================================
+	// ================= initialization =================================
+	// ==================================================================
 
 	/**
 	 * Calls super constructor.
@@ -43,7 +43,7 @@ public class ParsedProperties extends ConfigProperties {
 		super(pars);
 	}
 
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
 
 	/**
 	 * Calls super constructor.
@@ -55,8 +55,8 @@ public class ParsedProperties extends ConfigProperties {
 	}
 
 
-// =========== Public methods ========================================
-// ===================================================================
+	// =========== Public methods ========================================
+	// ===================================================================
 
 
 	/**
@@ -124,7 +124,7 @@ public class ParsedProperties extends ConfigProperties {
 	public void load(String fileName) throws IOException {
 
 		/* This set is used to store prefixes that have been associated
-		 * to brackets blocks. If a prefix is inserted twice, this means
+		 * to bracket blocks. If a prefix is inserted twice, this means
 		 * that there are two blocks referring to the same prefix -
 		 * which may be caused by a commented prefix in the config
 		 * file, something like this:
@@ -149,7 +149,7 @@ public class ParsedProperties extends ConfigProperties {
 		f.close();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	private int parseStream(BufferedReader f, String prefix, int pars,
 							int lines, Set prefixes)
@@ -228,13 +228,7 @@ public class ParsedProperties extends ConfigProperties {
 		return lines;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
-/*
-public static void main(String[] args)
-{
-	java.util.Properties prop = new ParsedProperties(args);
-}
-*/
 }
 

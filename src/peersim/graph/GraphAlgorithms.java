@@ -27,8 +27,8 @@ import java.util.*;
  */
 public class GraphAlgorithms {
 
-// =================== public fields ==================================
-// ====================================================================
+	// =================== public fields ==================================
+	// ====================================================================
 
 	/**
 	 * output of some algorithms is passed here
@@ -58,8 +58,8 @@ public class GraphAlgorithms {
 	 */
 	public int[] d = null;
 
-// =================== private methods ================================
-// ====================================================================
+	// =================== private methods ================================
+	// ====================================================================
 
 
 	/**
@@ -77,7 +77,6 @@ public class GraphAlgorithms {
 	 * {@link #cluster}.
 	 */
 	private void dfs(int from) {
-
 		color[from] = GREY;
 
 		for (int j : g.getNeighbours(from)) {
@@ -91,7 +90,7 @@ public class GraphAlgorithms {
 		color[from] = BLACK;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Collects nodes accessible from node "from" using breadth-first search.
@@ -104,7 +103,6 @@ public class GraphAlgorithms {
 	 * <code>d</code> must either be long enough or null.
 	 */
 	private void bfs(int from) {
-
 		List<Integer> q = new LinkedList<>();
 		int u, du;
 
@@ -134,13 +132,12 @@ public class GraphAlgorithms {
 		}
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * The recursive part of the Tarjan algorithm.
 	 */
 	private void tarjanVisit(int i) {
-
 		color[i] = counter++;
 		root[i] = i;
 		stack.push(i);
@@ -168,8 +165,8 @@ public class GraphAlgorithms {
 		}
 	}
 
-// =================== public methods ================================
-// ====================================================================
+	// =================== public methods ================================
+	// ====================================================================
 
 	/**
 	 * Returns the weakly connected cluster indexes with size as a value.
@@ -178,7 +175,6 @@ public class GraphAlgorithms {
 	 * information; we guarantee only that different clusters have different indexes.
 	 */
 	public Map weaklyConnectedClusters(Graph g) {
-
 		this.g = g;
 		if (cluster == null) cluster = new HashSet<>();
 		if (color == null || color.length < g.size()) color = new int[g.size()];
@@ -209,7 +205,7 @@ public class GraphAlgorithms {
 		return ht;
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * In <code>{@link #d}[j]</code> returns the length of the shortest path between
@@ -229,7 +225,7 @@ public class GraphAlgorithms {
 		bfs(i);
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Calculates the clustering coefficient for the given node in the given
@@ -242,7 +238,6 @@ public class GraphAlgorithms {
 	 * @throws IllegalArgumentException if g is directed
 	 */
 	public static double clustering(Graph g, int i) {
-
 		if (g.directed()) throw new IllegalArgumentException(
 				"graph is directed");
 
@@ -259,7 +254,7 @@ public class GraphAlgorithms {
 		return ((edges * 2.0) / n.length) / (n.length - 1);
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Performs anti-entropy epidemic multicasting from node 0.
@@ -272,7 +267,6 @@ public class GraphAlgorithms {
 	 * their state at the same time point, synchronously.
 	 */
 	public static void multicast(Graph g, int[] b, Random r) {
-
 		int[] c1 = new int[g.size()];
 		int[] c2 = new int[g.size()];
 		for (int i = 0; i < c1.length; ++i) c2[i] = c1[i] = WHITE;
@@ -306,7 +300,7 @@ public class GraphAlgorithms {
 		for (; k < b.length; ++k) b[k] = g.size();
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Performs flooding from given node.
@@ -316,7 +310,6 @@ public class GraphAlgorithms {
 	 * then the remaining elements of b are zero.
 	 */
 	public void flooding(Graph g, int[] b, int k) {
-
 		dist(g, k);
 
 		for (int i = 0; i < b.length; ++i) b[i] = 0;
@@ -325,7 +318,7 @@ public class GraphAlgorithms {
 		}
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Returns the strongly connected cluster roots with size as a value.
@@ -335,9 +328,8 @@ public class GraphAlgorithms {
 	 * are strongly connected (such as large rings) you can get stack overflow
 	 * because of the large depth of recursion.
 	 */
-//XXX implement a non-recursive version ASAP!!!
+	//XXX implement a non-recursive version ASAP!!!
 	public Map tarjan(Graph g) {
-
 		this.g = g;
 		stack.clear();
 		if (root == null || root.length < g.size()) root = new int[g.size()];

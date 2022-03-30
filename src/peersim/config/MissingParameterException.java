@@ -26,8 +26,8 @@ package peersim.config;
  */
 public class MissingParameterException extends RuntimeException {
 
-// ================== initialization =====================================
-// =======================================================================
+	// ================== initialization =====================================
+	// =======================================================================
 
 	MissingParameterException(String name) {
 		super("Parameter \"" + name + "\" not found.");
@@ -37,8 +37,8 @@ public class MissingParameterException extends RuntimeException {
 		super("Parameter \"" + name + "\" not found " + motivation);
 	}
 
-// ================== methods ============================================
-// =======================================================================
+	// ================== methods ============================================
+	// =======================================================================
 
 	/**
 	 * Extends message with info from stack trace.

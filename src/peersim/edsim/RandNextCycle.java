@@ -29,8 +29,8 @@ import peersim.core.*;
 public class RandNextCycle extends NextCycleEvent {
 
 
-// =============================== initialization ======================
-// =====================================================================
+	// =============================== initialization ======================
+	// =====================================================================
 
 
 	/**
@@ -40,19 +40,18 @@ public class RandNextCycle extends NextCycleEvent {
 		super(n);
 	}
 
-// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Calls super.clone().
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
 		return super.clone();
 	}
 
 
-// ========================== methods ==================================
-// =====================================================================
+	// ========================== methods ==================================
+	// =====================================================================
 
 
 	/**
@@ -61,7 +60,6 @@ public class RandNextCycle extends NextCycleEvent {
 	 * (expected value is therefore <code>step</code>).
 	 */
 	protected long nextDelay(long step) {
-
 		return 1 + CommonState.r.nextLong((step << 1) - 1);
 	}
 

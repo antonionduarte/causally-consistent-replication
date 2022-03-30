@@ -29,8 +29,8 @@ import peersim.util.*;
  */
 public class BallExpansion extends GraphObserver {
 
-// ===================== fields =======================================
-// ====================================================================
+	// ===================== fields =======================================
+	// ====================================================================
 
 	/**
 	 * This parameter defines the maximal distance we care about.
@@ -80,8 +80,8 @@ public class BallExpansion extends GraphObserver {
 
 	private final RandPermutation rp = new RandPermutation(CommonState.r);
 
-// ===================== initialization ================================
-// =====================================================================
+	// ===================== initialization ================================
+	// =====================================================================
 
 	/**
 	 * Standard constructor that reads the configuration parameters.
@@ -97,8 +97,8 @@ public class BallExpansion extends GraphObserver {
 		b = new int[maxd];
 	}
 
-// ====================== methods ======================================
-// =====================================================================
+	// ====================== methods ======================================
+	// =====================================================================
 
 	/**
 	 * Prints information about ball expansion. It uses {@value #PAR_N} nodes to
@@ -122,7 +122,6 @@ public class BallExpansion extends GraphObserver {
 	 * @return always false
 	 */
 	public boolean execute() {
-
 		updateGraph();
 		System.out.print(name + ": ");
 		rp.reset(g.size());
