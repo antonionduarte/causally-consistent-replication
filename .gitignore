@@ -4,29 +4,9 @@
 # MacOS files
 .DS_Store
 
-# Docker
-.vagrant*
-bin
-docker/docker
-.*.swp
-a.out
-*.orig
-build_src
-.flymake*
-.idea
-.DS_Store
-docs/_build
-docs/_static
-docs/_templates
-.gopath/
-.dotcloud
-*.test
-bundles/
-.hg/
-.git/
-vendor/pkg/
-pyenv
-Vagrantfile
+# Example Files
+example-config/
+example/
 
 # Log file
 *.log
@@ -189,3 +169,26 @@ local.properties
 # Uncomment this line if you wish to ignore the project description file.
 # Typically, this file would be tracked if it contains build/dependency configurations:
 #.project
+
+# Random stuff
+.vagrant*
+bin
+docker/docker
+.*.swp
+a.out
+*.orig
+build_src
+.flymake*
+.idea
+docs/_build
+docs/_static
+docs/_templates
+.gopath/
+.dotcloud
+*.test
+bundles/
+.hg/
+.git/
+vendor/pkg/
+pyenv
+Vagrantfile
