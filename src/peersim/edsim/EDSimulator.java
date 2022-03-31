@@ -191,7 +191,6 @@ public class EDSimulator {
 	 * Load and run initializers.
 	 */
 	private static void runInitializers() {
-
 		Object[] inits = Configuration.getInstanceArray(PAR_INIT);
 		String[] names = Configuration.getNames(PAR_INIT);
 
@@ -238,8 +237,8 @@ public class EDSimulator {
 	 * @param event The control event
 	 */
 	static void addControlEvent(long time, int order, ControlEvent event) {
-	// we don't check whether time is negative or in the past: we trust
-	// the caller, which must be from this package
+		// we don't check whether time is negative or in the past: we trust
+		// the caller, which must be from this package
 		if (time >= endtime) return;
 		heap.add(time, event, null, (byte) 0, order);
 	}

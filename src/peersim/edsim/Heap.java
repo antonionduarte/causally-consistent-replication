@@ -186,7 +186,7 @@ public class Heap implements PriorityQ {
 	public void add(long time, Object event, Node node, byte pid, long priority) {
 		if ((time & overflowMask) != 0) throw new
 				IllegalArgumentException("Time overflow: time=" + time);
-		//XXX should we test priority overflow? How much does it cost?
+			//XXX should we test priority overflow? How much does it cost?
 
 		time = (time << pbits) | priority;
 

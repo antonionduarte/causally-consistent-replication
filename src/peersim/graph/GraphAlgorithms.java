@@ -312,7 +312,7 @@ public class GraphAlgorithms {
 	public void flooding(Graph g, int[] b, int k) {
 		dist(g, k);
 
-		for (int i = 0; i < b.length; ++i) b[i] = 0;
+		Arrays.fill(b, 0);
 		for (int j : d) {
 			if (j >= 0 && j < b.length) b[j]++;
 		}

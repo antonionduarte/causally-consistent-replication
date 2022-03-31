@@ -178,7 +178,6 @@ public class Simulator {
 		}
 
 		try {
-
 			for (int k = 0; k < exps; ++k) {
 				if (k > 0) {
 					long seed = CommonState.r.nextLong();

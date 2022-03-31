@@ -19,6 +19,7 @@
 package peersim.util;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 
 //XXX This implementation is very restricted, to be made more flexible
 // using hashtables.
@@ -83,7 +84,7 @@ public class IncrementalFreq implements Cloneable {
 	 */
 	public void reset() {
 		if (freq == null || N == 0) freq = new int[0];
-		else for (int i = 0; i < freq.length; ++i) freq[i] = 0;
+		else Arrays.fill(freq, 0);
 		n = 0;
 	}
 
