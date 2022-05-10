@@ -1,12 +1,22 @@
 # Causally Consistent Replication
-Repository for research and development for a simulator to test algorithms that assure causal consistency upon data replication.
+Simulator to build and test causal consistency algorithms.
 
 # TODO:
-- [ ] Message "Container" Class - contains things like the development the size of the data etc...
-- [ ] Client simulation - nClients per node configurable, writes/reads percentage configurable.
-- [ ] Metrics - Latecy per operation - perReplica and Global, Operations/s
+- [ ] Client simulation
+  - [X] Configuration - Reading values from config file
+  - [ ] Operations being sent in a closed loop
+  - [ ] Distinction between read/write operations
+- [ ] Configuration - Create an easy to read sample config file 
+- [ ] Metrics
+  - [ ] Latency
+  - [ ] Operations/s
+- [X] Heap / Scheduler change - A node can only receive one operation on a specific timestamp. 
 - [ ] Transport - Latency Matrix / Throughput into consideration
 - [ ] Protocol - Base Meta-protocol
+    - [X] Internal event queue for non processed events
+    - [ ] Changes to account for difference between reads/writes
+    - [X] Base message container class getSize() for Transport etc...
+- [ ] Operation propagation through the system
 
-# Running Peersim:
+# Running the Simulator:
 *Command:* ```java -cp target/peersim.jar peersim.Simulator config/config.txt```
