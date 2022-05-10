@@ -32,7 +32,7 @@ package peersim.core;
  * sense in the context of our applications,
  * where this interface is used for 1) initialization and 2)
  * providing an interface for other protocols for accessing the neighbor list.
- * Protocols that manage links remove, refresh, etc their link set internally
+ * Protocols that manage links remove, refresh, etc. their link set internally
  * or through custom methods.
  * Therefore, it would only put an unnecessary burden on implementors.
  */

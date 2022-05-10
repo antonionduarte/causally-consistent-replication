@@ -1,0 +1,28 @@
+# network size
+SIZE 1000
+
+# causality layer config
+EXECUTION_TIME 10 # TODO
+NUMBER_CLIENTS 100 # TODO
+
+# reads & writes weights
+WEIGHT_READS 70 # TODO
+WEIGHT_WRITES 30 # TODO
+
+# parameters of periodic execution
+CYCLES 100
+CYCLE SIZE * 10000
+
+# parameters of message transfer
+# delay values here are relative to cycle length, in percentage,
+# eg 50 means half the cycle length, 200 twice the cycle length, etc.
+MINDELAY 0
+MAXDELAY 0
+# drop is a probability, 0 <= DROP <= 1
+DROP 0
+
+random.seed 1234567890
+network.size SIZE
+
+simulation.endtime CYCLE * CYCLES
+simulation.logtime CYCLE

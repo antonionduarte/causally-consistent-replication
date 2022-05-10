@@ -108,7 +108,7 @@ public class OverlayGraph implements Graph {
 			for (int j = 0; j < lble.degree(); ++j) {
 				final Node node = lble.getNeighbor(j);
 				// if accessible, we include it
-				if (node.isUp()) al.add(Integer.valueOf(node.getIndex()));
+				if (node.isUp()) al.add(node.getIndex());
 			}
 		}
 		return Collections.unmodifiableList(al);

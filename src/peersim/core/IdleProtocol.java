@@ -142,9 +142,9 @@ public class IdleProtocol implements Protocol, Linkable {
 	public String toString() {
 		if (neighbors == null) return "DEAD!";
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("len=" + len + " maxlen=" + neighbors.length + " [");
+		buffer.append("len=").append(len).append(" maxlen=").append(neighbors.length).append(" [");
 		for (int i = 0; i < len; ++i) {
-			buffer.append(neighbors[i].getIndex() + " ");
+			buffer.append(neighbors[i].getIndex()).append(" ");
 		}
 		return buffer.append("]").toString();
 	}

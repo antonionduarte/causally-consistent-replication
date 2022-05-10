@@ -144,7 +144,7 @@ public class CheckConfig {
 					CDSimulator.nextExperiment();
 					break;
 				case EDSIM:
-					// Set endtime to 0, so no simulation is ever performed.
+					// Set end time to 0, so no simulation is ever performed.
 					prop.setProperty(EDSimulator.PAR_ENDTIME, "0");
 					EDSimulator.nextExperiment();
 					break;

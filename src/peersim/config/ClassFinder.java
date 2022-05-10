@@ -125,8 +125,6 @@ class ClassFinder {
 	 * in the map as associations (name, comma-separated list of
 	 * fully-qualified names).
 	 *
-	 * @param map
-	 * @throws IOException
 	 */
 	private static void findClasses(Map<String, String> map)
 			throws IOException {

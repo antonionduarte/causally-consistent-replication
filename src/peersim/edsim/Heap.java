@@ -23,6 +23,11 @@ import peersim.core.CommonState;
 import peersim.config.Configuration;
 import peersim.config.IllegalParameterException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * The Heap data structure used to maintain events "sorted" by
  * scheduled time and to obtain the next event to be executed.
@@ -55,6 +60,11 @@ public class Heap implements PriorityQ {
 	 */
 	private static final String PAR_SIZE = "size";
 
+	/**
+	 * How much to increment the time of a scheduled event.
+	 */
+	private static final String EVENT_PROCESSING_TIME = "EVENT_PROCESSING_TIME";
+
 
 	//--------------------------------------------------------------------------
 	// Fields
@@ -63,6 +73,12 @@ public class Heap implements PriorityQ {
 	// The following arrays are four heaps ordered by time. The alternative
 	// approach (i.e. to store event objects) requires much more memory,
 	// and based on some tests that I've done is not really much faster.
+
+	/**
+	 * Saves the times at which events are
+	 * scheduled to arrive at a certain node.
+	 */
+	Map<Node, List<Long>> nodeTimes;
 
 	/**
 	 * Event component of the heap
@@ -105,6 +121,13 @@ public class Heap implements PriorityQ {
 	 */
 	private final long overflowMask;
 
+	/**
+	 * How long it takes to process an event within a node.
+	 * We assume that in the simulations, a Node can't process two events completely
+	 * simultaneously so we need to add a time to process an event.
+	 */
+	private final int eventProcessingTime;
+
 	//--------------------------------------------------------------------------
 	// Constructor
 	//--------------------------------------------------------------------------
@@ -122,6 +145,9 @@ public class Heap implements PriorityQ {
 	 * Initializes a new heap using the configuration.
 	 */
 	public Heap(String prefix) {
+		this.eventProcessingTime = Configuration.getInt(EVENT_PROCESSING_TIME);
+		this.nodeTimes = new HashMap<>();
+
 		int size = Configuration.getInt(prefix + "." + PAR_SIZE, 65536);
 
 		// some complex stuff to deal with legacy parameter names...
@@ -163,6 +189,9 @@ public class Heap implements PriorityQ {
 
 	/**
 	 * Add a new event, to be scheduled at the specified time.
+	 * Also verifies if there's already an event scheduled for that
+	 * specific timestamp and for that node, and if not increments the time
+	 * by a configured value.
 	 *
 	 * @param time  the time at which this event should be scheduled
 	 * @param event the object describing the event
@@ -170,7 +199,18 @@ public class Heap implements PriorityQ {
 	 * @param pid   the protocol that handles the event
 	 */
 	public void add(long time, Object event, Node node, byte pid) {
-		add(time, event, node, pid, CommonState.r.nextInt(1 << pbits));
+		long finalTime = time;
+
+		if (!nodeTimes.containsKey(node)) {
+			this.nodeTimes.put(node, new ArrayList<>());
+		} else {
+			while (nodeTimes.get(node).contains(finalTime)) {
+				finalTime += eventProcessingTime;
+			}
+		}
+
+		this.nodeTimes.get(node).add(finalTime);
+		add(finalTime, event, node, pid, CommonState.r.nextInt(1 << pbits));
 	}
 
 	// --------------------------------------------------------------------------
@@ -217,8 +257,12 @@ public class Heap implements PriorityQ {
 		ev.event = events[0];
 		ev.node = nodes[0];
 		ev.pid = pids[0];
+
+		nodeTimes.get(ev.node).remove(ev.time);
+
 		swap(1, size);
 		size--;
+
 		minHeapify(1);
 		return ev;
 	}
@@ -241,10 +285,10 @@ public class Heap implements PriorityQ {
 	 * Prints the time values contained in the heap.
 	 */
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("[Size: " + size + " Times: ");
+		StringBuilder buffer = new StringBuilder();
+		buffer.append("[Size: ").append(size).append(" Times: ");
 		for (int i = 1; i <= size; i++) {
-			buffer.append(getTime(i) + ",");
+			buffer.append(getTime(i)).append(",");
 		}
 		buffer.append("]");
 		return buffer.toString();
@@ -266,26 +310,26 @@ public class Heap implements PriorityQ {
 		// Their associated time
 		long lt, rt;
 		// The minimum time between val, lt, rt
-		long mintime;
-		// The index of the mininum time
-		int minindex = index;
+		long minTime;
+		// The index of the minimum time
+		int minIndex = index;
 		do {
-			index = minindex;
-			mintime = time;
+			index = minIndex;
+			minTime = time;
 			l = index << 1;
 			r = l + 1;
-			if (l <= size && (lt = getTime(l)) < mintime) {
-				minindex = l;
-				mintime = lt;
+			if (l <= size && (lt = getTime(l)) < minTime) {
+				minIndex = l;
+				minTime = lt;
 			}
-			if (r <= size && (rt = getTime(r)) < mintime) {
-				minindex = r;
-				mintime = rt;
+			if (r <= size && (rt = getTime(r)) < minTime) {
+				minIndex = r;
+				minTime = rt;
 			}
-			if (minindex != index) {
-				swap(minindex, index);
+			if (minIndex != index) {
+				swap(minIndex, index);
 			}
-		} while (minindex != index);
+		} while (minIndex != index);
 	}
 
 	// --------------------------------------------------------------------------
@@ -347,19 +391,19 @@ public class Heap implements PriorityQ {
 	 *
 	 */
 	private void doubleCapacity() {
-		int oldsize = events.length;
-		int newsize = oldsize * 2;
-		Object[] te = new Object[newsize];
-		System.arraycopy(events, 0, te, 0, oldsize);
+		int oldSize = events.length;
+		int newSize = oldSize * 2;
+		Object[] te = new Object[newSize];
+		System.arraycopy(events, 0, te, 0, oldSize);
 		events = te;
-		long[] tt = new long[newsize];
-		System.arraycopy(times, 0, tt, 0, oldsize);
+		long[] tt = new long[newSize];
+		System.arraycopy(times, 0, tt, 0, oldSize);
 		times = tt;
-		Node[] tn = new Node[newsize];
-		System.arraycopy(nodes, 0, tn, 0, oldsize);
+		Node[] tn = new Node[newSize];
+		System.arraycopy(nodes, 0, tn, 0, oldSize);
 		nodes = tn;
-		byte[] tp = new byte[newsize];
-		System.arraycopy(pids, 0, tp, 0, oldsize);
+		byte[] tp = new byte[newSize];
+		System.arraycopy(pids, 0, tp, 0, oldSize);
 		pids = tp;
 	}
 
