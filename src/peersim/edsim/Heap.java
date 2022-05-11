@@ -70,16 +70,6 @@ public class Heap implements PriorityQ {
 	// Fields
 	//--------------------------------------------------------------------------
 
-	// The following arrays are four heaps ordered by time. The alternative
-	// approach (i.e. to store event objects) requires much more memory,
-	// and based on some tests that I've done is not really much faster.
-
-	/**
-	 * Saves the times at which events are
-	 * scheduled to arrive at a certain node.
-	 */
-	Map<Node, List<Long>> nodeTimes;
-
 	/**
 	 * Event component of the heap
 	 */
@@ -146,7 +136,6 @@ public class Heap implements PriorityQ {
 	 */
 	public Heap(String prefix) {
 		this.eventProcessingTime = Configuration.getInt(EVENT_PROCESSING_TIME);
-		this.nodeTimes = new HashMap<>();
 
 		int size = Configuration.getInt(prefix + "." + PAR_SIZE, 65536);
 
@@ -193,24 +182,13 @@ public class Heap implements PriorityQ {
 	 * specific timestamp and for that node, and if not increments the time
 	 * by a configured value.
 	 *
-	 * @param time  the time at which this event should be scheduled
+	 * @param time the time at which this event should be scheduled
 	 * @param event the object describing the event
-	 * @param node  the node at which the event has to be delivered
-	 * @param pid   the protocol that handles the event
+	 * @param node the node at which the event has to be delivered
+	 * @param pid the protocol that handles the event
 	 */
 	public void add(long time, Object event, Node node, byte pid) {
-		long finalTime = time;
-
-		if (!nodeTimes.containsKey(node)) {
-			this.nodeTimes.put(node, new ArrayList<>());
-		} else {
-			while (nodeTimes.get(node).contains(finalTime)) {
-				finalTime += eventProcessingTime;
-			}
-		}
-
-		this.nodeTimes.get(node).add(finalTime);
-		add(finalTime, event, node, pid, CommonState.r.nextInt(1 << pbits));
+		add(time, event, node, pid, CommonState.r.nextInt(1 << pbits));
 	}
 
 	// --------------------------------------------------------------------------
@@ -218,18 +196,38 @@ public class Heap implements PriorityQ {
 	/**
 	 * Add a new event, to be scheduled at the specified time.
 	 *
-	 * @param time  the time at which this event should be scheduled
+	 * @param time the time at which this event should be scheduled
 	 * @param event the object describing the event
-	 * @param node  the node at which the event has to be delivered
-	 * @param pid   the protocol that handles the event
+	 * @param node the node at which the event has to be delivered
+	 * @param pid the protocol that handles the event
 	 */
 	public void add(long time, Object event, Node node, byte pid, long priority) {
 		if ((time & overflowMask) != 0) throw new
 				IllegalArgumentException("Time overflow: time=" + time);
-			//XXX should we test priority overflow? How much does it cost?
+		//XXX should we test priority overflow? How much does it cost?
+
+		boolean stop = false;
+
+		while (!stop) {
+			stop = true;
+			long timeBegin = time << pbits;
+			long timeEnds = time;
+			for (int i = 0; i < pbits; i++) {
+				timeEnds = timeEnds << 1 | 1;
+			}
+
+			int pre = size - 1;
+			while (pre >= 0 && times[pre] >= timeBegin) {
+				if (times[pre] >= timeBegin && times[pre] <= timeEnds && nodes[pre].getID() == node.getID()) {
+					time += eventProcessingTime;
+					stop = false;
+					break;
+				}
+				pre--;
+			}
+		}
 
 		time = (time << pbits) | priority;
-
 		size++;
 		int pos = size;
 		put(pos, time, event, node, pid);
@@ -257,8 +255,6 @@ public class Heap implements PriorityQ {
 		ev.event = events[0];
 		ev.node = nodes[0];
 		ev.pid = pids[0];
-
-		nodeTimes.get(ev.node).remove(ev.time);
 
 		swap(1, size);
 		size--;
@@ -444,5 +440,4 @@ public static void main(String[] args) {
 	}
 }
 */
-
 } // END Heap

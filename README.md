@@ -1,7 +1,7 @@
 # Causally Consistent Replication
 Simulator to build and test causal consistency algorithms.
 
-# TODO:
+# TODO - Simulator:
 - [ ] Client simulation
   - [X] Configuration - Reading values from config file
   - [ ] Operations being sent in a closed loop
@@ -17,6 +17,10 @@ Simulator to build and test causal consistency algorithms.
     - [ ] Changes to account for difference between reads/writes
     - [X] Base message container class getSize() for Transport etc...
 - [ ] Operation propagation through the system
+
+# TODO - Protocols
+- [ ] C3
+- [ ] Saturn
 
 # Running the Simulator:
 *Command:* ```java -cp target/peersim.jar peersim.Simulator config/config.txt```
