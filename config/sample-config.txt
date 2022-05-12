@@ -2,18 +2,19 @@
 SIZE 1000
 
 # causality layer config
-EXECUTION_TIME 10 # TODO
-NUMBER_CLIENTS 100 # TODO
+WRITE_TIME 10 # the amount of time a write takes to execute
+READ_TIME 1 # the amount of time that a read takes to execute
+NUMBER_CLIENTS 100 # the number of clients being simulated per node
 
 # reads & writes weights
-WEIGHT_READS 70 # TODO
-WEIGHT_WRITES 30 # TODO
+WEIGHT_READS 70 # the percentage/weight of reads being simulated
+WEIGHT_WRITES 30 # the percentage/weight of writes being simulated
 
 # parameters of periodic execution
 CYCLES 100
 CYCLE SIZE * 10000
 
-# parameters of message transfer
+# parameters of protocolMessage transfer
 # delay values here are relative to cycle length, in percentage,
 # eg 50 means half the cycle length, 200 twice the cycle length, etc.
 MINDELAY 0

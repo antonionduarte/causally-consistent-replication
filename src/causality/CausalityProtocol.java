@@ -1,6 +1,7 @@
 package causality;
 
 import causality.messages.Message;
+import causality.messages.ProtocolMessage;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 
@@ -31,7 +32,7 @@ public interface CausalityProtocol extends EDProtocol {
 	 *
 	 * @param message The message / message to process.
 	 */
-	void processProtocolMessage(Message message);
+	void uponMessageExecuted(Message message);
 
 	/**
 	 * If a protocol needs to change it's internal state when it places a
@@ -39,7 +40,7 @@ public interface CausalityProtocol extends EDProtocol {
 	 *
 	 * @param message The message that was placed in execution.
 	 */
-	void messageExecutingProtocol(Message message);
+	void uponMessageExecuting(Message message);
 
 	/**
 	 * Processes the operation Queue, checking if any

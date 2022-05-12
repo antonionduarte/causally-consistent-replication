@@ -192,12 +192,8 @@ public class Simulator {
 				// XXX could be done through reflection, but
 				// this is easier to read.
 				switch (SIMID) {
-					case CDSIM:
-						CDSimulator.nextExperiment();
-						break;
-					case EDSIM:
-						EDSimulator.nextExperiment();
-						break;
+					case CDSIM -> CDSimulator.nextExperiment();
+					case EDSIM -> EDSimulator.nextExperiment();
 				}
 			}
 

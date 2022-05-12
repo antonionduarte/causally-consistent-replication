@@ -15,7 +15,7 @@ Simulator to build and test causal consistency algorithms.
 - [ ] Protocol - Base Meta-protocol
     - [X] Internal event queue for non processed events
     - [ ] Changes to account for difference between reads/writes
-    - [X] Base message container class getSize() for Transport etc...
+    - [X] Base protocolMessage container class getSize() for Transport etc...
 - [ ] Operation propagation through the system
 
 # TODO - Protocols
