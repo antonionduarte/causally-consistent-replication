@@ -228,6 +228,16 @@ public class IncrementalFreq implements Cloneable {
 		return result.toString();
 	}
 
+	public String toString(String separator) {
+		StringBuilder result = new StringBuilder();
+
+		for (int i = 0; i < freq.length; ++i)
+			if (freq[i] != 0)
+				result.append("\n").append(i).append(separator).append(freq[i]);
+
+		return result.toString();
+	}
+
 	// ---------------------------------------------------------------------
 
 	/**

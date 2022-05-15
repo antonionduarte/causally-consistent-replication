@@ -57,7 +57,7 @@ public abstract class CausalityProtocolAbstract implements CausalityProtocol {
 		}
 
 		// TODO: This will throw NPE
-		if (verifyCausality(message)) { // TODO: Is the order of these if's correct?
+		if (verifyCausality(message)) {
 			if (message.isPropagating()) {
 				message.togglePropagating();
 				executeOperation(node, message, pid);
@@ -89,12 +89,12 @@ public abstract class CausalityProtocolAbstract implements CausalityProtocol {
 	@Override
 	public void executeOperation(Node node, Message message, int pid) {
 		// Sends message to self with the operation.
-		long expectedArrivalTime = CommonState.getTime();
+		long expectedArrivalTime = 0;
 
 		uponMessageExecuting(message);
 		switch (message.getMessageType()) {
-			case READ -> expectedArrivalTime += readTime;
-			case WRITE ->  expectedArrivalTime += writeTime;
+			case READ -> expectedArrivalTime = readTime;
+			case WRITE ->  expectedArrivalTime = writeTime;
 		}
 
 		EDSimulator.add(expectedArrivalTime, message, node, pid);

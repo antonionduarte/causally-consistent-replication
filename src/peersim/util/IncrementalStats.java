@@ -19,9 +19,8 @@
 package peersim.util;
 
 /**
- * A class that can keep track of some statistics like variance, average, min,
- * max incrementally. That is, when adding a new data item, it updates the
- * statistics.
+ * A class that can keep track of some statistics like variance, average, min, max incrementally. That is, when adding a
+ * new data item, it updates the statistics.
  */
 public class IncrementalStats {
 
@@ -58,8 +57,8 @@ public class IncrementalStats {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Resets the statistics to reflect the zero elements set.
-	 * Min and max are set to positive and negative infinity, respectively.
+	 * Resets the statistics to reflect the zero elements set. Min and max are set to positive and negative infinity,
+	 * respectively.
 	 */
 	public void reset() {
 		countmin = 0;
@@ -97,12 +96,16 @@ public class IncrementalStats {
 			min = item;
 			countmin = 0;
 		}
-		if (item == min) countmin += k;
+		if (item == min) {
+			countmin += k;
+		}
 		if (item > max) {
 			max = item;
 			countmax = 0;
 		}
-		if (item == max) countmax += k;
+		if (item == max) {
+			countmax += k;
+		}
 		n += k;
 		if (k == 1) {
 			sum += item;
@@ -188,9 +191,8 @@ public class IncrementalStats {
 	// --------------------------------------------------------------------
 
 	/**
-	 * The empirical variance of the data items. Guaranteed to be larger or
-	 * equal to 0.0. If due to rounding errors the value becomes negative,
-	 * it returns 0.0.
+	 * The empirical variance of the data items. Guaranteed to be larger or equal to 0.0. If due to rounding errors the
+	 * value becomes negative, it returns 0.0.
 	 */
 	public double getVar() {
 		double var =
@@ -214,14 +216,16 @@ public class IncrementalStats {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Prints the following quantities separated by spaces in a single line
-	 * in this order.
-	 * Minimum, maximum, number of items, average, variance, number of minimal
-	 * items, number of maximal items.
+	 * Prints the following quantities separated by spaces in a single line in this order. Minimum, maximum, number of
+	 * items, average, variance, number of minimal items, number of maximal items.
 	 */
 	public String toString() {
 		return min + " " + max + " " + n + " " + sum / n + " " + getVar() + " " +
 				countmin + " " + countmax;
+	}
+
+	public String toString(String separator) {
+		return min + separator + max + separator + n + separator + sum / n + separator + getVar() + separator + countmin + separator + countmax;
 	}
 
 }
