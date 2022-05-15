@@ -1,7 +1,14 @@
 # network size
 SIZE 1000
 
-# causality layer config
+# parameters of periodic execution
+CYCLES 100
+CYCLE SIZE * 10000
+
+# -------------------------------- #
+# ---- Causality Layer Config ---- #
+# -------------------------------- #
+
 WRITE_TIME 10 # the amount of time a write takes to execute
 READ_TIME 1 # the amount of time that a read takes to execute
 NUMBER_CLIENTS 100 # the number of clients being simulated per node
@@ -10,17 +17,24 @@ NUMBER_CLIENTS 100 # the number of clients being simulated per node
 WEIGHT_READS 70 # the percentage/weight of reads being simulated
 WEIGHT_WRITES 30 # the percentage/weight of writes being simulated
 
-# parameters of periodic execution
-CYCLES 100
-CYCLE SIZE * 10000
+# ---------------------- #
+# ---- Initializers ---- #
+# ---------------------- #
 
-# parameters of protocolMessage transfer
-# delay values here are relative to cycle length, in percentage,
-# eg 50 means half the cycle length, 200 twice the cycle length, etc.
-MINDELAY 0
-MAXDELAY 0
-# drop is a probability, 0 <= DROP <= 1
-DROP 0
+include.init        application
+
+init.application    causality.application.ApplicationInitializer
+
+# ------------------- #
+# ---- Transport ---- #
+# ------------------- #
+
+transport.trans     UniformRandomTransport
+{
+    MINDELAY 0
+    MAXDELAY 0
+    DROP 0
+}
 
 random.seed 1234567890
 network.size SIZE

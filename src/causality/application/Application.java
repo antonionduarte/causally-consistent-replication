@@ -1,5 +1,6 @@
-package causality;
+package causality.application;
 
+import causality.CausalityLayer;
 import causality.messages.Message;
 import causality.messages.MessageWrapper;
 import peersim.config.Configuration;
@@ -91,7 +92,7 @@ public class Application implements EDProtocol {
 
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
-		EDSimulator.add(0, message, node, CausalityLayer.causalityPid);
+		EDSimulator.add(0, toSend, node, CausalityLayer.causalityPid);
 	}
 
 	/**

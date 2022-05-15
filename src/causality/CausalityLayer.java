@@ -1,11 +1,10 @@
 package causality;
 
+import causality.application.Application;
 import causality.messages.Message;
 import causality.messages.ProtocolMessage;
-
 import peersim.config.Configuration;
 import peersim.config.FastConfig;
-import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDSimulator;
 import peersim.transport.Transport;
@@ -13,7 +12,7 @@ import peersim.transport.Transport;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public abstract class CausalityProtocolAbstract implements CausalityProtocol {
+public abstract class CausalityLayer implements Causality {
 
 	/**
 	 * The execution time for an operation.
@@ -22,16 +21,18 @@ public abstract class CausalityProtocolAbstract implements CausalityProtocol {
 	private final int readTime;
 
 	/**
-	 * Event Queue, saves the events that weren't able to be processed
-	 * due to issues with causality.
+	 * Event Queue, saves the events that weren't able to be processed due to issues with causality.
 	 */
-	private final Queue<Message> messageQueue;
+	private Queue<Message> messageQueue;
+
+	public static int causalityPid;
 
 	/**
 	 * The constructor for the protocol.
 	 */
-	public CausalityProtocolAbstract() {
-		this.messageQueue = new LinkedList<>();
+	public CausalityLayer(String prefix) {
+		causalityPid = Configuration.getPid(prefix);
+
 		this.writeTime = Configuration.getInt("WRITE_TIME");
 		this.readTime = Configuration.getInt("READ_TIME");
 	}
@@ -39,7 +40,9 @@ public abstract class CausalityProtocolAbstract implements CausalityProtocol {
 	@Override
 	public Object clone() {
 		try {
-			Object clone = super.clone();
+			CausalityLayer clone = (CausalityLayer) super.clone();
+			clone.messageQueue = new LinkedList<>();
+			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -61,16 +64,18 @@ public abstract class CausalityProtocolAbstract implements CausalityProtocol {
 			if (message.isPropagating()) {
 				message.togglePropagating();
 				executeOperation(node, message, pid);
+				uponMessageExecuting(message);
+
+				// only sends it back to the application if the message came from the application (same node).
+				// TODO: check with someone that knows what they're doing that this makes sense
+				if (message.getOriginNode().getID() == node.getID()) {
+					EDSimulator.add(0, event, node, Application.applicationPid);
+				}
 			} else {
-				// e.g.: If it's a vector clock, this function should handle incrementing the clock.
-				// within the protocol.
 				uponMessageExecuted(message);
-				// process the eventQueue and check if the events are now valid
-				// in respect with causality, and put the available ones in execution.
 				processQueue(node, pid);
 			}
 		} else {
-			// if the operation isn't possible due to causality issues add it to the queue.
 			messageQueue.add(message);
 		}
 	}
@@ -94,7 +99,7 @@ public abstract class CausalityProtocolAbstract implements CausalityProtocol {
 		uponMessageExecuting(message);
 		switch (message.getMessageType()) {
 			case READ -> expectedArrivalTime = readTime;
-			case WRITE ->  expectedArrivalTime = writeTime;
+			case WRITE -> expectedArrivalTime = writeTime;
 		}
 
 		EDSimulator.add(expectedArrivalTime, message, node, pid);

@@ -1,20 +1,36 @@
 package causality.messages;
 
-import peersim.core.Protocol;
+import peersim.core.Node;
 
 /**
  * Wrapper for Messages.
  */
 public class MessageWrapper implements Message {
 
-	ProtocolMessage protocolMessage;
-	MessageType messageType;
-	boolean isPropagating;
+	private ProtocolMessage protocolMessage;
+	private MessageType messageType;
 
-	public MessageWrapper(MessageType messageType, ProtocolMessage protocolMessage) {
+	private boolean isPropagating;
+
+	private final long sendTime;
+	private final Node originNode;
+
+	public MessageWrapper(MessageType messageType, ProtocolMessage protocolMessage, Node node, long sendTime) {
 		this.protocolMessage = protocolMessage;
 		this.messageType = messageType;
 		this.isPropagating = false;
+		this.originNode = node;
+		this.sendTime = sendTime;
+	}
+
+	@Override
+	public long getSendTime() {
+		return this.sendTime;
+	}
+
+	@Override
+	public Node getOriginNode() {
+		return this.originNode;
 	}
 
 	@Override
@@ -22,6 +38,7 @@ public class MessageWrapper implements Message {
 		return isPropagating;
 	}
 
+	@Override
 	public void togglePropagating() {
 		this.isPropagating = !isPropagating;
 	}
@@ -41,6 +58,7 @@ public class MessageWrapper implements Message {
 		return protocolMessage;
 	}
 
+	@Override
 	public void setProtocolMessage(ProtocolMessage protocolMessage) {
 		this.protocolMessage = protocolMessage;
 	}
