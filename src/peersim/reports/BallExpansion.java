@@ -78,7 +78,7 @@ public class BallExpansion extends GraphObserver {
 	 */
 	private final int[] b;
 
-	private final RandPermutation rp = new RandPermutation(CommonState.r);
+	private final RandPermutation rp = new RandPermutation(CommonState.random);
 
 	// ===================== initialization ================================
 	// =====================================================================

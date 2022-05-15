@@ -85,7 +85,7 @@ public class DegreeStats extends GraphObserver {
 
 	private final String type;
 
-	private final RandPermutation rp = new RandPermutation(CommonState.r);
+	private final RandPermutation rp = new RandPermutation(CommonState.random);
 
 	private int nextnode = 0;
 

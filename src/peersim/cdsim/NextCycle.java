@@ -75,7 +75,7 @@ public class NextCycle extends FullNextCycle {
 		for (int j = 0; j < Network.size(); ++j) {
 			Node node = null;
 			if (getpair_rand)
-				node = Network.get(CDState.r.nextInt(Network.size()));
+				node = Network.get(CDState.random.nextInt(Network.size()));
 			else if (shuffle)
 				node = Network.get(rperm.next());
 			else

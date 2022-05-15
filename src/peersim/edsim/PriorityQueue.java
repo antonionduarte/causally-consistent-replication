@@ -26,7 +26,7 @@ import peersim.core.Node;
  * required by any peersim components: one that takes a String argument,
  * the component name in the configuration.
  */
-public interface PriorityQ {
+public interface PriorityQueue {
 
 
 	/**

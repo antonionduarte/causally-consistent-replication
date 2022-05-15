@@ -82,7 +82,7 @@ public class WireScaleFreeBA extends WireGraph {
 	 * calls {@link GraphFactory#wireScaleFreeBA}.
 	 */
 	public void wire(Graph g) {
-		GraphFactory.wireScaleFreeBA(g, k, CommonState.r);
+		GraphFactory.wireScaleFreeBA(g, k, CommonState.random);
 	}
 
 }

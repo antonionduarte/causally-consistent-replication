@@ -269,7 +269,7 @@ public class Network {
 	 * Shuffles the node array. The index of each node is updated accordingly.
 	 */
 	public static void shuffle() {
-		for (int i = len; i > 1; i--) swap(i - 1, CommonState.r.nextInt(i));
+		for (int i = len; i > 1; i--) swap(i - 1, CommonState.random.nextInt(i));
 	}
 
 	// ------------------------------------------------------------------

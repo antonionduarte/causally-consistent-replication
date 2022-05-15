@@ -23,11 +23,6 @@ import peersim.core.CommonState;
 import peersim.config.Configuration;
 import peersim.config.IllegalParameterException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * The Heap data structure used to maintain events "sorted" by
  * scheduled time and to obtain the next event to be executed.
@@ -35,7 +30,7 @@ import java.util.Map;
  * @author Alberto Montresor
  * @version $Revision: 1.10 $
  */
-public class Heap implements PriorityQ {
+public class Heap implements PriorityQueue {
 
 	//--------------------------------------------------------------------------
 	// Constants
@@ -188,7 +183,7 @@ public class Heap implements PriorityQ {
 	 * @param pid the protocol that handles the event
 	 */
 	public void add(long time, Object event, Node node, byte pid) {
-		add(time, event, node, pid, CommonState.r.nextInt(1 << pbits));
+		add(time, event, node, pid, CommonState.random.nextInt(1 << pbits));
 	}
 
 	// --------------------------------------------------------------------------

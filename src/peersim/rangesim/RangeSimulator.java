@@ -327,7 +327,7 @@ public class RangeSimulator implements ProcessHandler {
 					TaggedOutputStream.PAR_RANGES + "=" + log);
 
 			// Fill the seed place holder
-			long seed = CommonState.r.nextLong();
+			long seed = CommonState.random.nextLong();
 			list.set(startseed, CommonState.PAR_SEED + "=" + seed);
 
 			System.err.println("Experiment: " + log);

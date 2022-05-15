@@ -60,7 +60,7 @@ public class RandNextCycle extends NextCycleEvent {
 	 * (expected value is therefore <code>step</code>).
 	 */
 	protected long nextDelay(long step) {
-		return 1 + CommonState.r.nextLong((step << 1) - 1);
+		return 1 + CommonState.random.nextLong((step << 1) - 1);
 	}
 
 

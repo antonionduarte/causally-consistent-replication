@@ -51,7 +51,7 @@ import java.util.ArrayList;
  * index.
  * <li>If the last argument can be assigned from
  * <code>java.util.Random</code> then it is initialized with
- * {@link CommonState#r}, the central source of randomness for the
+ * {@link CommonState#random}, the central source of randomness for the
  * simulator.</li>
  * </ul>
  * For example, the class {@link WireWS} can be emulated by configuring
@@ -138,8 +138,8 @@ public class WireByMethod extends WireGraph {
 				args[i] = Configuration.getLong(prefix + "." + PAR_ARG + i);
 			else if (argt[i] == double.class)
 				args[i] = Configuration.getDouble(prefix + "." + PAR_ARG + i);
-			else if (i == args.length - 1 && argt[i].isInstance(CommonState.r))
-				args[i] = CommonState.r;
+			else if (i == args.length - 1 && argt[i].isInstance(CommonState.random))
+				args[i] = CommonState.random;
 			else {
 				// we should neve get here
 				throw new RuntimeException("Unexpected error, please " +

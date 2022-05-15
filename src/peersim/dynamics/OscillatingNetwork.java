@@ -170,7 +170,7 @@ public class OscillatingNetwork implements Control {
 	 */
 	protected void remove(int n) {
 		for (int i = 0; i < n; ++i) {
-			Network.remove(CommonState.r.nextInt(Network.size()));
+			Network.remove(CommonState.random.nextInt(Network.size()));
 		}
 	}
 

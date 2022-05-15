@@ -111,7 +111,7 @@ public class EDSimulator {
 
 	/**
 	 * This parameter specifies the event queue to be used. It must be an
-	 * implementation of interface {@link PriorityQ}. If it is not defined,
+	 * implementation of interface {@link PriorityQueue}. If it is not defined,
 	 * the internal implementation is used.
 	 *
 	 * @config
@@ -170,7 +170,7 @@ public class EDSimulator {
 	/**
 	 * Ordered list of events (heap)
 	 */
-	private static PriorityQ heap = null;
+	private static PriorityQueue heap = null;
 
 	private static long nextlog = 0;
 
@@ -262,7 +262,7 @@ public class EDSimulator {
 	 * @return true if the execution should be stopped.
 	 */
 	private static boolean executeNext() {
-		PriorityQ.Event ev = heap.removeFirst();
+		PriorityQueue.Event ev = heap.removeFirst();
 		if (ev == null) {
 			System.err.println("EDSimulator: queue is empty, quitting" +
 					" at time " + CommonState.getTime());
@@ -328,7 +328,7 @@ public class EDSimulator {
 	public static void nextExperiment() {
 		// Reading parameter
 		if (Configuration.contains(PAR_PQ))
-			heap = (PriorityQ) Configuration.getInstance(PAR_PQ);
+			heap = (PriorityQueue) Configuration.getInstance(PAR_PQ);
 		else
 			heap = new Heap();
 		endtime = Configuration.getLong(PAR_ENDTIME);

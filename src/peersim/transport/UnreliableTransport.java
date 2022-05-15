@@ -106,7 +106,7 @@ public final class UnreliableTransport implements Transport {
 	 */
 	public void send(Node src, Node dest, Object msg, int pid) {
 		try {
-			if (CommonState.r.nextFloat() >= loss) {
+			if (CommonState.random.nextFloat() >= loss) {
 				// message is not lost
 				Transport t = (Transport) src.getProtocol(transport);
 				t.send(src, dest, msg, pid);

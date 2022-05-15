@@ -106,7 +106,7 @@ public class WireScaleFreeDM extends WireGraph {
 
 		for (int i = clique; i < nodes; i++)
 			for (int l = 0; l < k; l++) {
-				int edge = CommonState.r.nextInt(len);
+				int edge = CommonState.random.nextInt(len);
 				int m = links[edge * 2];
 				int j = links[edge * 2 + 1];
 				g.setEdge(i, m);

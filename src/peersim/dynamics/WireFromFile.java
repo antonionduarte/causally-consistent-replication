@@ -19,25 +19,22 @@
 package peersim.dynamics;
 
 
-import java.io.IOException;
+import peersim.config.Configuration;
+import peersim.core.Linkable;
+import peersim.core.Network;
+import peersim.graph.Graph;
+
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.StringTokenizer;
 
-import peersim.graph.Graph;
-import peersim.core.*;
-import peersim.config.Configuration;
-
 /**
- * Takes a {@link Linkable} protocol and adds connections that are stored in a
- * file. Note that no
- * connections are removed, they are only added. So it can be used in
- * combination with other initializers.
- * The format of the file is as follows. Each line begins with a node ID
- * (IDs start from 0) followed by a list of neighbors, separated by whitespace.
- * All node IDs larger than the actual network size will be discarded, but
- * it does not trigger an error. Lines starting with a "#" character and
- * empty lines are ignored.
+ * Takes a {@link Linkable} protocol and adds connections that are stored in a file. Note that no connections are
+ * removed, they are only added. So it can be used in combination with other initializers. The format of the file is as
+ * follows. Each line begins with a node ID (IDs start from 0) followed by a list of neighbors, separated by whitespace.
+ * All node IDs larger than the actual network size will be discarded, but it does not trigger an error. Lines starting
+ * with a "#" character and empty lines are ignored.
  */
 public class WireFromFile extends WireGraph {
 
@@ -54,9 +51,8 @@ public class WireFromFile extends WireGraph {
 	private static final String PAR_FILE = "file";
 
 	/**
-	 * The number of neighbors to be read from the file. If unset, the default
-	 * behavior is to read all links in the file. If set, then the first k
-	 * neighbors will be read only.
+	 * The number of neighbors to be read from the file. If unset, the default behavior is to read all links in the
+	 * file. If set, then the first k neighbors will be read only.
 	 *
 	 * @config
 	 */
@@ -71,8 +67,7 @@ public class WireFromFile extends WireGraph {
 
 
 	/**
-	 * Standard constructor that reads the configuration parameters.
-	 * Invoked by the simulation engine.
+	 * Standard constructor that reads the configuration parameters. Invoked by the simulation engine.
 	 *
 	 * @param prefix the configuration prefix for this class
 	 */
@@ -88,12 +83,10 @@ public class WireFromFile extends WireGraph {
 
 
 	/**
-	 * Wires the graph from a file.
-	 * The format of the file is as follows. Each line begins with a node ID
-	 * (IDs start from 0) followed by a list of neighbors, separated by whitespace.
-	 * All node IDs larger than the actual network size will be discarded, but
-	 * it does not trigger an error. Lines starting with a "#" character and
-	 * empty lines are ignored.
+	 * Wires the graph from a file. The format of the file is as follows. Each line begins with a node ID (IDs start
+	 * from 0) followed by a list of neighbors, separated by whitespace. All node IDs larger than the actual network
+	 * size will be discarded, but it does not trigger an error. Lines starting with a "#" character and empty lines are
+	 * ignored.
 	 */
 	public void wire(Graph g) {
 		try {
@@ -102,9 +95,13 @@ public class WireFromFile extends WireGraph {
 			String line;
 			boolean wasOutOfRange = false;
 			while ((line = lnr.readLine()) != null) {
-				if (line.startsWith("#")) continue;
+				if (line.startsWith("#")) {
+					continue;
+				}
 				StringTokenizer st = new StringTokenizer(line);
-				if (!st.hasMoreTokens()) continue;
+				if (!st.hasMoreTokens()) {
+					continue;
+				}
 
 				final int from = Integer.parseInt(st.nextToken());
 				if (from < 0 || from >= Network.size()) {
@@ -114,16 +111,18 @@ public class WireFromFile extends WireGraph {
 
 				for (int i = 0; i < k && st.hasMoreTokens(); ++i) {
 					final int to = Integer.parseInt(st.nextToken());
-					if (to < 0 || to >= Network.size())
+					if (to < 0 || to >= Network.size()) {
 						wasOutOfRange = true;
-					else
+					} else {
 						g.setEdge(from, to);
+					}
 				}
 			}
 
-			if (wasOutOfRange)
+			if (wasOutOfRange) {
 				System.err.println("WireFromFile warning: in " + file + " " +
 						"some nodes were out of range and so ignored.");
+			}
 			lnr.close();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

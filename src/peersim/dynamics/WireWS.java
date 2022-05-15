@@ -89,7 +89,7 @@ public class WireWS extends WireGraph {
 	 * calls {@link GraphFactory#wireWS}.
 	 */
 	public void wire(Graph g) {
-		GraphFactory.wireWS(g, k, beta, CommonState.r);
+		GraphFactory.wireWS(g, k, beta, CommonState.random);
 	}
 
 }

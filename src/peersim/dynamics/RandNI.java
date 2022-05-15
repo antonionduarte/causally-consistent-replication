@@ -104,7 +104,7 @@ public class RandNI implements NodeInitializer {
 
 		Linkable linkable = (Linkable) n.getProtocol(pid);
 		for (int j = 0; j < k; ++j) {
-			int r = CommonState.r.nextInt(Network.size());
+			int r = CommonState.random.nextInt(Network.size());
 			linkable.addNeighbor(Network.get(r));
 		}
 

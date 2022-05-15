@@ -81,7 +81,7 @@ public class UniformRouterAssignment implements Control {
 		for (int i = 0; i < nsize; i++) {
 			Node node = Network.get(i);
 			RouterInfo t = (RouterInfo) node.getProtocol(pid);
-			int r = CommonState.r.nextInt(nrouters);
+			int r = CommonState.random.nextInt(nrouters);
 			t.setRouter(r);
 		}
 

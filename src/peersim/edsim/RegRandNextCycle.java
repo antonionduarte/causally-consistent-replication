@@ -88,7 +88,7 @@ public class RegRandNextCycle extends NextCycleEvent {
 		// after the next cycle
 		nextCycleStart += step;
 
-		return nextCycleStart - now - CommonState.r.nextLong(step) - 1;
+		return nextCycleStart - now - CommonState.random.nextLong(step) - 1;
 	}
 
 }

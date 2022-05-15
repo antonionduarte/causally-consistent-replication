@@ -213,7 +213,7 @@ public class CDScheduler implements Control, NodeInitializer {
 	 */
 	protected long firstDelay(long cyclelength) {
 		if (randstart)
-			return CommonState.r.nextLong(cyclelength);
+			return CommonState.random.nextLong(cyclelength);
 		else
 			return 0;
 	}

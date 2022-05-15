@@ -106,7 +106,7 @@ public final class UniformRandomTransport implements Transport {
 	 */
 	public void send(Node src, Node dest, Object msg, int pid) {
 		// avoid calling nextLong if possible
-		long delay = (range == 1 ? min : min + CommonState.r.nextLong(range));
+		long delay = (range == 1 ? min : min + CommonState.random.nextLong(range));
 		EDSimulator.add(delay, msg, dest, pid);
 	}
 
@@ -116,7 +116,7 @@ public final class UniformRandomTransport implements Transport {
 	 * distribution.
 	 */
 	public long getLatency(Node src, Node dest) {
-		return (range == 1 ? min : min + CommonState.r.nextLong(range));
+		return (range == 1 ? min : min + CommonState.random.nextLong(range));
 	}
 
 

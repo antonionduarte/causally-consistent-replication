@@ -180,13 +180,13 @@ public class Simulator {
 		try {
 			for (int k = 0; k < exps; ++k) {
 				if (k > 0) {
-					long seed = CommonState.r.nextLong();
+					long seed = CommonState.random.nextLong();
 					CommonState.initializeRandom(seed);
 				}
 				System.err.print("Simulator: starting experiment " + k);
 				System.err.println(" invoking " + simName[SIMID]);
 				System.err.println("Random seed: " +
-						CommonState.r.getLastSeed());
+						CommonState.random.getLastSeed());
 				System.out.println("\n\n");
 
 				// XXX could be done through reflection, but

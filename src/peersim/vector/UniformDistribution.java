@@ -103,12 +103,12 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 		if (setter.isInteger()) {
 			long d = max.longValue() - min.longValue();
 			for (int i = 0; i < Network.size(); ++i) {
-				setter.set(i, CommonState.r.nextLong(d) + min.longValue());
+				setter.set(i, CommonState.random.nextLong(d) + min.longValue());
 			}
 		} else {
 			double d = max.doubleValue() - min.doubleValue();
 			for (int i = 0; i < Network.size(); ++i) {
-				setter.set(i, CommonState.r.nextDouble() * d +
+				setter.set(i, CommonState.random.nextDouble() * d +
 						min.doubleValue());
 			}
 		}
@@ -127,10 +127,10 @@ public class UniformDistribution extends VectControl implements NodeInitializer 
 	public void initialize(Node n) {
 		if (setter.isInteger()) {
 			long d = max.longValue() - min.longValue();
-			setter.set(n, CommonState.r.nextLong(d) + min.longValue());
+			setter.set(n, CommonState.random.nextLong(d) + min.longValue());
 		} else {
 			double d = max.doubleValue() - min.doubleValue();
-			setter.set(n, CommonState.r.nextDouble() * d);
+			setter.set(n, CommonState.random.nextDouble() * d);
 		}
 	}
 

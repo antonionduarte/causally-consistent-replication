@@ -100,7 +100,7 @@ public class CommonState {
 	 * of calling a wrapper method, which is important because this is needed
 	 * very often.
 	 */
-	public static ExtendedRandom r = null;
+	public static ExtendedRandom random = null;
 
 
 	// ======================== initialization =========================
@@ -270,10 +270,10 @@ public class CommonState {
 	//-----------------------------------------------------------------
 
 	public static void initializeRandom(long seed) {
-		if (r == null) {
-			r = (ExtendedRandom) Configuration.getInstance(PAR_RANDOM, new ExtendedRandom(seed));
+		if (random == null) {
+			random = (ExtendedRandom) Configuration.getInstance(PAR_RANDOM, new ExtendedRandom(seed));
 		}
-		r.setSeed(seed);
+		random.setSeed(seed);
 	}
 
 	//-----------------------------------------------------------------
