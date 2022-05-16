@@ -5,12 +5,12 @@ import causality.messages.Message;
 import causality.messages.ProtocolMessage;
 import peersim.config.Configuration;
 import peersim.config.FastConfig;
+import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDSimulator;
 import peersim.transport.Transport;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public abstract class CausalityLayer implements Causality {
 
@@ -28,6 +28,11 @@ public abstract class CausalityLayer implements Causality {
 	public static int causalityPid;
 
 	/**
+	 * Statistic collection structure - Visibility times.
+	 */
+	Map<String, Long> visibilityTimes;
+
+	/**
 	 * The constructor for the protocol.
 	 */
 	public CausalityLayer(String prefix) {
@@ -42,6 +47,7 @@ public abstract class CausalityLayer implements Causality {
 		try {
 			CausalityLayer clone = (CausalityLayer) super.clone();
 			clone.messageQueue = new LinkedList<>();
+			clone.visibilityTimes = new HashMap<>();
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -56,22 +62,34 @@ public abstract class CausalityLayer implements Causality {
 		ProtocolMessage protocolMessage = message.getProtocolMessage();
 
 		if (protocolMessage == null) {
+			// yadda yadda yadda createMessage or sumthin?
+			// ig que nunca há problema com as escritas dos clientes?
+			// portanto essa escrita passaria sempre no verifyCausality
+			// podia talvez fazer: if protocolMessage == null || verifyCausality(message)
 
+			// o problema de fazer a verificação == null, é que depois dentro do protocolo
+			// a pessoa teria de fazer a verificação e criar a mensagem, otherwise isto não funcionaria, o que é
+			// um comportamento esquisito...
 		}
 
 		// TODO: This will throw NPE
-		if (verifyCausality(message)) {
+		if (message.getProtocolMessage() == null || verifyCausality(message)) {
 			if (message.isPropagating()) {
 				message.togglePropagating();
 				executeOperation(node, message, pid);
 				uponMessageExecuting(message);
 
 				// only sends it back to the application if the message came from the application (same node).
-				// TODO: check with someone that knows what they're doing that this makes sense
 				if (message.getOriginNode().getID() == node.getID()) {
 					EDSimulator.add(0, event, node, Application.applicationPid);
 				}
 			} else {
+				visibilityTimes.put(message.getMessageId(), CommonState.getTime());
+
+				if (message.getMessageType() == Message.MessageType.WRITE) {
+					// TODO: Propagate message to other nodes
+				}
+
 				uponMessageExecuted(message);
 				processQueue(node, pid);
 			}
@@ -83,7 +101,6 @@ public abstract class CausalityLayer implements Causality {
 	@Override
 	public void processQueue(Node node, int pid) {
 		for (Message message : messageQueue) {
-			ProtocolMessage protocolMessage = message.getProtocolMessage();
 			if (verifyCausality(message)) {
 				messageQueue.remove(message);
 				executeOperation(node, message, pid);

@@ -31,6 +31,8 @@ public class Application implements EDProtocol {
 	private final int weightReads;
 	private final int weightWrites;
 
+	private long idCounter;
+
 	private static final String NUMBER_CLIENTS_CONFIG = "NUMBER_CLIENTS";
 	private static final String WEIGHT_WRITES_CONFIG = "WEIGHT_WRITES";
 	private static final String WEIGHT_READS_CONFIG = "WEIGHT_READS";
@@ -106,12 +108,14 @@ public class Application implements EDProtocol {
 		long random = CommonState.random.nextLong() % totalWeight;
 		Message.MessageType messageType;
 
+		String messageId = node.getID() + "_" + idCounter++;
+
 		if (random <= weightReads) {
 			messageType = Message.MessageType.READ;
 		} else {
 			messageType = Message.MessageType.WRITE;
 		}
 
-		return new MessageWrapper(messageType, null, node, CommonState.getTime());
+		return new MessageWrapper(messageType, null, node, CommonState.getTime(), messageId);
 	}
 }

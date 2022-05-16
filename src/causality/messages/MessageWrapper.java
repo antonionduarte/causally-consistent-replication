@@ -14,13 +14,20 @@ public class MessageWrapper implements Message {
 
 	private final long sendTime;
 	private final Node originNode;
+	private final String messageId;
 
-	public MessageWrapper(MessageType messageType, ProtocolMessage protocolMessage, Node node, long sendTime) {
+	public MessageWrapper(MessageType messageType, ProtocolMessage protocolMessage, Node node, long sendTime, String messageId) {
 		this.protocolMessage = protocolMessage;
 		this.messageType = messageType;
 		this.isPropagating = false;
 		this.originNode = node;
 		this.sendTime = sendTime;
+		this.messageId = messageId;
+	}
+
+	@Override
+	public String getMessageId() {
+		return messageId;
 	}
 
 	@Override

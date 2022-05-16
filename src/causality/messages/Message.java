@@ -11,6 +11,9 @@ public interface Message {
 
 	}
 
+
+	String getMessageId();
+
 	/**
 	 * @return The time at which the message was sent.
 	 */

@@ -9,7 +9,7 @@ import peersim.core.Node;
  */
 public class ApplicationInitializer implements Control {
 
-	private int protocolID;
+	private final int protocolID;
 
 	public ApplicationInitializer(String prefix) {
 		this.protocolID = Application.applicationPid;
