@@ -17,6 +17,19 @@ NUMBER_CLIENTS 100 # the number of clients being simulated per node
 WEIGHT_READS 70 # the percentage/weight of reads being simulated
 WEIGHT_WRITES 30 # the percentage/weight of writes being simulated
 
+# ------------------- #
+# ---- Broadcast ---- #
+# ------------------- #
+
+# select the broadcast protocol you wish to use, and initialize it
+
+# ---------------------------- #
+# ---- Topology / Overlay ---- #
+# ---------------------------- #
+
+# select the topology that you with to use and initialize it,
+# initialize the node inits as well
+
 # ---------------------- #
 # ---- Initializers ---- #
 # ---------------------- #

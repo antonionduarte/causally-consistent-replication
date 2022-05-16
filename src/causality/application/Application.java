@@ -81,8 +81,8 @@ public class Application implements EDProtocol {
 	 * This function will only trigger when it receives a message back from the Protocol. Basically calculated and
 	 * stores statistics, and triggers sending a new message.
 	 *
-	 * @param node  the local node
-	 * @param pid   the identifier of this protocol
+	 * @param node the local node
+	 * @param pid the identifier of this protocol
 	 * @param event the delivered event
 	 */
 	@Override
