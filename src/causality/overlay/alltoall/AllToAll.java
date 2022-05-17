@@ -1,5 +1,6 @@
 package causality.overlay.alltoall;
 
+import causality.overlay.OverlayProtocol;
 import peersim.config.Configuration;
 import peersim.core.Linkable;
 import peersim.core.Node;
@@ -11,26 +12,22 @@ import java.util.List;
 /**
  * Very simple Overlay where all Nodes are everyone's neighbours.
  */
-public class AllToAll implements Protocol, Linkable {
+public class AllToAll extends OverlayProtocol implements Linkable {
 
 	private List<Node> neighbors;
 
 	public static int allToAllPid;
 
 	public AllToAll(String prefix) {
+		super(prefix);
 		allToAllPid = Configuration.getPid(prefix);
 	}
 
 	@Override
 	public Object clone() {
-		try {
-			AllToAll clone = (AllToAll) super.clone();
-			clone.neighbors = new LinkedList<Node>();
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
+		AllToAll clone = (AllToAll) super.clone();
+		clone.neighbors = new LinkedList<Node>();
+		return clone;
 	}
 
 	@Override
@@ -63,4 +60,8 @@ public class AllToAll implements Protocol, Linkable {
 	@Override
 	public void pack() {}
 
+	@Override
+	public List<Node> getNeighbors() {
+		return neighbors;
+	}
 }

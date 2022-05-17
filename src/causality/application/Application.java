@@ -42,9 +42,6 @@ public class Application implements EDProtocol {
 	// Statistic Collection - Probably will be queried in a control that runs periodically
 	private List<Long> messageLatencies;
 
-	// PID of protocol: prefix-of-protocol and probably getPID from Configuration.
-	// this can probably receive messages as well, and send them back
-	// probably also wants to keep statistics on OP/s and Latency.
 	public Application(String prefix) {
 		this.numberClients = Configuration.getInt(NUMBER_CLIENTS_CONFIG);
 		this.weightWrites = Configuration.getInt(WEIGHT_WRITES_CONFIG);

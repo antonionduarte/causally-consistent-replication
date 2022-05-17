@@ -5,6 +5,16 @@ SIZE 1000
 CYCLES 100
 CYCLE SIZE * 10000
 
+# ------------------------------- #
+# ---- Simulation Parameters ---- #
+# ------------------------------- #
+
+random.seed 1234567890
+network.size SIZE
+
+simulation.endtime CYCLE * CYCLES
+simulation.logtime CYCLE
+
 # -------------------------------- #
 # ---- Causality Layer Config ---- #
 # -------------------------------- #
@@ -17,15 +27,34 @@ NUMBER_CLIENTS 100 # the number of clients being simulated per node
 WEIGHT_READS 70 # the percentage/weight of reads being simulated
 WEIGHT_WRITES 30 # the percentage/weight of writes being simulated
 
+include.protocol        broadcast, overlay, causality
+
+# ------------------- #
+# ---- Transport ---- #
+# ------------------- #
+
+transport.trans         UniformRandomTransport
+{
+    mindelay 0
+    maxdelay 0
+}
+
 # ------------------- #
 # ---- Broadcast ---- #
 # ------------------- #
+
+protocol.broadcast      causality.broadcast.click.ClickBroadcast # replace path with desired broadcast protocol
+{
+    transport           trans
+}
 
 # select the broadcast protocol you wish to use, and initialize it
 
 # ---------------------------- #
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
+
+protocol.overlay        causality.overlay.alltoall.AllToAll # replace path with desired overlay protocol
 
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well
@@ -34,23 +63,7 @@ WEIGHT_WRITES 30 # the percentage/weight of writes being simulated
 # ---- Initializers ---- #
 # ---------------------- #
 
-include.init        application
+include.init            applicationInit, overlayInit
 
-init.application    causality.application.ApplicationInitializer
-
-# ------------------- #
-# ---- Transport ---- #
-# ------------------- #
-
-transport.trans     UniformRandomTransport
-{
-    MINDELAY 0
-    MAXDELAY 0
-    DROP 0
-}
-
-random.seed 1234567890
-network.size SIZE
-
-simulation.endtime CYCLE * CYCLES
-simulation.logtime CYCLE
+init.applicationInit    causality.application.ApplicationInitializer
+init.overlayInit        causality.overlay.alltoall.AllToAllInitializer

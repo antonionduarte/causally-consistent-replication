@@ -1,16 +1,18 @@
 package causality;
 
 import causality.application.Application;
+import causality.broadcast.Broadcast;
+import causality.broadcast.BroadcastProtocol;
 import causality.messages.Message;
-import causality.messages.ProtocolMessage;
 import peersim.config.Configuration;
-import peersim.config.FastConfig;
 import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDSimulator;
-import peersim.transport.Transport;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 
 public abstract class CausalityLayer implements Causality {
 
@@ -59,21 +61,9 @@ public abstract class CausalityLayer implements Causality {
 	public void processEvent(Node node, int pid, Object event) {
 		// process the incoming event
 		Message message = (Message) event;
-		ProtocolMessage protocolMessage = message.getProtocolMessage();
 
-		if (protocolMessage == null) {
-			// yadda yadda yadda createMessage or sumthin?
-			// ig que nunca há problema com as escritas dos clientes?
-			// portanto essa escrita passaria sempre no verifyCausality
-			// podia talvez fazer: if protocolMessage == null || verifyCausality(message)
-
-			// o problema de fazer a verificação == null, é que depois dentro do protocolo
-			// a pessoa teria de fazer a verificação e criar a mensagem, otherwise isto não funcionaria, o que é
-			// um comportamento esquisito...
-		}
-
-		// TODO: This will throw NPE
-		if (message.getProtocolMessage() == null || verifyCausality(message)) {
+		// TODO: Right now this will throw NPE, but Application will now be an Abstract class as well
+		if (verifyCausality(message)) {
 			if (message.isPropagating()) {
 				message.togglePropagating();
 				executeOperation(node, message, pid);
@@ -84,17 +74,18 @@ public abstract class CausalityLayer implements Causality {
 					EDSimulator.add(0, event, node, Application.applicationPid);
 				}
 			} else {
-				visibilityTimes.put(message.getMessageId(), CommonState.getTime());
+				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
 
 				if (message.getMessageType() == Message.MessageType.WRITE) {
-					// TODO: Propagate message to other nodes
+					Broadcast broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.broadcastPid);
+					broadcast.broadcastMessage(node, message);
 				}
 
 				uponMessageExecuted(message);
 				processQueue(node, pid);
 			}
 		} else {
-			messageQueue.add(message);
+			this.messageQueue.add(message);
 		}
 	}
 
@@ -102,7 +93,7 @@ public abstract class CausalityLayer implements Causality {
 	public void processQueue(Node node, int pid) {
 		for (Message message : messageQueue) {
 			if (verifyCausality(message)) {
-				messageQueue.remove(message);
+				this.messageQueue.remove(message);
 				executeOperation(node, message, pid);
 			}
 		}
@@ -111,20 +102,16 @@ public abstract class CausalityLayer implements Causality {
 	@Override
 	public void executeOperation(Node node, Message message, int pid) {
 		// Sends message to self with the operation.
-		long expectedArrivalTime = 0;
-
+		long expectedArrivalTime;
 		uponMessageExecuting(message);
-		switch (message.getMessageType()) {
-			case READ -> expectedArrivalTime = readTime;
-			case WRITE -> expectedArrivalTime = writeTime;
+
+		if (message.getMessageType() == Message.MessageType.READ) {
+			expectedArrivalTime = readTime;
+		} else {
+			expectedArrivalTime = writeTime;
 		}
 
 		EDSimulator.add(expectedArrivalTime, message, node, pid);
-	}
-
-	private void sendOperation(Node node, Node dest, ProtocolMessage protocolMessage, int pid) {
-		((Transport) node.getProtocol(FastConfig.getTransport(pid)))
-				.send(node, dest, protocolMessage, pid);
 	}
 
 	@Override
