@@ -1,7 +1,7 @@
-package causality.broadcast.click;
+package simulator.broadcast.click;
 
-import causality.broadcast.BroadcastProtocol;
-import causality.messages.Message;
+import simulator.broadcast.BroadcastProtocol;
+import simulator.messages.Message;
 import peersim.config.FastConfig;
 import peersim.core.Node;
 import peersim.transport.Transport;

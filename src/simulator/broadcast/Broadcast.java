@@ -1,6 +1,6 @@
-package causality.broadcast;
+package simulator.broadcast;
 
-import causality.messages.Message;
+import simulator.messages.Message;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 

@@ -1,9 +1,9 @@
-package causality;
+package simulator;
 
-import causality.application.Application;
-import causality.broadcast.Broadcast;
-import causality.broadcast.BroadcastProtocol;
-import causality.messages.Message;
+import simulator.application.Application;
+import simulator.broadcast.Broadcast;
+import simulator.broadcast.BroadcastProtocol;
+import simulator.messages.Message;
 import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Node;
@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-public abstract class CausalityLayer implements Causality {
+public abstract class CausalityProtocol implements Causality {
 
 	/**
 	 * The execution time for an operation.
@@ -37,7 +37,7 @@ public abstract class CausalityLayer implements Causality {
 	/**
 	 * The constructor for the protocol.
 	 */
-	public CausalityLayer(String prefix) {
+	public CausalityProtocol(String prefix) {
 		causalityPid = Configuration.getPid(prefix);
 
 		this.writeTime = Configuration.getInt("WRITE_TIME");
@@ -47,7 +47,7 @@ public abstract class CausalityLayer implements Causality {
 	@Override
 	public Object clone() {
 		try {
-			CausalityLayer clone = (CausalityLayer) super.clone();
+			CausalityProtocol clone = (CausalityProtocol) super.clone();
 			clone.messageQueue = new LinkedList<>();
 			clone.visibilityTimes = new HashMap<>();
 			return clone;
@@ -59,29 +59,33 @@ public abstract class CausalityLayer implements Causality {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		// process the incoming event
 		Message message = (Message) event;
 
 		// TODO: Right now this will throw NPE, but Application will now be an Abstract class as well
+		// TODO: This will be fixed once the application is specialized as well
+
+		// TODO: Maybe make a change, instead of immediately executing the message
+		// First I should enqueue it and then check the queue to verify which ones can execute
+		// maybe irrelevant though
 		if (verifyCausality(message)) {
 			if (message.isPropagating()) {
 				message.togglePropagating();
 				executeOperation(node, message, pid);
-				uponMessageExecuting(message);
-
-				// only sends it back to the application if the message came from the application (same node).
-				if (message.getOriginNode().getID() == node.getID()) {
-					EDSimulator.add(0, event, node, Application.applicationPid);
-				}
-			} else {
+				uponMessageExecuting(node, message);
+			}
+			else {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
+				uponMessageExecuted(node, message);
 
 				if (message.getMessageType() == Message.MessageType.WRITE) {
 					Broadcast broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.broadcastPid);
 					broadcast.broadcastMessage(node, message);
 				}
 
-				uponMessageExecuted(message);
+				if (message.getOriginNode().getID() == node.getID()) {
+					EDSimulator.add(0, event, node, Application.applicationPid);
+				}
+
 				processQueue(node, pid);
 			}
 		} else {
@@ -103,7 +107,7 @@ public abstract class CausalityLayer implements Causality {
 	public void executeOperation(Node node, Message message, int pid) {
 		// Sends message to self with the operation.
 		long expectedArrivalTime;
-		uponMessageExecuting(message);
+		uponMessageExecuting(node, message);
 
 		if (message.getMessageType() == Message.MessageType.READ) {
 			expectedArrivalTime = readTime;
@@ -118,10 +122,10 @@ public abstract class CausalityLayer implements Causality {
 	public abstract boolean verifyCausality(Message message);
 
 	@Override
-	public abstract void uponMessageExecuted(Message message);
+	public abstract void uponMessageExecuted(Node node, Message message);
 
 	@Override
-	public abstract void uponMessageExecuting(Message message);
+	public abstract void uponMessageExecuting(Node node, Message message);
 
 
 }

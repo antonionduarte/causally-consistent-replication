@@ -1,4 +1,4 @@
-package causality.application;
+package simulator.application;
 
 import peersim.core.Control;
 import peersim.core.Network;

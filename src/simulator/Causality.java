@@ -1,6 +1,6 @@
-package causality;
+package simulator;
 
-import causality.messages.Message;
+import simulator.messages.Message;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 
@@ -27,15 +27,17 @@ public interface Causality extends EDProtocol {
 	 * Processes a Protocol specific Message when it's possible according to causal consistency.
 	 *
 	 * @param message The message / message to process.
+	 * @param node The local node.
 	 */
-	void uponMessageExecuted(Message message);
+	void uponMessageExecuted(Node node, Message message);
 
 	/**
 	 * If a protocol needs to change it's internal state when it places a message in execution.
 	 *
 	 * @param message The message that was placed in execution.
+	 * @param node The local node.
 	 */
-	void uponMessageExecuting(Message message);
+	void uponMessageExecuting(Node node, Message message);
 
 	/**
 	 * Processes the operation Queue, checking if any operation that was in the Queue is now possible according to

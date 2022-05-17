@@ -1,9 +1,9 @@
-package causality.broadcast;
+package simulator.broadcast;
 
-import causality.Causality;
-import causality.CausalityLayer;
-import causality.messages.Message;
-import causality.overlay.OverlayProtocol;
+import simulator.Causality;
+import simulator.CausalityProtocol;
+import simulator.messages.Message;
+import simulator.overlay.OverlayProtocol;
 import peersim.config.Configuration;
 import peersim.core.Node;
 
@@ -29,8 +29,8 @@ public abstract class BroadcastProtocol implements Broadcast {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		Causality causalityLayer = (Causality) node.getProtocol(CausalityLayer.causalityPid);
-		causalityLayer.processEvent(node, CausalityLayer.causalityPid, event);
+		Causality causalityLayer = (Causality) node.getProtocol(CausalityProtocol.causalityPid);
+		causalityLayer.processEvent(node, CausalityProtocol.causalityPid, event);
 	}
 
 	@Override

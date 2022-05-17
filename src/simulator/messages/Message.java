@@ -1,4 +1,4 @@
-package causality.messages;
+package simulator.messages;
 
 import peersim.core.Node;
 

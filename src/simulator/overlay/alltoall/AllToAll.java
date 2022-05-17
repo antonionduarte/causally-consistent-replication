@@ -1,10 +1,9 @@
-package causality.overlay.alltoall;
+package simulator.overlay.alltoall;
 
-import causality.overlay.OverlayProtocol;
+import simulator.overlay.OverlayProtocol;
 import peersim.config.Configuration;
 import peersim.core.Linkable;
 import peersim.core.Node;
-import peersim.core.Protocol;
 
 import java.util.LinkedList;
 import java.util.List;

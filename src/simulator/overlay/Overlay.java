@@ -1,4 +1,4 @@
-package causality.overlay;
+package simulator.overlay;
 
 import peersim.core.Linkable;
 import peersim.core.Node;

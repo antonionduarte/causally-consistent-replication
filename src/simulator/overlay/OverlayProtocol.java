@@ -1,4 +1,4 @@
-package causality.overlay;
+package simulator.overlay;
 
 import peersim.config.Configuration;
 import peersim.core.Protocol;

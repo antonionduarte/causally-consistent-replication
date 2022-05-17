@@ -1,4 +1,4 @@
-package causality.overlay.alltoall;
+package simulator.overlay.alltoall;
 
 import peersim.core.Control;
 import peersim.core.Network;
