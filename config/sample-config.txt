@@ -27,7 +27,7 @@ NUMBER_CLIENTS 100 # the number of clients being simulated per node
 WEIGHT_READS 70 # the percentage/weight of reads being simulated
 WEIGHT_WRITES 30 # the percentage/weight of writes being simulated
 
-include.protocol        broadcast, overlay, causality
+include.protocol        broadcast, overlay, simulator
 
 # ------------------- #
 # ---- Transport ---- #
@@ -43,7 +43,7 @@ transport.trans         UniformRandomTransport
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      causality.broadcast.click.ClickBroadcast # replace path with desired broadcast protocol
+protocol.broadcast      simulator.broadcast.click.ClickBroadcast # replace path with desired broadcast protocol
 {
     transport           trans
 }
@@ -54,7 +54,7 @@ protocol.broadcast      causality.broadcast.click.ClickBroadcast # replace path 
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
 
-protocol.overlay        causality.overlay.alltoall.AllToAll # replace path with desired overlay protocol
+protocol.overlay        simulator.overlay.alltoall.AllToAll # replace path with desired overlay protocol
 
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well
@@ -65,5 +65,5 @@ protocol.overlay        causality.overlay.alltoall.AllToAll # replace path with 
 
 include.init            applicationInit, overlayInit
 
-init.applicationInit    causality.application.ApplicationInitializer
-init.overlayInit        causality.overlay.alltoall.AllToAllInitializer
+init.applicationInit    simulator.application.ApplicationInitializer
+init.overlayInit        simulator.overlay.alltoall.AllToAllInitializer
