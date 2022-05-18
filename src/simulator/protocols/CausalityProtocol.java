@@ -61,6 +61,7 @@ public abstract class CausalityProtocol implements Causality {
 	public void processEvent(Node node, int pid, Object event) {
 		Message message = (Message) event;
 
+		// could throw NPE if not well verified within the protocol
 		if (verifyCausality(message)) {
 			if (message.isPropagating()) {
 				message.togglePropagating();
