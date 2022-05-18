@@ -1,4 +1,4 @@
-package simulator.overlay;
+package simulator.protocols.overlay;
 
 import peersim.core.Linkable;
 import peersim.core.Node;

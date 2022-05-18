@@ -1,9 +1,9 @@
-package simulator.broadcast;
+package simulator.protocols.broadcast;
 
-import simulator.Causality;
-import simulator.CausalityProtocol;
-import simulator.messages.Message;
-import simulator.overlay.OverlayProtocol;
+import simulator.protocols.Causality;
+import simulator.protocols.CausalityProtocol;
+import simulator.protocols.messages.Message;
+import simulator.protocols.overlay.OverlayProtocol;
 import peersim.config.Configuration;
 import peersim.core.Node;
 

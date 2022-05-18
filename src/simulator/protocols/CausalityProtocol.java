@@ -1,9 +1,9 @@
-package simulator;
+package simulator.protocols;
 
-import simulator.application.Application;
-import simulator.broadcast.Broadcast;
-import simulator.broadcast.BroadcastProtocol;
-import simulator.messages.Message;
+import simulator.protocols.application.ApplicationProtocol;
+import simulator.protocols.broadcast.Broadcast;
+import simulator.protocols.broadcast.BroadcastProtocol;
+import simulator.protocols.messages.Message;
 import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Node;
@@ -61,12 +61,6 @@ public abstract class CausalityProtocol implements Causality {
 	public void processEvent(Node node, int pid, Object event) {
 		Message message = (Message) event;
 
-		// TODO: Right now this will throw NPE, but Application will now be an Abstract class as well
-		// TODO: This will be fixed once the application is specialized as well
-
-		// TODO: Maybe make a change, instead of immediately executing the message
-		// First I should enqueue it and then check the queue to verify which ones can execute
-		// maybe irrelevant though
 		if (verifyCausality(message)) {
 			if (message.isPropagating()) {
 				message.togglePropagating();
@@ -83,7 +77,7 @@ public abstract class CausalityProtocol implements Causality {
 				}
 
 				if (message.getOriginNode().getID() == node.getID()) {
-					EDSimulator.add(0, event, node, Application.applicationPid);
+					EDSimulator.add(0, event, node, ApplicationProtocol.applicationPid);
 				}
 
 				processQueue(node, pid);
@@ -105,7 +99,6 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void executeOperation(Node node, Message message, int pid) {
-		// Sends message to self with the operation.
 		long expectedArrivalTime;
 		uponMessageExecuting(node, message);
 

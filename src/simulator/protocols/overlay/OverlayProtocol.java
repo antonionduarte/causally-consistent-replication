@@ -1,4 +1,4 @@
-package simulator.overlay;
+package simulator.protocols.overlay;
 
 import peersim.config.Configuration;
 import peersim.core.Protocol;

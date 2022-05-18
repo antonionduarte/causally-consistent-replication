@@ -15,19 +15,21 @@ network.size SIZE
 simulation.endtime CYCLE * CYCLES
 simulation.logtime CYCLE
 
-# -------------------------------- #
-# ---- Causality Layer Config ---- #
-# -------------------------------- #
+include.protocol        application, broadcast, overlay, simulator
 
-WRITE_TIME 10 # the amount of time a write takes to execute
-READ_TIME 1 # the amount of time that a read takes to execute
-NUMBER_CLIENTS 100 # the number of clients being simulated per node
+# -------------------------------------- #
+# ---- Application / Clients Config ---- #
+# -------------------------------------- #
 
-# reads & writes weights
-WEIGHT_READS 70 # the percentage/weight of reads being simulated
-WEIGHT_WRITES 30 # the percentage/weight of writes being simulated
+protocol.application    simulator.protocols.application.ApplicationProtocol
+{
+    write_time 10           # the amount of time a write takes to execute
+    read_time 1             # the amount of time that a read takes to execute
+    number_clients 100      # the number of clients being simulated per node
 
-include.protocol        broadcast, overlay, simulator
+    weigh_reads 70          # the percentage/weight of reads being simulated
+    weight_writes 30        # the percentage/weight of writes being simulated
+}
 
 # ------------------- #
 # ---- Transport ---- #
@@ -43,7 +45,7 @@ transport.trans         UniformRandomTransport
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      simulator.broadcast.click.ClickBroadcast # replace path with desired broadcast protocol
+protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # replace path with desired broadcast protocol
 {
     transport           trans
 }
@@ -54,7 +56,7 @@ protocol.broadcast      simulator.broadcast.click.ClickBroadcast # replace path 
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
 
-protocol.overlay        simulator.overlay.alltoall.AllToAll # replace path with desired overlay protocol
+protocol.overlay        simulator.protocols.overlay.alltoall.AllToAll         # replace path with desired overlay protocol
 
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well
@@ -65,5 +67,5 @@ protocol.overlay        simulator.overlay.alltoall.AllToAll # replace path with 
 
 include.init            applicationInit, overlayInit
 
-init.applicationInit    simulator.application.ApplicationInitializer
-init.overlayInit        simulator.overlay.alltoall.AllToAllInitializer
+init.applicationInit    simulator.protocols.application.ApplicationInitializer
+init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer

@@ -1,4 +1,4 @@
-package simulator.messages;
+package simulator.protocols.messages;
 
 public interface ProtocolMessage {
 

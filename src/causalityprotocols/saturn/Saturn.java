@@ -1,8 +1,8 @@
 package causalityprotocols.saturn;
 
 import peersim.core.Node;
-import simulator.CausalityProtocol;
-import simulator.messages.Message;
+import simulator.protocols.CausalityProtocol;
+import simulator.protocols.messages.Message;
 
 public class Saturn extends CausalityProtocol {
 

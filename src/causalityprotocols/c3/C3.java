@@ -1,9 +1,9 @@
 package causalityprotocols.c3;
 
 import peersim.core.Node;
-import simulator.CausalityProtocol;
-import simulator.messages.Message;
-import simulator.messages.ProtocolMessage;
+import simulator.protocols.CausalityProtocol;
+import simulator.protocols.messages.Message;
+import simulator.protocols.messages.ProtocolMessage;
 
 import java.util.List;
 

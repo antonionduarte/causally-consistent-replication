@@ -1,4 +1,4 @@
-package simulator.application;
+package simulator.protocols.application;
 
 import peersim.core.Control;
 

@@ -1,4 +1,4 @@
-package simulator.application;
+package simulator.protocols.application;
 
 import peersim.core.Control;
 import peersim.core.Network;
@@ -12,14 +12,14 @@ public class ApplicationInitializer implements Control {
 	private final int protocolID;
 
 	public ApplicationInitializer(String prefix) {
-		this.protocolID = Application.applicationPid;
+		this.protocolID = ApplicationProtocol.applicationPid;
 	}
 
 	@Override
 	public boolean execute() {
 		for (int i = 0; i < Network.size(); i++) {
 			Node node = Network.get(i);
-			((Application) node.getProtocol(protocolID)).startClients(node);
+			((ApplicationProtocol) node.getProtocol(protocolID)).startClients(node);
 		}
 		return false;
 	}

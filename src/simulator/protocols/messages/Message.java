@@ -1,4 +1,4 @@
-package simulator.messages;
+package simulator.protocols.messages;
 
 import peersim.core.Node;
 

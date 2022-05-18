@@ -1,13 +1,14 @@
-package simulator.application;
+package simulator.protocols.application;
 
-import simulator.CausalityProtocol;
-import simulator.messages.Message;
-import simulator.messages.MessageWrapper;
+import simulator.protocols.CausalityProtocol;
+import simulator.protocols.messages.Message;
+import simulator.protocols.messages.MessageWrapper;
 import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 import peersim.edsim.EDSimulator;
+import simulator.protocols.messages.ProtocolMessage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
  * <p>
  * [Random]: - CommonState.r.nextInt/Long etc...
  */
-public class Application implements EDProtocol {
+public abstract class ApplicationProtocol implements EDProtocol {
 
 	private final int numberClients;
 	private final int weightReads;
@@ -33,19 +34,19 @@ public class Application implements EDProtocol {
 
 	private long idCounter;
 
-	private static final String NUMBER_CLIENTS_CONFIG = "NUMBER_CLIENTS";
-	private static final String WEIGHT_WRITES_CONFIG = "WEIGHT_WRITES";
-	private static final String WEIGHT_READS_CONFIG = "WEIGHT_READS";
+	private static final String NUMBER_CLIENTS_CONFIG = "number_clients";
+	private static final String WEIGHT_WRITES_CONFIG = "weight_writes";
+	private static final String WEIGHT_READS_CONFIG = "weight_reads";
 
 	public static int applicationPid;
 
 	// Statistic Collection - Probably will be queried in a control that runs periodically
 	private List<Long> messageLatencies;
 
-	public Application(String prefix) {
-		this.numberClients = Configuration.getInt(NUMBER_CLIENTS_CONFIG);
-		this.weightWrites = Configuration.getInt(WEIGHT_WRITES_CONFIG);
-		this.weightReads = Configuration.getInt(WEIGHT_READS_CONFIG);
+	public ApplicationProtocol(String prefix) {
+		this.numberClients = Configuration.getInt(prefix + "." + NUMBER_CLIENTS_CONFIG);
+		this.weightWrites = Configuration.getInt(prefix + "." + WEIGHT_WRITES_CONFIG);
+		this.weightReads = Configuration.getInt(prefix + "." + WEIGHT_READS_CONFIG);
 
 		applicationPid = Configuration.getPid(prefix);
 	}
@@ -53,7 +54,7 @@ public class Application implements EDProtocol {
 	@Override
 	public Object clone() {
 		try {
-			Application clone = (Application) super.clone();
+			ApplicationProtocol clone = (ApplicationProtocol) super.clone();
 			clone.messageLatencies = new LinkedList<>();
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -70,6 +71,7 @@ public class Application implements EDProtocol {
 	public void startClients(Node node) {
 		for (int i = 0; i < numberClients; i++) {
 			Message message = getRandomMessage(node);
+			this.changeInitialMessage(node, message.getProtocolMessage());
 			EDSimulator.add(0, message, node, CausalityProtocol.causalityPid);
 		}
 	}
@@ -91,6 +93,7 @@ public class Application implements EDProtocol {
 
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
+		this.changeResponseMessage(node, toSend.getProtocolMessage());
 		EDSimulator.add(0, toSend, node, CausalityProtocol.causalityPid);
 	}
 
@@ -115,4 +118,22 @@ public class Application implements EDProtocol {
 
 		return new MessageWrapper(messageType, null, node, CommonState.getTime(), messageId);
 	}
+
+	/**
+	 * Implement this function in your Application class if you want the
+	 * Initial wrapped {@link simulator.protocols.messages.ProtocolMessage} to be different than null.
+	 *
+	 * @param node The local node.
+	 * @param message The protocol specific message.
+	 */
+	public abstract void changeInitialMessage(Node node, ProtocolMessage message);
+
+	/**
+	 * Implement this function in your Application class if you want the wrapped {@link simulator.protocols.messages.ProtocolMessage}
+	 * that are sent as responses in the middle of the simulation to be changed.
+	 *
+	 * @param node The local node.
+	 * @param message The protocol specific message.
+	 */
+	public abstract void changeResponseMessage(Node node, ProtocolMessage message);
 }

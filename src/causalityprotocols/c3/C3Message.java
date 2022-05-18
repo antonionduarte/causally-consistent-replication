@@ -1,6 +1,6 @@
 package causalityprotocols.c3;
 
-import simulator.messages.ProtocolMessage;
+import simulator.protocols.messages.ProtocolMessage;
 
 public class C3Message implements ProtocolMessage {
 

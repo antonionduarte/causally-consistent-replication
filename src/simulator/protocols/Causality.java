@@ -1,6 +1,6 @@
-package simulator;
+package simulator.protocols;
 
-import simulator.messages.Message;
+import simulator.protocols.messages.Message;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 

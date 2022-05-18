@@ -1,6 +1,6 @@
-package simulator.overlay.alltoall;
+package simulator.protocols.overlay.alltoall;
 
-import simulator.overlay.OverlayProtocol;
+import simulator.protocols.overlay.OverlayProtocol;
 import peersim.config.Configuration;
 import peersim.core.Linkable;
 import peersim.core.Node;

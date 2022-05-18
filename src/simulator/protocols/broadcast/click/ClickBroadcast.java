@@ -1,7 +1,7 @@
-package simulator.broadcast.click;
+package simulator.protocols.broadcast.click;
 
-import simulator.broadcast.BroadcastProtocol;
-import simulator.messages.Message;
+import simulator.protocols.broadcast.BroadcastProtocol;
+import simulator.protocols.messages.Message;
 import peersim.config.FastConfig;
 import peersim.core.Node;
 import peersim.transport.Transport;

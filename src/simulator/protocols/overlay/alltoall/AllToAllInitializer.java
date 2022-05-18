@@ -1,4 +1,4 @@
-package simulator.overlay.alltoall;
+package simulator.protocols.overlay.alltoall;
 
 import peersim.core.Control;
 import peersim.core.Network;
