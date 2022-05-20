@@ -19,9 +19,10 @@ public interface Causality extends EDProtocol {
 	 * Verifies if it's possible to execute an operation according to causal consistency.
 	 *
 	 * @param message The operation to verify.
+	 * @param node The local node.
 	 * @return Boolean indicating if it's possible to execute the operation.
 	 */
-	boolean verifyCausality(Message message);
+	boolean verifyCausality(Node node, Message message);
 
 	/**
 	 * Processes a Protocol specific Message when it's possible according to causal consistency.
