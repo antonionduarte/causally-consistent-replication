@@ -1,4 +1,4 @@
-package simulator.observers.throughput;
+package simulator.observers;
 
 import peersim.core.CommonState;
 import peersim.core.Control;

@@ -1,4 +1,4 @@
-package simulator.observers.latency;
+package simulator.observers;
 
 import peersim.core.Control;
 import peersim.core.CommonState;
