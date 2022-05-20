@@ -1,19 +1,21 @@
 # network size
-SIZE 1000
+
+SIZE        1000
 
 # parameters of periodic execution
-CYCLES 100
-CYCLE SIZE * 10000
+
+CYCLES      100
+CYCLE       SIZE * 10000
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
 # ------------------------------- #
 
-random.seed 1234567890
-network.size SIZE
+random.seed             1234567890
+network.size            SIZE
 
-simulation.endtime CYCLE * CYCLES
-simulation.logtime CYCLE
+simulation.endtime      120000
+simulation.logtime      CYCLE
 
 include.protocol        application, broadcast, overlay, simulator
 
@@ -30,6 +32,12 @@ protocol.application    simulator.protocols.application.ApplicationProtocol
     weigh_reads     70          # the percentage/weight of reads being simulated
     weight_writes   30          # the percentage/weight of writes being simulated
 }
+
+# -------------------------- #
+# ---- Causality Config ---- #
+# -------------------------- #
+
+protocol.causality      causality_protocols.c3.C3
 
 # ------------------- #
 # ---- Transport ---- #
@@ -69,3 +77,25 @@ include.init            applicationInit, overlayInit
 
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
 init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
+
+# ---------------------------------- #
+# ----- Controls and Observers ----- #
+# ---------------------------------- #
+
+include.control         latencyObserver, throughputObserver, visibilityObserver
+
+control.latencyObserver     simulator.observers.LatencyObserver
+{
+    step    119950
+}
+
+control.throughputObserver  simulator.observers.ThroughputObserver
+{
+    step    119955
+}
+
+control.visibilityObserver  simulator.observers.VisibilityObserver
+{
+    step    119960
+}
+
