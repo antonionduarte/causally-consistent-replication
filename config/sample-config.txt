@@ -23,12 +23,12 @@ include.protocol        application, broadcast, overlay, simulator
 
 protocol.application    simulator.protocols.application.ApplicationProtocol
 {
-    write_time 10           # the amount of time a write takes to execute
-    read_time 1             # the amount of time that a read takes to execute
-    number_clients 100      # the number of clients being simulated per node
+    write_time      10          # the amount of time a write takes to execute
+    read_time       1           # the amount of time that a read takes to execute
+    number_clients  100         # the number of clients being simulated per node
 
-    weigh_reads 70          # the percentage/weight of reads being simulated
-    weight_writes 30        # the percentage/weight of writes being simulated
+    weigh_reads     70          # the percentage/weight of reads being simulated
+    weight_writes   30          # the percentage/weight of writes being simulated
 }
 
 # ------------------- #
@@ -37,8 +37,8 @@ protocol.application    simulator.protocols.application.ApplicationProtocol
 
 transport.trans         UniformRandomTransport
 {
-    mindelay 0
-    maxdelay 0
+    mindelay        50
+    maxdelay        50
 }
 
 # ------------------- #

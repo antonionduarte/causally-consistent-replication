@@ -120,6 +120,13 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	}
 
 	/**
+	 * @return The list of Client perceived latencies for the node.
+	 */
+	public List<Long> getMessageLatencies() {
+		return messageLatencies;
+	}
+
+	/**
 	 * Implement this function in your Application class if you want the
 	 * Initial wrapped {@link simulator.protocols.messages.ProtocolMessage} to be different than null.
 	 *

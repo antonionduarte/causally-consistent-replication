@@ -32,7 +32,12 @@ public abstract class CausalityProtocol implements Causality {
 	/**
 	 * Statistic collection structure - Visibility times.
 	 */
-	Map<String, Long> visibilityTimes;
+	private Map<String, Long> visibilityTimes;
+
+	/**
+	 * The total amount of executed operations within this node.
+	 */
+	private long executedOperations;
 
 	/**
 	 * The constructor for the protocol.
@@ -48,6 +53,7 @@ public abstract class CausalityProtocol implements Causality {
 	public Object clone() {
 		try {
 			CausalityProtocol clone = (CausalityProtocol) super.clone();
+			clone.executedOperations = 0;
 			clone.messageQueue = new LinkedList<>();
 			clone.visibilityTimes = new HashMap<>();
 			return clone;
@@ -70,6 +76,7 @@ public abstract class CausalityProtocol implements Causality {
 			}
 			else {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
+				this.executedOperations++;
 				uponMessageExecuted(node, message);
 
 				if (message.getMessageType() == Message.MessageType.WRITE) {
@@ -110,6 +117,20 @@ public abstract class CausalityProtocol implements Causality {
 		}
 
 		EDSimulator.add(expectedArrivalTime, message, node, pid);
+	}
+
+	/**
+	 * @return The time at which a message was made visible within this node.
+	 */
+	public Map<String, Long> getVisibilityTimes() {
+		return visibilityTimes;
+	}
+
+	/**
+	 * @return The total amount of executed operations within the node.
+	 */
+	public long getExecutedOperations() {
+		return executedOperations;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package causalityprotocols.c3;
+package causality_protocols.c3;
 
 import peersim.core.Node;
 import simulator.protocols.CausalityProtocol;
