@@ -19,7 +19,7 @@ public class LatencyObserver implements Control {
 	/**
 	 * Map nodeID -> List of latency observations.
 	 */
-	private Map<Long, List<Long>> latencyPerNode;
+	private final Map<Long, List<Long>> latencyPerNode;
 
 	public LatencyObserver() {
 		this.latencyPerNode = new HashMap<>();
@@ -30,9 +30,9 @@ public class LatencyObserver implements Control {
 		System.err.println(CommonState.getTime() + ": " + this.getClass().getName() + " extracting client perceived Latencies.");
 
 		for (int i = 0; i < Network.size(); i++) {
-			Node node = Network.get(i);
-			ApplicationProtocol application = (ApplicationProtocol) node.getProtocol(ApplicationProtocol.applicationPid);
-			List<Long> nodeLatencies = application.getMessageLatencies();
+			var node = Network.get(i);
+			var application = (ApplicationProtocol) node.getProtocol(ApplicationProtocol.applicationPid);
+			var nodeLatencies = application.getMessageLatencies();
 			latencyPerNode.put(node.getID(), nodeLatencies);
 		}
 
@@ -45,9 +45,9 @@ public class LatencyObserver implements Control {
 	 */
 	private void writeToFile() {
 		for (long nodeId : latencyPerNode.keySet()) {
-			List<Long> latencies = latencyPerNode.get(nodeId);
+			var latencies = latencyPerNode.get(nodeId);
 			System.out.print("Node: " + nodeId);
-			StringBuilder toPrint = new StringBuilder(nodeId + ",");
+			var toPrint = new StringBuilder(nodeId + ",");
 			for (long latency : latencies) {
 				toPrint.append(latency).append(",");
 			}
