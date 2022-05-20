@@ -19,8 +19,8 @@ public class Saturn extends CausalityProtocol {
 	}
 
 	@Override
-	public boolean verifyCausality(Message message) {
-		return false;
+	public boolean verifyCausality(Node node, Message message) {
+		return true;
 	}
 
 	@Override

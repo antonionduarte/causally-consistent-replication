@@ -2,21 +2,24 @@ package causality_protocols.c3;
 
 import simulator.protocols.messages.ProtocolMessage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class C3Message implements ProtocolMessage {
 
-	private long[] lblDeps;
+	private Map<Long, Long> lblDeps;
 	private long writeId;
 
 	public C3Message(long[] lblDeps) {
-		this.lblDeps = lblDeps;
+		this.lblDeps = new HashMap<>();
 	}
 
 	@Override
 	public int getSize() {
-		return lblDeps.length;
+		return lblDeps.size();
 	}
 
-	public long[] getLblDeps() {
+	public Map<Long, Long> getLblDeps() {
 		return lblDeps;
 	}
 
@@ -24,7 +27,7 @@ public class C3Message implements ProtocolMessage {
 		return writeId;
 	}
 
-	public void setLblDeps(long[] lblDeps) {
+	public void setLblDeps(Map<Long, Long> lblDeps) {
 		this.lblDeps = lblDeps;
 	}
 }
