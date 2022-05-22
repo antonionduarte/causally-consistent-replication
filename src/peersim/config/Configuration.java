@@ -294,7 +294,7 @@ public class Configuration {
 	/**
 	 * The properties object that stores all configuration information.
 	 */
-	private static ConfigContainer config = null;
+	public static ConfigContainer config = null;
 
 	// =================== initialization ================================
 	// ===================================================================

@@ -78,6 +78,10 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 include.init            applicationInit, overlayInit
 
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
+{
+    protocol            application
+}
+
 init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 
 # ---------------------------------- #

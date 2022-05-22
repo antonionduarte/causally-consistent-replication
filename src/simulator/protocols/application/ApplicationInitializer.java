@@ -22,13 +22,9 @@ public class ApplicationInitializer implements Control {
 	public boolean execute() {
 		for (int i = 0; i < Network.size(); i++) {
 			Node node = Network.get(i);
-			System.out.println(ApplicationProtocol.applicationPrefix);
-			System.out.println("TEST + " + Configuration.getPid(ApplicationProtocol.applicationPrefix));
 
-			//((ApplicationProtocol) node.getProtocol(Configuration.getPid(ApplicationProtocol.applicationPrefix)))
-			//		.startClients(node);
-			System.out.println("test2");
-
+			((ApplicationProtocol) node.getProtocol(Configuration.lookupPid("application")))
+					.startClients(node);
 		}
 		return false;
 	}
