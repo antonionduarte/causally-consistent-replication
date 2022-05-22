@@ -2,26 +2,14 @@ package causality_protocols.c3;
 
 import peersim.core.Node;
 import simulator.protocols.CausalityProtocol;
+import simulator.protocols.broadcast.Broadcast;
+import simulator.protocols.broadcast.BroadcastProtocol;
 import simulator.protocols.messages.Message;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-// maybe I need to write an initializer
-// to build the initial VC.
-
-/**
- * Lines 36-54:
- * of the Pseudocode are what I'm already doing with
- * my CausalityProtocol layer. [DONE]
- *
- * Lines 23-32:
- * write label from DS: propagate the operation to the
- * targets. [DONE]
- *
- * Lines
- */
 
 public class C3 extends CausalityProtocol {
 
@@ -30,9 +18,16 @@ public class C3 extends CausalityProtocol {
 	 */
 	private Map<Long, Long> executingClock;
 	private Map<Long, Long> executedClock;
+
+	/**
+	 * Map from nodeId -> lblId
+	 */
+	private Map<Long, List<Long>> aheadExecutedOps;
+
+	// waitingOps not necessary because it's handled by CausalityProtocol
+
 	private long writeCounter; // probably not necessary
 
-	private List<Message> aheadExecutedOps;
 
 	/**
 	 * The constructor for the protocol.
@@ -46,7 +41,8 @@ public class C3 extends CausalityProtocol {
 		C3 clone = (C3) super.clone();
 		clone.executedClock = new HashMap<>();
 		clone.executingClock = new HashMap<>();
-		clone.writeCounter = 0;
+		clone.aheadExecutedOps = new HashMap<>();
+		clone.writeCounter = -1;
 		return super.clone();
 	}
 
@@ -54,48 +50,73 @@ public class C3 extends CausalityProtocol {
 	public boolean verifyCausality(Node node, Message message) {
 		C3Message wrappedMessage = (C3Message) message.getProtocolMessage();
 
-		// means message came from local DS
-		if (wrappedMessage == null) return true;
+		// means it came from local DS
+		if (wrappedMessage == null) {
+			this.writeCounter++;
+			message.setProtocolMessage(new C3Message(new HashMap<>(executingClock), writeCounter));
+			return false;
+		}
 
 		Map<Long, Long> messageDeps = wrappedMessage.getLblDeps();
 
 		for (long nodeId : messageDeps.keySet()) {
-			// se uma das entries no executingClock for maior, quer dizer que either é || ou >
-
-			// tenho de verificar se todas as entries são maiores, -> true
-			// ou se são todas iguais -> true
-			// ou se são um misto -> true
-
-			// else -> false
-			if (executingClock.containsKey(nodeId)) {
-				if (executingClock.get(nodeId) > messageDeps.get(nodeId)) {
-					return true;
+			if (executedClock.containsKey(nodeId)) {
+				if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
+					return false;
 				}
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override
-	public void uponMessageExecuted(Node node, Message message) {
-		// when a message ends execution
-		// change the state of the message or create a new one?
-
-		// prob update executed clock
+	public void uponOperationExecuted(Node node, Message message) {
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
-		c3Message.setLblDeps(executingClock);
+
+		// previous writes are still executing
+		if (executedClock.get(message.getOriginNode().getID()) + 1 != c3Message.getLblId()) {
+			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
+				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
+			}
+			else {
+				List<Long> nodeAheadExecutedOps = new LinkedList<>();
+				nodeAheadExecutedOps.add(c3Message.getLblId());
+				aheadExecutedOps.put(message.getOriginNode().getID(), nodeAheadExecutedOps);
+			}
+		}
+		else {
+			executedClock.put(message.getOriginNode().getID(), c3Message.getLblId());
+			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
+				this.checkAheadOps(
+						message.getOriginNode(),
+						aheadExecutedOps.get(message.getOriginNode().getID())
+				);
+			}
+		}
 
 	}
 
 	@Override
-	public void uponMessageExecuting(Node node, Message message) {
-		// prob update executing clock
-
-
+	public void uponOperationExecuting(Node node, Message message) {
 		// if the message is from a local client/datastore, do nothing
+		var currentClock = this.executingClock.get(message.getOriginNode().getID());
+		this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
+	}
 
-		// line 60-64
-		// executingClock <- executingClock[sourceDC] + 1;
+	/**
+	 * Check if subsequent operations already completed.
+	 *
+	 * @param originNode The originNode.
+	 * @param toCheck The list of subsequent operations to check.
+	 */
+	private void checkAheadOps(Node originNode, List<Long> toCheck) {
+		for (var lblId : toCheck) {
+			var nodeClock = this.executedClock.get(originNode.getID());
+			if (nodeClock + 1 == lblId) {
+				this.executedClock.put(originNode.getID(), lblId);
+				toCheck.remove(lblId);
+			}
+		}
 	}
 }

@@ -25,7 +25,7 @@ public abstract class CausalityProtocol implements Causality {
 	/**
 	 * Event Queue, saves the events that weren't able to be processed due to issues with causality.
 	 */
-	private Queue<Message> messageQueue;
+	private Queue<Message> operationQueue;
 
 	public static int causalityPid;
 
@@ -54,7 +54,7 @@ public abstract class CausalityProtocol implements Causality {
 		try {
 			CausalityProtocol clone = (CausalityProtocol) super.clone();
 			clone.executedOperations = 0;
-			clone.messageQueue = new LinkedList<>();
+			clone.operationQueue = new LinkedList<>();
 			clone.visibilityTimes = new HashMap<>();
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -65,42 +65,42 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		Message message = (Message) event;
+		var message = (Message) event;
 
-		// could throw NPE if not well verified within the protocol
+		// Could throw NPE if not well verified within the protocol
 		if (verifyCausality(node, message)) {
+			// Message was propagating, and starts executing
 			if (message.isPropagating()) {
 				message.togglePropagating();
-				executeOperation(node, message, pid);
-				uponMessageExecuting(node, message);
+				this.executeOperation(node, message, pid);
+				this.propagateMessage(node, message);
+				this.processQueue(node, pid);
 			}
+			// Message was executing, and finished executing
 			else {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
 				this.executedOperations++;
-				uponMessageExecuted(node, message);
 
-				if (message.getMessageType() == Message.MessageType.WRITE) {
-					Broadcast broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.broadcastPid);
-					broadcast.broadcastMessage(node, message);
-				}
+				this.uponOperationExecuted(node, message);
 
 				if (message.getOriginNode().getID() == node.getID()) {
 					EDSimulator.add(0, event, node, ApplicationProtocol.applicationPid);
 				}
 
-				processQueue(node, pid);
+				this.processQueue(node, pid);
 			}
 		} else {
-			this.messageQueue.add(message);
+			this.operationQueue.add(message);
+			this.propagateMessage(node, message);
 		}
 	}
 
 	@Override
 	public void processQueue(Node node, int pid) {
-		for (Message message : messageQueue) {
+		for (var message : operationQueue) {
 			if (verifyCausality(node, message)) {
-				this.messageQueue.remove(message);
-				executeOperation(node, message, pid);
+				this.operationQueue.remove(message);
+				this.executeOperation(node, message, pid);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ public abstract class CausalityProtocol implements Causality {
 	@Override
 	public void executeOperation(Node node, Message message, int pid) {
 		long expectedArrivalTime;
-		uponMessageExecuting(node, message);
+		this.uponOperationExecuting(node, message);
 
 		if (message.getMessageType() == Message.MessageType.READ) {
 			expectedArrivalTime = readTime;
@@ -137,10 +137,18 @@ public abstract class CausalityProtocol implements Causality {
 	public abstract boolean verifyCausality(Node node, Message message);
 
 	@Override
-	public abstract void uponMessageExecuted(Node node, Message message);
+	public abstract void uponOperationExecuted(Node node, Message message);
 
 	@Override
-	public abstract void uponMessageExecuting(Node node, Message message);
+	public abstract void uponOperationExecuting(Node node, Message message);
+
+	private void propagateMessage(Node node, Message message) {
+		// TODO: In C3 the messages are propagated before being executed in the local DC
+		if (message.getMessageType() == Message.MessageType.WRITE) {
+			var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.broadcastPid);
+			broadcast.broadcastMessage(node, message);
+		}
+	}
 
 
 }
