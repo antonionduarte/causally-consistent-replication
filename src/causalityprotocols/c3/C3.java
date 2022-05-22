@@ -1,9 +1,7 @@
-package causality_protocols.c3;
+package causalityprotocols.c3;
 
 import peersim.core.Node;
 import simulator.protocols.CausalityProtocol;
-import simulator.protocols.broadcast.Broadcast;
-import simulator.protocols.broadcast.BroadcastProtocol;
 import simulator.protocols.messages.Message;
 
 import java.util.HashMap;

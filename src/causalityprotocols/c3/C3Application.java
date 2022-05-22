@@ -1,4 +1,4 @@
-package causality_protocols.c3;
+package causalityprotocols.c3;
 
 import peersim.core.Node;
 import simulator.protocols.application.ApplicationProtocol;
@@ -17,11 +17,11 @@ public class C3Application extends ApplicationProtocol {
 
 	@Override
 	public void changeInitialMessage(Node node, ProtocolMessage message) {
-
+		// do nothing
 	}
 
 	@Override
 	public void changeResponseMessage(Node node, ProtocolMessage message) {
-
+		// do nothing
 	}
 }

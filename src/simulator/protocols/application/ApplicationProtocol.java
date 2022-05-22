@@ -38,17 +38,16 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	private static final String WEIGHT_WRITES_CONFIG = "weight_writes";
 	private static final String WEIGHT_READS_CONFIG = "weight_reads";
 
-	public static int applicationPid;
+	public static String applicationPrefix;
 
 	// Statistic Collection - Probably will be queried in a control that runs periodically
 	private List<Long> messageLatencies;
 
 	public ApplicationProtocol(String prefix) {
+		applicationPrefix = prefix;
 		this.numberClients = Configuration.getInt(prefix + "." + NUMBER_CLIENTS_CONFIG);
 		this.weightWrites = Configuration.getInt(prefix + "." + WEIGHT_WRITES_CONFIG);
 		this.weightReads = Configuration.getInt(prefix + "." + WEIGHT_READS_CONFIG);
-
-		applicationPid = Configuration.getPid(prefix);
 	}
 
 	@Override
@@ -56,6 +55,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		try {
 			ApplicationProtocol clone = (ApplicationProtocol) super.clone();
 			clone.messageLatencies = new LinkedList<>();
+			System.out.println(applicationPrefix);
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		for (int i = 0; i < numberClients; i++) {
 			Message message = getRandomMessage(node);
 			this.changeInitialMessage(node, message.getProtocolMessage());
-			EDSimulator.add(0, message, node, CausalityProtocol.causalityPid);
+			EDSimulator.add(0, message, node, Configuration.getPid(CausalityProtocol.causalityPrefix));
 		}
 	}
 
@@ -94,7 +94,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
 		this.changeResponseMessage(node, toSend.getProtocolMessage());
-		EDSimulator.add(0, toSend, node, CausalityProtocol.causalityPid);
+		EDSimulator.add(0, toSend, node, Configuration.getPid(CausalityProtocol.causalityPrefix));
 	}
 
 	/**
@@ -128,7 +128,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 	/**
 	 * Implement this function in your Application class if you want the
-	 * Initial wrapped {@link simulator.protocols.messages.ProtocolMessage} to be different than null.
+	 * Initial wrapped {@link simulator.protocols.messages.ProtocolMessage} to be different from null.
 	 *
 	 * @param node The local node.
 	 * @param message The protocol specific message.

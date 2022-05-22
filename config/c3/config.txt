@@ -1,6 +1,6 @@
 # network size
 
-SIZE                    1000
+SIZE                    3
 
 # parameters of periodic execution
 
@@ -18,20 +18,17 @@ network.size            SIZE
 simulation.endtime      120000
 simulation.logtime      CYCLE
 
-include.protocol        application, broadcast, overlay, simulator
+include.protocol        application, broadcast, overlay, causality
 
 # -------------------------------------- #
 # ---- Application / Clients Config ---- #
 # -------------------------------------- #
 
-protocol.application    simulator.protocols.application.ApplicationProtocol
+protocol.application    causalityprotocols.c3.C3Application
 {
-    write_time      8          # the amount of time a write takes to execute
-    read_time       12           # the amount of time that a read takes to execute
-    number_clients  100         # the number of clients being simulated per node
-
-    weigh_reads     50          # the percentage/weight of reads being simulated
-    weight_writes   50          # the percentage/weight of writes being simulated
+    number_clients  10         # the number of clients being simulated per node
+    weight_reads    50         # the percentage/weight of reads being simulated
+    weight_writes   50         # the percentage/weight of writes being simulated
 }
 
 # -------------------------- #
@@ -39,6 +36,10 @@ protocol.application    simulator.protocols.application.ApplicationProtocol
 # -------------------------- #
 
 protocol.causality      causalityprotocols.c3.C3
+{
+    write_time      8          # the amount of time a write takes to execute
+    read_time       12         # the amount of time that a read takes to execute
+}
 
 # ------------------- #
 # ---- Transport ---- #
@@ -47,8 +48,17 @@ protocol.causality      causalityprotocols.c3.C3
 transport.trans         UniformRandomTransport
 {
     mindelay        50
-    maxdelay        50
+    maxdelay        100
 }
+
+# ---------------------------- #
+# ---- Topology / Overlay ---- #
+# ---------------------------- #
+
+protocol.overlay        simulator.protocols.overlay.alltoall.AllToAll         # replace path with desired overlay protocol
+
+# select the topology that you with to use and initialize it,
+# initialize the node inits as well
 
 # ------------------- #
 # ---- Broadcast ---- #
@@ -60,15 +70,6 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 }
 
 # select the broadcast protocol you wish to use, and initialize it
-
-# ---------------------------- #
-# ---- Topology / Overlay ---- #
-# ---------------------------- #
-
-protocol.overlay        simulator.protocols.overlay.alltoall.AllToAll         # replace path with desired overlay protocol
-
-# select the topology that you with to use and initialize it,
-# initialize the node inits as well
 
 # ---------------------- #
 # ---- Initializers ---- #

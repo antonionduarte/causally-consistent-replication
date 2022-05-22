@@ -1,5 +1,6 @@
 package simulator.observers;
 
+import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Control;
 import peersim.core.Network;
@@ -22,7 +23,7 @@ public class VisibilityObserver implements Control {
 
 		for (int i = 0; i < Network.size(); i++) {
 			var node = Network.get(i);
-			var protocol = (CausalityProtocol) node.getProtocol(CausalityProtocol.causalityPid);
+			var protocol = (CausalityProtocol) node.getProtocol(Configuration.getPid(CausalityProtocol.causalityPrefix));
 			var messageVisibilities = protocol.getVisibilityTimes();
 
 			for (var messageId : messageVisibilities.keySet()) {

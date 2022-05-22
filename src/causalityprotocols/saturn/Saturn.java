@@ -1,4 +1,4 @@
-package causality_protocols.saturn;
+package causalityprotocols.saturn;
 
 import peersim.core.Node;
 import simulator.protocols.CausalityProtocol;

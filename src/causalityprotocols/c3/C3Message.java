@@ -1,4 +1,4 @@
-package causality_protocols.c3;
+package causalityprotocols.c3;
 
 import simulator.protocols.messages.ProtocolMessage;
 

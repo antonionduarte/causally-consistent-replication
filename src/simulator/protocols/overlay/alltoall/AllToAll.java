@@ -15,17 +15,17 @@ public class AllToAll extends OverlayProtocol implements Linkable {
 
 	private List<Node> neighbors;
 
-	public static int allToAllPid;
+	public static String allToAllPrefix;
 
 	public AllToAll(String prefix) {
 		super(prefix);
-		allToAllPid = Configuration.getPid(prefix);
+		allToAllPrefix = prefix;
 	}
 
 	@Override
 	public Object clone() {
 		AllToAll clone = (AllToAll) super.clone();
-		clone.neighbors = new LinkedList<Node>();
+		clone.neighbors = new LinkedList<>();
 		return clone;
 	}
 

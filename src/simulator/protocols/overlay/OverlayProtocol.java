@@ -5,10 +5,10 @@ import peersim.core.Protocol;
 
 public abstract class OverlayProtocol implements Overlay, Protocol {
 
-	public static int overlayPid;
+	public static String overlayPrefix;
 
 	public OverlayProtocol(String prefix) {
-		overlayPid = Configuration.getPid(prefix);
+		overlayPrefix = prefix;
 	}
 
 	@Override

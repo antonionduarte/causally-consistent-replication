@@ -27,7 +27,10 @@ public abstract class CausalityProtocol implements Causality {
 	 */
 	private Queue<Message> operationQueue;
 
-	public static int causalityPid;
+	public static String causalityPrefix;
+
+	public static final String WRITE_TIME = "write_time";
+	public static final String READ_TIME = "read_time";
 
 	/**
 	 * Statistic collection structure - Visibility times.
@@ -43,10 +46,9 @@ public abstract class CausalityProtocol implements Causality {
 	 * The constructor for the protocol.
 	 */
 	public CausalityProtocol(String prefix) {
-		causalityPid = Configuration.getPid(prefix);
-
-		this.writeTime = Configuration.getInt("WRITE_TIME");
-		this.readTime = Configuration.getInt("READ_TIME");
+		causalityPrefix = prefix;
+		this.writeTime = Configuration.getInt(prefix + "." + WRITE_TIME);
+		this.readTime = Configuration.getInt(prefix + "." + READ_TIME);
 	}
 
 	@Override
@@ -84,7 +86,7 @@ public abstract class CausalityProtocol implements Causality {
 				this.uponOperationExecuted(node, message);
 
 				if (message.getOriginNode().getID() == node.getID()) {
-					EDSimulator.add(0, event, node, ApplicationProtocol.applicationPid);
+					EDSimulator.add(0, event, node, Configuration.getPid(ApplicationProtocol.applicationPrefix));
 				}
 
 				this.processQueue(node, pid);
@@ -145,7 +147,7 @@ public abstract class CausalityProtocol implements Causality {
 	private void propagateMessage(Node node, Message message) {
 		// TODO: In C3 the messages are propagated before being executed in the local DC
 		if (message.getMessageType() == Message.MessageType.WRITE) {
-			var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.broadcastPid);
+			var broadcast = (Broadcast) node.getProtocol(Configuration.getPid(BroadcastProtocol.broadcastPrefix));
 			broadcast.broadcastMessage(node, message);
 		}
 	}
