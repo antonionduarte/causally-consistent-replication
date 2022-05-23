@@ -11,10 +11,10 @@ import java.util.List;
 
 public abstract class BroadcastProtocol implements Broadcast {
 
-	public static String broadcastPrefix;
+	public static String protName;
 
 	public BroadcastProtocol(String prefix) {
-		broadcastPrefix = prefix;
+		protName = (prefix.split("\\."))[1];
 	}
 
 	@Override
@@ -29,13 +29,13 @@ public abstract class BroadcastProtocol implements Broadcast {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		Causality causalityLayer = (Causality) node.getProtocol(Configuration.getPid(CausalityProtocol.causalityPrefix));
-		causalityLayer.processEvent(node, Configuration.getPid(CausalityProtocol.causalityPrefix), event);
+		Causality causalityLayer = (Causality) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
+		causalityLayer.processEvent(node, Configuration.lookupPid(CausalityProtocol.protName), event);
 	}
 
 	@Override
 	public void broadcastMessage(Node node, Message message) {
-		List<Node> neighbors = ((OverlayProtocol) node.getProtocol(Configuration.getPid(OverlayProtocol.overlayPrefix)))
+		List<Node> neighbors = ((OverlayProtocol) node.getProtocol(Configuration.lookupPid(OverlayProtocol.protName)))
 				.getNeighbors();
 		uponBroadcast(node, message, neighbors);
 	}

@@ -27,7 +27,7 @@ public abstract class CausalityProtocol implements Causality {
 	 */
 	private Queue<Message> operationQueue;
 
-	public static String causalityPrefix;
+	public static String protName;
 
 	public static final String WRITE_TIME = "write_time";
 	public static final String READ_TIME = "read_time";
@@ -46,7 +46,7 @@ public abstract class CausalityProtocol implements Causality {
 	 * The constructor for the protocol.
 	 */
 	public CausalityProtocol(String prefix) {
-		causalityPrefix = prefix;
+		protName = (prefix.split("\\."))[1];
 		this.writeTime = Configuration.getInt(prefix + "." + WRITE_TIME);
 		this.readTime = Configuration.getInt(prefix + "." + READ_TIME);
 	}
@@ -76,7 +76,6 @@ public abstract class CausalityProtocol implements Causality {
 				message.togglePropagating();
 				this.executeOperation(node, message, pid);
 				this.propagateMessage(node, message);
-				this.processQueue(node, pid);
 			}
 			// Message was executing, and finished executing
 			else {
@@ -86,11 +85,10 @@ public abstract class CausalityProtocol implements Causality {
 				this.uponOperationExecuted(node, message);
 
 				if (message.getOriginNode().getID() == node.getID()) {
-					EDSimulator.add(0, event, node, Configuration.getPid(ApplicationProtocol.applicationPrefix));
+					EDSimulator.add(0, event, node, Configuration.lookupPid(ApplicationProtocol.protName));
 				}
-
-				this.processQueue(node, pid);
 			}
+			this.processQueue(node, pid);
 		} else {
 			this.operationQueue.add(message);
 			this.propagateMessage(node, message);
@@ -147,7 +145,7 @@ public abstract class CausalityProtocol implements Causality {
 	private void propagateMessage(Node node, Message message) {
 		// TODO: In C3 the messages are propagated before being executed in the local DC
 		if (message.getMessageType() == Message.MessageType.WRITE) {
-			var broadcast = (Broadcast) node.getProtocol(Configuration.getPid(BroadcastProtocol.broadcastPrefix));
+			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
 			broadcast.broadcastMessage(node, message);
 		}
 	}

@@ -22,7 +22,7 @@ public class LatencyObserver implements Control {
 	 */
 	private final Map<Long, List<Long>> latencyPerNode;
 
-	public LatencyObserver() {
+	public LatencyObserver(String prefix) {
 		this.latencyPerNode = new HashMap<>();
 	}
 
@@ -32,7 +32,7 @@ public class LatencyObserver implements Control {
 
 		for (int i = 0; i < Network.size(); i++) {
 			var node = Network.get(i);
-			var application = (ApplicationProtocol) node.getProtocol(Configuration.getPid(ApplicationProtocol.applicationPrefix));
+			var application = (ApplicationProtocol) node.getProtocol(Configuration.lookupPid(ApplicationProtocol.protName));
 			var nodeLatencies = application.getMessageLatencies();
 			latencyPerNode.put(node.getID(), nodeLatencies);
 		}

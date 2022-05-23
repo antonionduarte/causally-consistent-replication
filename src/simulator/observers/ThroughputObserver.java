@@ -5,10 +5,8 @@ import peersim.core.CommonState;
 import peersim.core.Control;
 import peersim.core.Network;
 import simulator.protocols.CausalityProtocol;
-import simulator.protocols.application.ApplicationProtocol;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ThroughputObserver implements Control {
@@ -17,7 +15,7 @@ public class ThroughputObserver implements Control {
 	 */
 	private final Map<Long, Long> throughputPerNode;
 
-	public ThroughputObserver() {
+	public ThroughputObserver(String prefix) {
 		this.throughputPerNode = new HashMap<>();
 	}
 
@@ -27,7 +25,7 @@ public class ThroughputObserver implements Control {
 
 		for (int i = 0; i < Network.size(); i++) {
 			var node = Network.get(i);
-			var protocol = (CausalityProtocol) node.getProtocol(Configuration.getPid(CausalityProtocol.causalityPrefix));
+			var protocol = (CausalityProtocol) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
 			var executedOperations = protocol.getExecutedOperations();
 			throughputPerNode.put(node.getID(), executedOperations);
 		}

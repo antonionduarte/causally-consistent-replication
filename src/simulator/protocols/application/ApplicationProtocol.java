@@ -38,13 +38,13 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	private static final String WEIGHT_WRITES_CONFIG = "weight_writes";
 	private static final String WEIGHT_READS_CONFIG = "weight_reads";
 
-	public static String applicationPrefix;
+	public static String protName;
 
 	// Statistic Collection - Probably will be queried in a control that runs periodically
 	private List<Long> messageLatencies;
 
 	public ApplicationProtocol(String prefix) {
-		applicationPrefix = prefix;
+		protName = (prefix.split("\\."))[1];
 		this.numberClients = Configuration.getInt(prefix + "." + NUMBER_CLIENTS_CONFIG);
 		this.weightWrites = Configuration.getInt(prefix + "." + WEIGHT_WRITES_CONFIG);
 		this.weightReads = Configuration.getInt(prefix + "." + WEIGHT_READS_CONFIG);
@@ -55,7 +55,6 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		try {
 			ApplicationProtocol clone = (ApplicationProtocol) super.clone();
 			clone.messageLatencies = new LinkedList<>();
-			System.out.println(applicationPrefix);
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -72,7 +71,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		for (int i = 0; i < numberClients; i++) {
 			Message message = getRandomMessage(node);
 			this.changeInitialMessage(node, message.getProtocolMessage());
-			EDSimulator.add(0, message, node, Configuration.getPid(CausalityProtocol.causalityPrefix));
+			EDSimulator.add(0, message, node, Configuration.lookupPid(CausalityProtocol.protName));
 		}
 	}
 
@@ -94,7 +93,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
 		this.changeResponseMessage(node, toSend.getProtocolMessage());
-		EDSimulator.add(0, toSend, node, Configuration.getPid(CausalityProtocol.causalityPrefix));
+		EDSimulator.add(0, toSend, node, Configuration.lookupPid(CausalityProtocol.protName));
 	}
 
 	/**

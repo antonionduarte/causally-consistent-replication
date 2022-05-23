@@ -23,8 +23,8 @@ public class ClickBroadcast extends BroadcastProtocol {
 	@Override
 	public void uponBroadcast(Node node, Message message, List<Node> neighbors) {
 		for (Node neighbour : neighbors) {
-			((Transport) node.getProtocol(FastConfig.getTransport(Configuration.getPid(BroadcastProtocol.broadcastPrefix))))
-					.send(node, neighbour, message, Configuration.getPid(BroadcastProtocol.broadcastPrefix));
+			((Transport) node.getProtocol(FastConfig.getTransport(Configuration.lookupPid(BroadcastProtocol.protName))))
+					.send(node, neighbour, message, Configuration.lookupPid(BroadcastProtocol.protName));
 		}
 	}
 }

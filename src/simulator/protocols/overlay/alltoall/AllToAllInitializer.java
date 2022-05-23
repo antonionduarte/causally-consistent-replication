@@ -18,7 +18,7 @@ public class AllToAllInitializer implements Control {
 	public boolean execute() {
 		for (int i = 0; i < Network.size(); i++) {
 			Node node = Network.get(i);
-			AllToAll overlay = (AllToAll) node.getProtocol(Configuration.getPid(OverlayProtocol.overlayPrefix));
+			AllToAll overlay = (AllToAll) node.getProtocol(Configuration.lookupPid(AllToAll.protName));
 
 			for (int j = 0; i < Network.size(); i++) {
 				if (j != i) overlay.addNeighbor(Network.get(j));

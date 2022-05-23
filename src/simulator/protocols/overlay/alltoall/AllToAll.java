@@ -15,11 +15,11 @@ public class AllToAll extends OverlayProtocol implements Linkable {
 
 	private List<Node> neighbors;
 
-	public static String allToAllPrefix;
+	public static String protName;
 
 	public AllToAll(String prefix) {
 		super(prefix);
-		allToAllPrefix = prefix;
+		protName = (prefix.split("\\."))[1];
 	}
 
 	@Override

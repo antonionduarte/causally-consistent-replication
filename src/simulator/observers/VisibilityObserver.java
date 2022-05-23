@@ -13,7 +13,7 @@ public class VisibilityObserver implements Control {
 
 	Map<String, List<Long>> visibilityTimes;
 
-	public VisibilityObserver() {
+	public VisibilityObserver(String prefix) {
 		this.visibilityTimes = new HashMap<>();
 	}
 
@@ -23,7 +23,7 @@ public class VisibilityObserver implements Control {
 
 		for (int i = 0; i < Network.size(); i++) {
 			var node = Network.get(i);
-			var protocol = (CausalityProtocol) node.getProtocol(Configuration.getPid(CausalityProtocol.causalityPrefix));
+			var protocol = (CausalityProtocol) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
 			var messageVisibilities = protocol.getVisibilityTimes();
 
 			for (var messageId : messageVisibilities.keySet()) {
