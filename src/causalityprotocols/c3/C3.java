@@ -41,7 +41,7 @@ public class C3 extends CausalityProtocol {
 		clone.executingClock = new HashMap<>();
 		clone.aheadExecutedOps = new HashMap<>();
 		clone.writeCounter = -1;
-		return super.clone();
+		return clone;
 	}
 
 	@Override
@@ -51,7 +51,9 @@ public class C3 extends CausalityProtocol {
 		// means it came from local DS
 		if (wrappedMessage == null) {
 			this.writeCounter++;
-			message.setProtocolMessage(new C3Message(new HashMap<>(executingClock), writeCounter));
+			message.setProtocolMessage(new C3Message(new HashMap<>(), writeCounter));
+			C3Message wrapped = (C3Message) message.getProtocolMessage();
+			wrapped.getLblDeps().putAll(executingClock);
 			return false;
 		}
 
