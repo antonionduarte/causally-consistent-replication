@@ -14,17 +14,12 @@ import java.util.Map;
 /**
  * Runs in the end of the simulation,
  * retrieves the Client perceived Latency statistics.
+ *
+ * TODO: Fix latency observations
  */
 public class LatencyObserver implements Control {
 
-	/**
-	 * Map nodeID -> List of latency observations.
-	 */
-	private final Map<Long, List<Long>> latencyPerNode;
-
-	public LatencyObserver(String prefix) {
-		this.latencyPerNode = new HashMap<>();
-	}
+	public LatencyObserver(String prefix) {}
 
 	@Override
 	public boolean execute() {
@@ -34,26 +29,15 @@ public class LatencyObserver implements Control {
 			var node = Network.get(i);
 			var application = (ApplicationProtocol) node.getProtocol(Configuration.lookupPid(ApplicationProtocol.protName));
 			var nodeLatencies = application.getMessageLatencies();
-			latencyPerNode.put(node.getID(), nodeLatencies);
-		}
+			System.out.print("perceived-latency-node-" + i + ": ");
 
-		writeToFile();
-		return false;
-	}
-
-	/**
-	 * Writes the collected statistics in latencyPerNode to a file.
-	 */
-	private void writeToFile() {
-		for (long nodeId : latencyPerNode.keySet()) {
-			var latencies = latencyPerNode.get(nodeId);
-			System.out.print("Node: " + nodeId);
-			var toPrint = new StringBuilder(nodeId + ",");
-			for (long latency : latencies) {
-				toPrint.append(latency).append(",");
+			for (var latency : nodeLatencies) {
+				System.out.print(latency + ",");
 			}
-			System.out.print(toPrint);
+
 			System.out.println();
 		}
+
+		return false;
 	}
 }

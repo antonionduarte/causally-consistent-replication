@@ -1,6 +1,6 @@
 # network size
 
-SIZE                    3
+SIZE                    300
 
 # parameters of periodic execution
 
@@ -16,7 +16,6 @@ random.seed             1234567890
 network.size            SIZE
 
 simulation.endtime      120000
-simulation.logtime      CYCLE
 
 # ------------------- #
 # ---- Transport ---- #
@@ -85,6 +84,9 @@ init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 # ----- Controls and Observers ----- #
 # ---------------------------------- #
 
-# control.currentTime     simulator.observers.CurrentTime
-# control.currentTime.step        CYCLE
+include.control          currentTime
 
+control.currentTime  simulator.observers.CurrentTime
+{
+    step    2000
+}

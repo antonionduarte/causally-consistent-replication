@@ -110,9 +110,9 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		String messageId = node.getID() + "_" + idCounter++;
 
 		if (random <= weightReads) {
-			messageType = Message.MessageType.READ;
-		} else {
 			messageType = Message.MessageType.WRITE;
+		} else {
+			messageType = Message.MessageType.READ;
 		}
 
 		return new MessageWrapper(messageType, null, node, CommonState.getTime(), messageId);
@@ -122,7 +122,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * @return The list of Client perceived latencies for the node.
 	 */
 	public List<Long> getMessageLatencies() {
-		return messageLatencies;
+		return this.messageLatencies;
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package simulator.protocols.overlay;
 
-import peersim.config.Configuration;
 import peersim.core.Protocol;
 
 public abstract class OverlayProtocol implements Overlay, Protocol {
