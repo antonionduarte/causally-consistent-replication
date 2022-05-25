@@ -73,9 +73,9 @@ public class C3 extends CausalityProtocol {
 	@Override
 	public void uponOperationExecuted(Node node, Message message) {
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
-
+		var executedState = executedClock.get(message.getOriginNode().getID());
 		// previous writes are still executing
-		if (executedClock.get(message.getOriginNode().getID()) + 1 != c3Message.getLblId()) {
+		if (executedState != null && (executedState + 1 != c3Message.getLblId())) {
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
 				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
 			}
@@ -101,7 +101,8 @@ public class C3 extends CausalityProtocol {
 	public void uponOperationExecuting(Node node, Message message) {
 		// if the message is from a local client/datastore, do nothing
 		var currentClock = this.executingClock.get(message.getOriginNode().getID());
-		this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
+		if (currentClock == null) this.executingClock.put(message.getOriginNode().getID(), 0L);
+		else this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
 	}
 
 	/**

@@ -8,6 +8,10 @@ import peersim.core.Control;
  */
 public class CurrentTime implements Control {
 
+	public CurrentTime(String prefix) {
+
+	}
+
 	@Override
 	public boolean execute() {
 		System.err.println("Current simulated time: " + CommonState.getTime());

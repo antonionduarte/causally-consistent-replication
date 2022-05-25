@@ -18,15 +18,16 @@ network.size            SIZE
 simulation.endtime      120000
 simulation.logtime      CYCLE
 
-include.protocol        urt, application, broadcast, overlay, causality
-
 # ------------------- #
 # ---- Transport ---- #
 # ------------------- #
 
 protocol.urt            peersim.transport.UniformRandomTransport
-protocol.urt.mindelay   50
-protocol.urt.maxdelay   100
+{
+    mindelay   50
+    maxdelay   100
+}
+
 
 # -------------------------------------- #
 # ---- Application / Clients Config ---- #
@@ -73,8 +74,6 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 # ---- Initializers ---- #
 # ---------------------- #
 
-include.init            applicationInit, overlayInit
-
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
 {
     protocol            application
@@ -86,4 +85,6 @@ init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 # ----- Controls and Observers ----- #
 # ---------------------------------- #
 
+# control.currentTime     simulator.observers.CurrentTime
+# control.currentTime.step        CYCLE
 
