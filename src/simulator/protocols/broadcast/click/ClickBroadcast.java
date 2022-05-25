@@ -11,8 +11,13 @@ import java.util.List;
 
 public class ClickBroadcast extends BroadcastProtocol {
 
+	private static final String PAR_TRANSPORT = "transport";
+
+	private final int transportId;
+
 	public ClickBroadcast(String prefix) {
 		super(prefix);
+		transportId = Configuration.getPid(prefix + "." + PAR_TRANSPORT);
 	}
 
 	@Override
@@ -24,7 +29,7 @@ public class ClickBroadcast extends BroadcastProtocol {
 	public void uponBroadcast(Node node, Message message, List<Node> neighbors) {
 		int pid = Configuration.lookupPid(BroadcastProtocol.protName);
 		for (Node neighbour : neighbors) {
-			((Transport) node.getProtocol(FastConfig.getTransport(pid)))
+			((Transport) node.getProtocol(transportId))
 					.send(node, neighbour, message, pid);
 		}
 	}

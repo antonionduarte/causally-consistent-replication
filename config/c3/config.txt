@@ -18,7 +18,15 @@ network.size            SIZE
 simulation.endtime      120000
 simulation.logtime      CYCLE
 
-include.protocol        application, broadcast, overlay, causality
+include.protocol        urt, application, broadcast, overlay, causality
+
+# ------------------- #
+# ---- Transport ---- #
+# ------------------- #
+
+protocol.urt            peersim.transport.UniformRandomTransport
+protocol.urt.mindelay   50
+protocol.urt.maxdelay   100
 
 # -------------------------------------- #
 # ---- Application / Clients Config ---- #
@@ -60,16 +68,6 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 }
 
 # select the broadcast protocol you wish to use, and initialize it
-
-# ------------------- #
-# ---- Transport ---- #
-# ------------------- #
-
-protocol.urt            UniformRandomTransport
-{
-    mindelay        50
-    maxdelay        100
-}
 
 # ---------------------- #
 # ---- Initializers ---- #
