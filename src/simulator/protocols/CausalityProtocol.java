@@ -9,10 +9,8 @@ import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDSimulator;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.sql.Array;
+import java.util.*;
 
 public abstract class CausalityProtocol implements Causality {
 
@@ -97,12 +95,14 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processQueue(Node node, int pid) {
-		for (var message : operationQueue) {
+		var verifiedMessages = new ArrayList<>();
+		for (Message message : operationQueue) {
 			if (verifyCausality(node, message)) {
-				this.operationQueue.remove(message);
+				verifiedMessages.add(message);
 				this.executeOperation(node, message, pid);
 			}
 		}
+		operationQueue.removeAll(verifiedMessages);
 	}
 
 	@Override

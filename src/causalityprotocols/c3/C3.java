@@ -4,10 +4,7 @@ import peersim.core.Node;
 import simulator.protocols.CausalityProtocol;
 import simulator.protocols.messages.Message;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class C3 extends CausalityProtocol {
 
@@ -112,12 +109,14 @@ public class C3 extends CausalityProtocol {
 	 * @param toCheck The list of subsequent operations to check.
 	 */
 	private void checkAheadOps(Node originNode, List<Long> toCheck) {
+		var toRemove = new ArrayList<Long>();
 		for (var lblId : toCheck) {
 			var nodeClock = this.executedClock.get(originNode.getID());
 			if (nodeClock + 1 == lblId) {
 				this.executedClock.put(originNode.getID(), lblId);
-				toCheck.remove(lblId);
+				toRemove.add(lblId);
 			}
 		}
+		toCheck.removeAll(toRemove);
 	}
 }
