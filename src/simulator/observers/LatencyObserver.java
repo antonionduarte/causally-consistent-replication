@@ -1,15 +1,10 @@
 package simulator.observers;
 
 import peersim.config.Configuration;
-import peersim.core.Control;
 import peersim.core.CommonState;
+import peersim.core.Control;
 import peersim.core.Network;
-import peersim.core.Node;
 import simulator.protocols.application.ApplicationProtocol;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Runs in the end of the simulation,

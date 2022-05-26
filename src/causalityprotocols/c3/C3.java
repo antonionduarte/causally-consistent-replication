@@ -1,9 +1,11 @@
 package causalityprotocols.c3;
 
+import peersim.core.CommonState;
 import peersim.core.Node;
 import simulator.protocols.CausalityProtocol;
 import simulator.protocols.messages.Message;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class C3 extends CausalityProtocol {
@@ -43,6 +45,8 @@ public class C3 extends CausalityProtocol {
 
 	@Override
 	public boolean verifyCausality(Node node, Message message) {
+		// System.out.println("DEBUG - Verifying - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+
 		C3Message wrappedMessage = (C3Message) message.getProtocolMessage();
 
 		// means it came from local DS
@@ -73,10 +77,12 @@ public class C3 extends CausalityProtocol {
 		var executedState = executedClock.get(message.getOriginNode().getID());
 		// previous writes are still executing
 		if (executedState != null && (executedState + 1 != c3Message.getLblId())) {
+			System.out.println("TEST 1");
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
 				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
 			}
 			else {
+				System.out.println("TEST 2");
 				List<Long> nodeAheadExecutedOps = new LinkedList<>();
 				nodeAheadExecutedOps.add(c3Message.getLblId());
 				aheadExecutedOps.put(message.getOriginNode().getID(), nodeAheadExecutedOps);
@@ -84,7 +90,9 @@ public class C3 extends CausalityProtocol {
 		}
 		else {
 			executedClock.put(message.getOriginNode().getID(), c3Message.getLblId());
+			System.out.println("TEST 3");
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
+				System.out.println("TEST 4");
 				this.checkAheadOps(
 						message.getOriginNode(),
 						aheadExecutedOps.get(message.getOriginNode().getID())
@@ -92,6 +100,10 @@ public class C3 extends CausalityProtocol {
 			}
 		}
 
+		System.out.println("DEBUG - Executed - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+		System.out.println("Executed Clock - " + this.executedClock);
+		System.out.println("Executing Clock - " + this.executingClock);
+		System.out.println();
 	}
 
 	@Override
@@ -100,6 +112,11 @@ public class C3 extends CausalityProtocol {
 		var currentClock = this.executingClock.get(message.getOriginNode().getID());
 		if (currentClock == null) this.executingClock.put(message.getOriginNode().getID(), 0L);
 		else this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
+
+		System.out.println("DEBUG - Executing - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+		System.out.println("Executed Clock - " + this.executedClock);
+		System.out.println("Executing Clock - " + this.executingClock);
+		System.out.println();
 	}
 
 	/**z

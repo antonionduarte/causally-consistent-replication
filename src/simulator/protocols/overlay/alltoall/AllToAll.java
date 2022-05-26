@@ -1,11 +1,11 @@
 package simulator.protocols.overlay.alltoall;
 
+import peersim.core.CommonState;
 import simulator.protocols.overlay.OverlayProtocol;
-import peersim.config.Configuration;
 import peersim.core.Linkable;
 import peersim.core.Node;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public class AllToAll extends OverlayProtocol implements Linkable {
 	@Override
 	public Object clone() {
 		AllToAll clone = (AllToAll) super.clone();
-		clone.neighbors = new LinkedList<>();
+		clone.neighbors = new ArrayList<>();
 		return clone;
 	}
 
@@ -46,14 +46,19 @@ public class AllToAll extends OverlayProtocol implements Linkable {
 
 	@Override
 	public boolean addNeighbor(Node neighbour) {
-		if (neighbors.contains(neighbour)) return false;
-		this.neighbors.add(neighbour);
-		return true;
+		if (!this.neighbors.contains(neighbour)) {
+			this.neighbors.add(neighbour);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public boolean contains(Node neighbor) {
-		return this.neighbors.contains(neighbor);
+		for (Node node : neighbors) {
+			if (node.getID() == neighbor.getID()) return true;
+		}
+		return false;
 	}
 
 	@Override

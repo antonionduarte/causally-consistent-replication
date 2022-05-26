@@ -6,10 +6,6 @@ import peersim.core.Control;
 import peersim.core.Network;
 import simulator.protocols.CausalityProtocol;
 
-import java.sql.SQLOutput;
-import java.util.HashMap;
-import java.util.Map;
-
 public class ThroughputObserver implements Control {
 
 	public ThroughputObserver(String prefix) {}

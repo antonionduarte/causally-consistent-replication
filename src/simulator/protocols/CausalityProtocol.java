@@ -78,7 +78,6 @@ public abstract class CausalityProtocol implements Causality {
 			// Message was executing, and finished executing
 			else {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
-				System.out.println("DEBUG:" + CommonState.getNode().getID());
 				this.executedOperations++;
 
 				this.uponOperationExecuted(node, message);
@@ -144,9 +143,13 @@ public abstract class CausalityProtocol implements Causality {
 	public abstract void uponOperationExecuting(Node node, Message message);
 
 	private void propagateMessage(Node node, Message message) {
+		System.out.println("DEBUG - Propagating - " + message.getMessageId());
+		System.out.println();
+
 		// TODO: In C3 the messages are propagated before being executed in the local DC
 		if (message.getMessageType() == Message.MessageType.WRITE) {
 			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
+			message.togglePropagating();
 			broadcast.broadcastMessage(node, message);
 		}
 	}

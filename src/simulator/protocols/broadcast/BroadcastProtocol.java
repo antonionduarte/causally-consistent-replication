@@ -30,7 +30,6 @@ public abstract class BroadcastProtocol implements Broadcast {
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		Causality causalityLayer = (Causality) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
-		// TODO: Colocar aqui a verificação de se vem pelo próprio nó.
 		causalityLayer.processEvent(node, Configuration.lookupPid(CausalityProtocol.protName), event);
 	}
 

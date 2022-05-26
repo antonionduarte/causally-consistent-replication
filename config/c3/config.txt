@@ -1,6 +1,6 @@
 # network size
 
-SIZE                    10000
+SIZE                    3
 
 # parameters of periodic execution
 
@@ -12,10 +12,10 @@ EVENT_PROCESSING_TIME   1
 # ---- Simulation Parameters ---- #
 # ------------------------------- #
 
-random.seed             1234567890
+random.seed             1
 network.size            SIZE
 
-simulation.endtime      120000
+simulation.endtime      1000
 
 # ------------------- #
 # ---- Transport ---- #
@@ -24,7 +24,7 @@ simulation.endtime      120000
 protocol.urt            peersim.transport.UniformRandomTransport
 {
     mindelay   50
-    maxdelay   100
+    maxdelay   150
 }
 
 
@@ -34,7 +34,7 @@ protocol.urt            peersim.transport.UniformRandomTransport
 
 protocol.application    causalityprotocols.c3.C3Application
 {
-    number_clients  10         # the number of clients being simulated per node
+    number_clients  1         # the number of clients being simulated per node
     weight_reads    50         # the percentage/weight of reads being simulated
     weight_writes   50         # the percentage/weight of writes being simulated
 }
@@ -84,9 +84,14 @@ init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 # ----- Controls and Observers ----- #
 # ---------------------------------- #
 
-include.control          currentTime
+include.control         latencyObserver, throughputObserver
 
-control.currentTime  simulator.observers.CurrentTime
+control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    2000
+    step    999
+}
+
+control.throughputObserver  simulator.observers.ThroughputObserver
+{
+    step    999
 }
