@@ -6,18 +6,13 @@ import peersim.core.Control;
 import peersim.core.Network;
 import simulator.protocols.CausalityProtocol;
 
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ThroughputObserver implements Control {
-	/**
-	 * Map nodeID -> Throughput.
-	 */
-	private final Map<Long, Long> throughputPerNode;
 
-	public ThroughputObserver(String prefix) {
-		this.throughputPerNode = new HashMap<>();
-	}
+	public ThroughputObserver(String prefix) {}
 
 	@Override
 	public boolean execute() {
@@ -27,22 +22,10 @@ public class ThroughputObserver implements Control {
 			var node = Network.get(i);
 			var protocol = (CausalityProtocol) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
 			var executedOperations = protocol.getExecutedOperations();
-			throughputPerNode.put(node.getID(), executedOperations);
+			System.out.println("throughput-node-" + i + ": " + executedOperations);
 		}
 
-		writeToFile();
+		System.out.println();
 		return false;
-	}
-
-	/**
-	 * Writes the collected statistics in latencyPerNode to a file.
-	 */
-	private void writeToFile() {
-		for (long nodeId : throughputPerNode.keySet()) {
-			var totalOps = throughputPerNode.get(nodeId);
-			System.out.print("Node: " + nodeId);
-			System.out.println("," + totalOps);
-			System.out.println();
-		}
 	}
 }

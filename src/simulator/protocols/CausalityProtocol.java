@@ -78,6 +78,7 @@ public abstract class CausalityProtocol implements Causality {
 			// Message was executing, and finished executing
 			else {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
+				System.out.println("DEBUG:" + CommonState.getNode().getID());
 				this.executedOperations++;
 
 				this.uponOperationExecuted(node, message);
@@ -95,7 +96,7 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processQueue(Node node, int pid) {
-		var verifiedMessages = new ArrayList<>();
+		var verifiedMessages = new ArrayList<Message>();
 		for (Message message : operationQueue) {
 			if (verifyCausality(node, message)) {
 				verifiedMessages.add(message);
