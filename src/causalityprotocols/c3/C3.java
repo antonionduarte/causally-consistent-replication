@@ -102,7 +102,7 @@ public class C3 extends CausalityProtocol {
 		else this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
 	}
 
-	/**
+	/**z
 	 * Check if subsequent operations already completed.
 	 *
 	 * @param originNode The originNode.

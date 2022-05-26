@@ -1,6 +1,6 @@
 # network size
 
-SIZE                    3
+SIZE                    10000
 
 # parameters of periodic execution
 

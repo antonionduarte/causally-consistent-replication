@@ -203,7 +203,7 @@ public class Heap implements PriorityQueue {
 
 		boolean stop = false;
 
-		while (!stop) {
+		while (!stop && node != null) {
 			stop = true;
 			long timeBegin = time << pbits;
 			long timeEnds = time;
