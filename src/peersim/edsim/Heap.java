@@ -226,6 +226,7 @@ public class Heap implements PriorityQueue {
 	 * @return first event or null if size is zero
 	 */
 	public Event removeFirst() {
+
 		if (size == 0) return null;
 
 		ev.time = times[0] >> pbits;
@@ -281,26 +282,26 @@ public class Heap implements PriorityQueue {
 		// Their associated time
 		long lt, rt;
 		// The minimum time between val, lt, rt
-		long mintime;
-		// The index of the mininum time
-		int minindex = index;
+		long minTime;
+		// The index of the minimum time
+		int minIndex = index;
 		do {
-			index = minindex;
-			mintime = time;
+			index = minIndex;
+			minTime = time;
 			l = index << 1;
 			r = l + 1;
-			if (l <= size && (lt = getTime(l)) < mintime) {
-				minindex = l;
-				mintime = lt;
+			if (l <= size && (lt = getTime(l)) < minTime) {
+				minIndex = l;
+				minTime = lt;
 			}
-			if (r <= size && (rt = getTime(r)) < mintime) {
-				minindex = r;
-				mintime = rt;
+			if (r <= size && (rt = getTime(r)) < minTime) {
+				minIndex = r;
+				minTime = rt;
 			}
-			if (minindex != index) {
-				swap(minindex, index);
+			if (minIndex != index) {
+				swap(minIndex, index);
 			}
-		} while (minindex != index);
+		} while (minIndex != index);
 	}
 
 	//--------------------------------------------------------------------------
@@ -346,7 +347,6 @@ public class Heap implements PriorityQueue {
 	 *
 	 */
 	private void put(int index, long time, Object event, Node node, byte pid) {
-
 		index--;
 		if (index >= events.length) {
 			doubleCapacity();
@@ -363,19 +363,19 @@ public class Heap implements PriorityQueue {
 	 *
 	 */
 	private void doubleCapacity() {
-		int oldsize = events.length;
-		int newsize = oldsize * 2;
-		Object[] te = new Object[newsize];
-		System.arraycopy(events, 0, te, 0, oldsize);
+		int oldSize = events.length;
+		int newSize = oldSize * 2;
+		Object[] te = new Object[newSize];
+		System.arraycopy(events, 0, te, 0, oldSize);
 		events = te;
-		long[] tt = new long[newsize];
-		System.arraycopy(times, 0, tt, 0, oldsize);
+		long[] tt = new long[newSize];
+		System.arraycopy(times, 0, tt, 0, oldSize);
 		times = tt;
-		Node[] tn = new Node[newsize];
-		System.arraycopy(nodes, 0, tn, 0, oldsize);
+		Node[] tn = new Node[newSize];
+		System.arraycopy(nodes, 0, tn, 0, oldSize);
 		nodes = tn;
-		byte[] tp = new byte[newsize];
-		System.arraycopy(pids, 0, tp, 0, oldsize);
+		byte[] tp = new byte[newSize];
+		System.arraycopy(pids, 0, tp, 0, oldSize);
 		pids = tp;
 	}
 
