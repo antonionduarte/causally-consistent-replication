@@ -95,6 +95,9 @@ public abstract class CausalityProtocol implements Causality {
 				;
 				*/
 				if (!executedMessages.contains(message.getMessageId())) {
+					if (message.getMessageId().equals("0_1")) {
+						System.out.println("TEST TEST TEST - 1");
+					}
 					this.operationQueue.add(message);
 				}
 			}
@@ -122,6 +125,11 @@ public abstract class CausalityProtocol implements Causality {
 			if (verifyCausality(node, message)) {
 				verifiedMessages.add(message);
 				this.executeOperation(node, message, pid);
+			}
+		}
+		for (var message : verifiedMessages) {
+			if (message.getMessageId().equals("0_1")) {
+				System.out.println("TEST TEST TEST - 2");
 			}
 		}
 		operationQueue.removeAll(verifiedMessages);

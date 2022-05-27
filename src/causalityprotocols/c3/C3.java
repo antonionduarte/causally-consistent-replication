@@ -63,13 +63,10 @@ public class C3 extends CausalityProtocol {
 		for (long nodeId : messageDeps.keySet()) {
 			if (executedClock.containsKey(nodeId)) {
 				if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
-					System.out.println("DOESN'T VERIFY CAUSALITY");
 					return false;
 				}
 			}
 		}
-
-		System.out.println("VERIFIES CAUSALITY");
 
 		return true;
 	}
