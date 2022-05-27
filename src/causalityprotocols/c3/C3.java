@@ -63,16 +63,19 @@ public class C3 extends CausalityProtocol {
 		for (long nodeId : messageDeps.keySet()) {
 			if (executedClock.containsKey(nodeId)) {
 				if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
+					System.out.println("DOESN'T VERIFY CAUSALITY");
 					return false;
 				}
 			}
 		}
 
+		System.out.println("VERIFIES CAUSALITY");
+
 		return true;
 	}
 
 	@Override
-	public void uponOperationExecuted(Node node, Message message) {
+	public void uponOperationFinishedExecution(Node node, Message message) {
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
 		var executedState = executedClock.get(message.getOriginNode().getID());
 		// previous writes are still executing
@@ -100,20 +103,21 @@ public class C3 extends CausalityProtocol {
 			}
 		}
 
-		System.out.println("DEBUG - Executed - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+		System.out.println("DEBUG - " + CommonState.getTime() + " Executed - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
 		System.out.println("Executed Clock - " + this.executedClock);
 		System.out.println("Executing Clock - " + this.executingClock);
 		System.out.println();
 	}
 
 	@Override
-	public void uponOperationExecuting(Node node, Message message) {
+	public void uponOperationExecuted(Node node, Message message) {
 		// if the message is from a local client/datastore, do nothing
+		var time = CommonState.getTime();
 		var currentClock = this.executingClock.get(message.getOriginNode().getID());
 		if (currentClock == null) this.executingClock.put(message.getOriginNode().getID(), 0L);
 		else this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
 
-		System.out.println("DEBUG - Executing - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+		System.out.println("DEBUG - " + CommonState.getTime() + " Executing - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
 		System.out.println("Executed Clock - " + this.executedClock);
 		System.out.println("Executing Clock - " + this.executingClock);
 		System.out.println();

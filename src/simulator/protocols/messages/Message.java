@@ -8,7 +8,6 @@ public interface Message {
 	enum MessageType {
 		WRITE,
 		READ;
-
 	}
 
 
@@ -33,6 +32,12 @@ public interface Message {
 	 * Toggles if the message is propagating or not (not being executing)
 	 */
 	void togglePropagating();
+
+	/**
+	 * Changes the state of the setPropagating.
+	 * @param state The new state of isPropagating (true or false).
+	 */
+	void setPropagating(boolean state);
 
 	/**
 	 * Messages in the system are either Write messages or Read messages.

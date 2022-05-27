@@ -1,6 +1,7 @@
 package simulator.protocols.broadcast.click;
 
 import peersim.config.Configuration;
+import peersim.core.CommonState;
 import simulator.protocols.broadcast.BroadcastProtocol;
 import simulator.protocols.messages.Message;
 import peersim.config.FastConfig;
@@ -27,10 +28,24 @@ public class ClickBroadcast extends BroadcastProtocol {
 
 	@Override
 	public void uponBroadcast(Node node, Message message, List<Node> neighbors) {
-		int pid = Configuration.lookupPid(BroadcastProtocol.protName);
-		for (Node neighbour : neighbors) {
-			((Transport) node.getProtocol(transportId))
-					.send(node, neighbour, message, pid);
+		if (message.getOriginNode().getID() == node.getID()) {
+			System.out.print(
+					"DEBUG - Propagating - " + message.getMessageId()
+					+ " - " + CommonState.getNode().getID() + " - "
+			);
+
+			int pid = Configuration.lookupPid(BroadcastProtocol.protName);
+
+			System.out.print("[");
+			for (Node neighbour : neighbors) {
+				System.out.print(neighbour.getID() + ",");
+				((Transport) node.getProtocol(transportId))
+						.send(node, neighbour, message, pid);
+			}
+			System.out.print("]");
+
+			System.out.println();
+			System.out.println();
 		}
 	}
 }

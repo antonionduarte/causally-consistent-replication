@@ -30,7 +30,7 @@ public interface Causality extends EDProtocol {
 	 * @param message The message / message to process.
 	 * @param node The local node.
 	 */
-	void uponOperationExecuted(Node node, Message message);
+	void uponOperationFinishedExecution(Node node, Message message);
 
 	/**
 	 * If a protocol needs to change it's internal state when it places a message in execution.
@@ -38,7 +38,7 @@ public interface Causality extends EDProtocol {
 	 * @param message The message that was placed in execution.
 	 * @param node The local node.
 	 */
-	void uponOperationExecuting(Node node, Message message);
+	void uponOperationExecuted(Node node, Message message);
 
 	/**
 	 * Processes the operation Queue, checking if any operation that was in the Queue is now possible according to

@@ -15,7 +15,7 @@ EVENT_PROCESSING_TIME   1
 random.seed             1
 network.size            SIZE
 
-simulation.endtime      1000
+simulation.endtime      300
 
 # ------------------- #
 # ---- Transport ---- #
@@ -34,7 +34,7 @@ protocol.urt            peersim.transport.UniformRandomTransport
 
 protocol.application    causalityprotocols.c3.C3Application
 {
-    number_clients  1         # the number of clients being simulated per node
+    number_clients  3        # the number of clients being simulated per node
     weight_reads    50         # the percentage/weight of reads being simulated
     weight_writes   50         # the percentage/weight of writes being simulated
 }
@@ -88,10 +88,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    999
+    step    297
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    999
+    step    297
 }

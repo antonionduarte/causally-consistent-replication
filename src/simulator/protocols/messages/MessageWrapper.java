@@ -19,7 +19,7 @@ public class MessageWrapper implements Message {
 	public MessageWrapper(MessageType messageType, ProtocolMessage protocolMessage, Node node, long sendTime, String messageId) {
 		this.protocolMessage = protocolMessage;
 		this.messageType = messageType;
-		this.isPropagating = false;
+		this.isPropagating = true;
 		this.originNode = node;
 		this.sendTime = sendTime;
 		this.messageId = messageId;
@@ -38,6 +38,11 @@ public class MessageWrapper implements Message {
 	@Override
 	public Node getOriginNode() {
 		return this.originNode;
+	}
+
+	@Override
+	public void setPropagating(boolean propagating) {
+		isPropagating = propagating;
 	}
 
 	@Override

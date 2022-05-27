@@ -24,12 +24,12 @@ public class Saturn extends CausalityProtocol {
 	}
 
 	@Override
-	public void uponOperationExecuted(Node node, Message message) {
+	public void uponOperationFinishedExecution(Node node, Message message) {
 
 	}
 
 	@Override
-	public void uponOperationExecuting(Node node, Message message) {
+	public void uponOperationExecuted(Node node, Message message) {
 
 	}
 }
