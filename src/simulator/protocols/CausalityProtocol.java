@@ -70,17 +70,15 @@ public abstract class CausalityProtocol implements Causality {
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
-		var time = CommonState.getTime();
 
 		// Could throw NPE if not well verified within the protocol
 		if (message.isPropagating()) {
 			if (verifyCausality(node, message)) {
-				/*
 				System.out.println(
-						"DEBUG: Verifies causality - " + CommonState.getTime() + " - " + message.getMessageId() +
-						" - " + CommonState.getNode().getID())
+					"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
+					" - Node:" + CommonState.getNode().getID())
 				;
-				*/
+
 				// Message was propagating, and starts executing
 				if (message.isPropagating()) {
 					message.togglePropagating();
@@ -88,17 +86,16 @@ public abstract class CausalityProtocol implements Causality {
 				}
 				this.processQueue(node, pid);
 			} else {
-				/*
 				System.out.println(
-						"DEBUG: Doesn't verify causality - " + CommonState.getTime() + " - " + message.getMessageId() +
-						" - " + CommonState.getNode().getID())
+					"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
+					" - Node:" + CommonState.getNode().getID())
 				;
-				*/
+
 				if (!executedMessages.contains(message.getMessageId())) {
 					// TODO: Debug - Delete
-					if (message.getMessageId().equals("0_1")) {
-						System.out.println("TEST TEST TEST - 1");
-					}
+					//if (message.getMessageId().equals("0_1")) {
+					//	System.out.println("TEST TEST TEST - 1");
+					//}
 					this.operationQueue.add(message);
 				}
 			}
@@ -129,11 +126,11 @@ public abstract class CausalityProtocol implements Causality {
 			}
 		}
 		// TODO: Debug - Delete
-		for (var message : verifiedMessages) {
-			if (message.getMessageId().equals("0_1")) {
-				System.out.println("TEST TEST TEST - 2");
-			}
-		}
+		//for (var message : verifiedMessages) {
+		//	if (message.getMessageId().equals("0_1")) {
+		//		System.out.println("TEST TEST TEST - 2");
+		//	}
+		//}
 		operationQueue.removeAll(verifiedMessages);
 	}
 

@@ -55,6 +55,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		try {
 			ApplicationProtocol clone = (ApplicationProtocol) super.clone();
 			clone.messageLatencies = new LinkedList<>();
+			clone.idCounter = 0;
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -85,12 +86,15 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 */
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		System.out.println("DEBUG - Received by Application");
-
 		// Statistic collection
 		Message message = (Message) event;
 		long rtt = (CommonState.getTime() - message.getSendTime());
 		messageLatencies.add(rtt / 2);
+
+		System.out.println(
+				"DEBUG: Received by Application" + " - Time:" + CommonState.getTime() + " - " +
+				message.getMessageId() + " - Node:" + CommonState.getNode().getID()
+		);
 
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
@@ -106,12 +110,12 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 */
 	private Message getRandomMessage(Node node) {
 		long totalWeight = weightWrites + weightReads;
-		long random = CommonState.random.nextLong() % totalWeight;
+		long random = CommonState.random.nextLong(totalWeight);
 		Message.MessageType messageType;
 
 		String messageId = node.getID() + "_" + idCounter++;
 
-		if (random <= weightReads) {
+		if (random <= weightWrites) {
 			messageType = Message.MessageType.WRITE;
 		} else {
 			messageType = Message.MessageType.READ;

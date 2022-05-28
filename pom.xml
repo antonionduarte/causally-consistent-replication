@@ -27,7 +27,6 @@
         </repository>
     </distributionManagement>
 
-
     <build>
         <sourceDirectory>${basedir}/src</sourceDirectory>
         <plugins>
@@ -57,29 +56,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Attach javadocs jar
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <source>15</source>
-                    <forceCreation>true</forceCreation>
-                    <includes>
-                        <directory>src/</directory>
-                    </includes>
-                </configuration>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>  -->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

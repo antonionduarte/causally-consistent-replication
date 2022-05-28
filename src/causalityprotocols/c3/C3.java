@@ -45,6 +45,9 @@ public class C3 extends CausalityProtocol {
 	@Override
 	public boolean verifyCausality(Node node, Message message) {
 		// System.out.println("DEBUG - Verifying - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+		if (message.getMessageType() == Message.MessageType.READ) {
+			return true;
+		}
 
 		C3Message wrappedMessage = (C3Message) message.getProtocolMessage();
 
@@ -72,10 +75,14 @@ public class C3 extends CausalityProtocol {
 
 	@Override
 	public void uponOperationFinishedExecution(Node node, Message message) {
+		if (message.getMessageType() == Message.MessageType.READ) {
+			return;
+		}
+
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
 		var executedState = executedClock.get(message.getOriginNode().getID());
 		// previous writes are still executing
-		if (executedState != null && (executedState + 1 != c3Message.getLblId())) {
+		if (executedState == null || (executedState + 1 != c3Message.getLblId())) {
 			// System.out.println("TEST 1");
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
 				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
@@ -99,7 +106,7 @@ public class C3 extends CausalityProtocol {
 			}
 		}
 
-		System.out.println("DEBUG - " + CommonState.getTime() + " Executed - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+		System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 		System.out.println("Executed Clock - " + this.executedClock);
 		System.out.println("Executing Clock - " + this.executingClock);
 		System.out.println();
@@ -107,13 +114,18 @@ public class C3 extends CausalityProtocol {
 
 	@Override
 	public void uponOperationExecuted(Node node, Message message) {
+		if (message.getMessageType() == Message.MessageType.READ) {
+			return;
+		}
+
 		// if the message is from a local client/datastore, do nothing
 		var time = CommonState.getTime();
+		var lblDeps = ((C3Message) message.getProtocolMessage()).getLblDeps();
 		var currentClock = this.executingClock.get(message.getOriginNode().getID());
-		if (currentClock == null) this.executingClock.put(message.getOriginNode().getID(), 0L);
+		if (currentClock == null) this.executingClock.put(message.getOriginNode().getID(), 0L); // TODO: Wrong?
 		else this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
 
-		System.out.println("DEBUG - " + CommonState.getTime() + " Executing - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
+		System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 		System.out.println("Executed Clock - " + this.executedClock);
 		System.out.println("Executing Clock - " + this.executingClock);
 		System.out.println();

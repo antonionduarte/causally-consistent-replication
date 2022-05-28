@@ -30,8 +30,8 @@ public class ClickBroadcast extends BroadcastProtocol {
 	public void uponBroadcast(Node node, Message message, List<Node> neighbors) {
 		if (message.getOriginNode().getID() == node.getID()) {
 			System.out.print(
-					"DEBUG - Propagating - " + message.getMessageId()
-					+ " - " + CommonState.getNode().getID() + " - "
+					"DEBUG: Propagating - " + message.getMessageId()
+					+ " - Time:" + CommonState.getNode().getID() + " - Node:" + CommonState.getNode().getID() + " - "
 			);
 
 			int pid = Configuration.lookupPid(BroadcastProtocol.protName);
