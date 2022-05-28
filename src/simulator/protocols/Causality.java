@@ -4,6 +4,8 @@ import simulator.protocols.messages.Message;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 
+import java.util.Queue;
+
 public interface Causality extends EDProtocol {
 
 	/**
@@ -47,5 +49,10 @@ public interface Causality extends EDProtocol {
 	 * @param node The local Node.
 	 */
 	void processQueue(Node node, int pid);
+
+	/**
+	 * @return The operation Queue.
+	 */
+	Queue<Message> getOperationQueue();
 
 }

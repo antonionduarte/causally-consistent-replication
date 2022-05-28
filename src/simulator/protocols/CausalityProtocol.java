@@ -95,6 +95,7 @@ public abstract class CausalityProtocol implements Causality {
 				;
 				*/
 				if (!executedMessages.contains(message.getMessageId())) {
+					// TODO: Debug - Delete
 					if (message.getMessageId().equals("0_1")) {
 						System.out.println("TEST TEST TEST - 1");
 					}
@@ -127,6 +128,7 @@ public abstract class CausalityProtocol implements Causality {
 				this.executeOperation(node, message, pid);
 			}
 		}
+		// TODO: Debug - Delete
 		for (var message : verifiedMessages) {
 			if (message.getMessageId().equals("0_1")) {
 				System.out.println("TEST TEST TEST - 2");
@@ -162,6 +164,11 @@ public abstract class CausalityProtocol implements Causality {
 	 */
 	public long getExecutedOperations() {
 		return executedOperations;
+	}
+
+	@Override
+	public Queue<Message> getOperationQueue() {
+		return operationQueue;
 	}
 
 	@Override

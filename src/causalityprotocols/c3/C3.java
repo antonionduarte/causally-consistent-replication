@@ -5,7 +5,6 @@ import peersim.core.Node;
 import simulator.protocols.CausalityProtocol;
 import simulator.protocols.messages.Message;
 
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class C3 extends CausalityProtocol {
@@ -77,12 +76,12 @@ public class C3 extends CausalityProtocol {
 		var executedState = executedClock.get(message.getOriginNode().getID());
 		// previous writes are still executing
 		if (executedState != null && (executedState + 1 != c3Message.getLblId())) {
-			System.out.println("TEST 1");
+			// System.out.println("TEST 1");
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
 				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
 			}
 			else {
-				System.out.println("TEST 2");
+				// System.out.println("TEST 2");
 				List<Long> nodeAheadExecutedOps = new LinkedList<>();
 				nodeAheadExecutedOps.add(c3Message.getLblId());
 				aheadExecutedOps.put(message.getOriginNode().getID(), nodeAheadExecutedOps);
@@ -90,9 +89,9 @@ public class C3 extends CausalityProtocol {
 		}
 		else {
 			executedClock.put(message.getOriginNode().getID(), c3Message.getLblId());
-			System.out.println("TEST 3");
+			// System.out.println("TEST 3");
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
-				System.out.println("TEST 4");
+				// System.out.println("TEST 4");
 				this.checkAheadOps(
 						message.getOriginNode(),
 						aheadExecutedOps.get(message.getOriginNode().getID())

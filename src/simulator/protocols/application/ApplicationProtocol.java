@@ -85,6 +85,8 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 */
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
+		System.out.println("DEBUG - Received by Application");
+
 		// Statistic collection
 		Message message = (Message) event;
 		long rtt = (CommonState.getTime() - message.getSendTime());

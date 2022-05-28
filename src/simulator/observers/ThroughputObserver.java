@@ -19,6 +19,8 @@ public class ThroughputObserver implements Control {
 			var protocol = (CausalityProtocol) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
 			var executedOperations = protocol.getExecutedOperations();
 			System.out.println("throughput-node-" + i + ": " + executedOperations);
+
+			System.out.println("DEBUG - Queue size - " + node.getID() + " - " + protocol.getOperationQueue().size());
 		}
 
 		System.out.println();
