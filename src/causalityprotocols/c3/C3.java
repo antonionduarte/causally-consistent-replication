@@ -44,14 +44,13 @@ public class C3 extends CausalityProtocol {
 
 	@Override
 	public boolean verifyCausality(Node node, Message message) {
-		// System.out.println("DEBUG - Verifying - : " + message.getMessageId() + " - " + CommonState.getNode().getID());
 		if (message.getMessageType() == Message.MessageType.READ) {
 			return true;
 		}
 
 		C3Message wrappedMessage = (C3Message) message.getProtocolMessage();
 
-		// means it came from local DS
+		// Means it came from local DS
 		if (wrappedMessage == null) {
 			this.writeCounter++;
 			message.setProtocolMessage(new C3Message(new HashMap<>(), writeCounter));
@@ -63,10 +62,12 @@ public class C3 extends CausalityProtocol {
 		Map<Long, Long> messageDeps = wrappedMessage.getLblDeps();
 
 		for (long nodeId : messageDeps.keySet()) {
-			if (executedClock.containsKey(nodeId)) {
-				if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
-					return false;
-				}
+			if (!executedClock.containsKey(nodeId)) {
+				executedClock.put(nodeId, 0L);
+			}
+
+			if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
+				return false;
 			}
 		}
 
@@ -81,7 +82,7 @@ public class C3 extends CausalityProtocol {
 
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
 		var executedState = executedClock.get(message.getOriginNode().getID());
-		// previous writes are still executing
+		// Previous writes are still executing
 		if (executedState == null || (executedState + 1 != c3Message.getLblId())) {
 			// System.out.println("TEST 1");
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
@@ -118,7 +119,7 @@ public class C3 extends CausalityProtocol {
 			return;
 		}
 
-		// if the message is from a local client/datastore, do nothing
+		// If the message is from a local client/datastore, do nothing
 		var time = CommonState.getTime();
 		var lblDeps = ((C3Message) message.getProtocolMessage()).getLblDeps();
 		var currentClock = this.executingClock.get(message.getOriginNode().getID());

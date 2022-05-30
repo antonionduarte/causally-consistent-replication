@@ -15,7 +15,7 @@ EVENT_PROCESSING_TIME   1
 random.seed             10
 network.size            SIZE
 
-simulation.endtime      300
+simulation.endtime      10000
 
 # ------------------- #
 # ---- Transport ---- #
@@ -88,10 +88,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    299
+    step    9999
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    299
+    step    9999
 }
