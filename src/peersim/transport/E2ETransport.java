@@ -111,8 +111,7 @@ public class E2ETransport implements Transport, RouterInfo {
 		/* Assuming that the sender corresponds to the source node */
 		E2ETransport sender = (E2ETransport) src.getProtocol(tid);
 		E2ETransport receiver = (E2ETransport) dest.getProtocol(tid);
-		long latency =
-				E2ENetwork.getLatency(sender.router, receiver.router) + local * 2;
+		long latency = E2ENetwork.getLatency(sender.router, receiver.router) + local * 2;
 		EDSimulator.add(latency, msg, dest, pid);
 	}
 

@@ -65,7 +65,7 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
 
-protocol.overlay        simulator.protocols.overlay.alltoall.AllToAll         # replace path with desired overlay protocol
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # replace path with desired overlay protocol
 
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well

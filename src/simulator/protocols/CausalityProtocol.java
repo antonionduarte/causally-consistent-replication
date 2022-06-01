@@ -84,7 +84,6 @@ public abstract class CausalityProtocol implements Causality {
 					message.togglePropagating();
 					this.executeOperation(node, message, pid);
 				}
-				this.processQueue(node, pid);
 			} else {
 				System.out.println(
 					"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
@@ -99,7 +98,8 @@ public abstract class CausalityProtocol implements Causality {
 					this.operationQueue.add(message);
 				}
 			}
-		// Message was executing
+
+			// Message was executing
 		} else {
 			this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
 			this.executedOperations++;
@@ -114,6 +114,8 @@ public abstract class CausalityProtocol implements Causality {
 		if (!sentMessages.contains(message.getMessageId())) {
 			propagateMessage(node, message);
 		}
+
+		this.processQueue(node, pid);
 	}
 
 	@Override

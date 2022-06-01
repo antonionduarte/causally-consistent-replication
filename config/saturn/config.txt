@@ -27,7 +27,6 @@ protocol.urt            peersim.transport.UniformRandomTransport
     maxdelay   150
 }
 
-
 # -------------------------------------- #
 # ---- Application / Clients Config ---- #
 # -------------------------------------- #
@@ -43,7 +42,7 @@ protocol.application    causalityprotocols.c3.C3Application
 # ---- Causality Config ---- #
 # -------------------------- #
 
-protocol.causality      causalityprotocols.c3.C3
+protocol.causality      causalityprotocols.saturn.Saturn
 {
     write_time      8          # the amount of time a write takes to execute
     read_time       12         # the amount of time that a read takes to execute
@@ -53,8 +52,7 @@ protocol.causality      causalityprotocols.c3.C3
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
 
-protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # replace path with desired overlay protocol
-
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well
 
@@ -72,6 +70,12 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 # ---------------------- #
 # ---- Initializers ---- #
 # ---------------------- #
+
+init.treeInit           WireRegRootedTree
+{
+    k                   20
+    protocol            overlay
+}
 
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
 {

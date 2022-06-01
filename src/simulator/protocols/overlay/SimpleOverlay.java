@@ -1,7 +1,5 @@
-package simulator.protocols.overlay.alltoall;
+package simulator.protocols.overlay;
 
-import peersim.core.CommonState;
-import simulator.protocols.overlay.OverlayProtocol;
 import peersim.core.Linkable;
 import peersim.core.Node;
 
@@ -11,20 +9,20 @@ import java.util.List;
 /**
  * Very simple Overlay where all Nodes are everyone's neighbours.
  */
-public class AllToAll extends OverlayProtocol implements Linkable {
+public class SimpleOverlay extends OverlayProtocol implements Linkable {
 
 	private List<Node> neighbors;
 
 	public static String protName;
 
-	public AllToAll(String prefix) {
+	public SimpleOverlay(String prefix) {
 		super(prefix);
 		protName = (prefix.split("\\."))[1];
 	}
 
 	@Override
 	public Object clone() {
-		AllToAll clone = (AllToAll) super.clone();
+		SimpleOverlay clone = (SimpleOverlay) super.clone();
 		clone.neighbors = new ArrayList<>();
 		return clone;
 	}
