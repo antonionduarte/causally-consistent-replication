@@ -2,7 +2,10 @@ import matrix_utils
 import random
 import copy
 
-""" 
+"""
+Makes a valid tree graph in the Adjacency-List format from a given latency matrix
+and with a max "k" replication factor value.
+
 matrix  - the latency matrix
 k       - replication factor
 """
@@ -44,7 +47,7 @@ def generate_tree(matrix, k):
 		if min_edge[0] != -1:
 			mst_set.append(min_edge[2])
 			tree[min_edge[0]].append(min_edge)
-			
+
 	for vert in tree:
 		for edge in tree[vert]:
 			final_tree[vert].append(edge)
@@ -53,14 +56,23 @@ def generate_tree(matrix, k):
 	return final_tree
 
 
-
-
-#def tree_to_file(tree):
+"""
+Converts the tree to a format accepted by Peersim's 
+WireFromFile format.
+"""
+def tree_to_file(tree, out):
+	file = open(out, 'w')
+	for vert in tree:
+		file.write(str(vert)) # write vert
+		for edge in tree[vert]: # write edges from vert
+			file.write(' ' + str(edge[2]))
+		file.write('\n')
+	file.close() 
 
 	
 
 def main():
 	tree = generate_tree('../config/latencies/latency-10-mat.txt', 2)
-	print(tree)
+	tree_to_file(tree, '../config/graphs/tree-graph-0.txt')
 
 main()
