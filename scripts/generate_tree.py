@@ -1,66 +1,66 @@
 import matrix_utils
 import random
+import copy
 
 """ 
 matrix  - the latency matrix
 k       - replication factor
 """
 def generate_tree(matrix, k):
-    mat = matrix_utils.matrix_from_file(matrix)
-    n_nodes = len(mat)
-    random_node = random.randint(0, n_nodes - 1)
+	mat = matrix_utils.matrix_from_file(matrix)
+	n_nodes = len(mat)
+	random_node = random.randint(0, n_nodes - 1)
 
-    adjacency_mat = {}
-    final_adjacency_mat = {}
+	adjacency_mat = {}
+	tree = {}
+	final_tree = {}
+	mst_set = []
+	num_connections = {}
 
-    # build all-to-all graph
-    i = 0
-    while i < len(mat):
-        adjacency_mat[i] = []
-        j = 0
-        while j < len(mat):
-            if j != i:
-                adjacency_mat[i].append((j, float(mat[i][j])))
-            j = j + 1
-        i = i + 1
+	# build all-to-all graph
+	i = 0
+	while i < len(mat):
+		adjacency_mat[i] = []
+		j = 0
+		while j < len(mat):
+			if j != i:
+				adjacency_mat[i].append((i, float(mat[i][j]), j))
+			j = j + 1
+		tree[i] = []
+		final_tree[i] = []
+		i = i + 1
 
-    # build "optimized" graph
-    visited = []
-    to_visit = []
-    to_visit.append(random_node)
+	mst_set.append(random_node)
 
-    print(adjacency_mat)
-    print()
-    print('random_node: ' + str(random_node))
-    print()
+	# generate the tree without symmetric-connections (with symmetric i don't mean necessarily same weight)
+	while len(mst_set) != len(adjacency_mat):
+		# select next minimum connection that isn't in the list of edges
+		min_edge = (-1, float('inf'), -1)
+		for vert in mst_set:
+			for edge in adjacency_mat[vert]:
+				if (edge[1] < min_edge[1]) and (mst_set.count(edge[2]) == 0) and (len(tree[vert]) < k):
+					min_edge = edge
 
-    while len(to_visit) > 0:
-        node = to_visit.pop()
-        visited.append(node)
+		if min_edge[0] != -1:
+			mst_set.append(min_edge[2])
+			tree[min_edge[0]].append(min_edge)
+			
+	for vert in tree:
+		for edge in tree[vert]:
+			final_tree[vert].append(edge)
+			final_tree[edge[2]].append((edge[2], mat[edge[2]][edge[0]], edge[0]))
 
-        neighbours = [(-1, float('inf'))] * k
+	return final_tree
 
-        for edge in adjacency_mat[node]:
-            j = 0
-            while j < len(neighbours):
-                if not visited.count(edge[0]) > 0:
-                    if edge[0] < neighbours[j][1]:
-                        neighbours[j] = edge
-                j = j + 1
 
-        for elem in neighbours:
-            if elem[0] != -1:
-                visited.append(elem[0])
-                to_visit.append(elem[0])
-            else:
-                neighbours.remove(elem)
 
-        final_adjacency_mat[node] = neighbours
-    print(final_adjacency_mat)
-    
+
+#def tree_to_file(tree):
+
+	
 
 def main():
-	generate_tree('../config/latencies/latency-10-mat.txt', 3)
-
+	tree = generate_tree('../config/latencies/latency-10-mat.txt', 2)
+	print(tree)
 
 main()

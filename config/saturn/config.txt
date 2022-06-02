@@ -60,7 +60,7 @@ protocol.overlay        simulator.protocols.overlay.SimpleOverlay
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # replace path with desired broadcast protocol
+protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace path with desired broadcast protocol
 {
     transport           urt
 }
@@ -71,10 +71,10 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 # ---- Initializers ---- #
 # ---------------------- #
 
-init.treeInit           WireRegRootedTree
+init.treeInit           WireFromFile
 {
     k                   20
-    protocol            overlay
+    file                config/graph/tree-0.txt
 }
 
 init.applicationInit    simulator.protocols.application.ApplicationInitializer

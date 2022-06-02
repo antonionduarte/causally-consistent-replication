@@ -22,7 +22,8 @@ public class SaturnBroadcast extends BroadcastProtocol {
 
 		for (var neighbor : neighbors) {
 			if (neighbor.getID() != receivedFromId) {
-				// send using transport layer
+				((Transport) node.getProtocol(transportId))
+					.send(node, neighbour, message, pid);
 			}
 		}
 	}
