@@ -4,6 +4,9 @@
 # MacOS files
 .DS_Store
 
+# Python
+__pycache__/*
+
 # Example Files
 example-config/
 example/
