@@ -42,7 +42,8 @@ def main():
 	sub_matrix(
 		'../config/latencies/processed-latency-matrix.txt',
 		indexes,
-		'../config/latencies/latency-10-mat.txt'
+		'../config/latencies/latency-0-mat.txt'
 	)
+
 
 main()

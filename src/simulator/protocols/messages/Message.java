@@ -4,12 +4,10 @@ import peersim.core.Node;
 
 public interface Message {
 
-
 	enum MessageType {
 		WRITE,
 		READ;
 	}
-
 
 	String getMessageId();
 
@@ -17,6 +15,11 @@ public interface Message {
 	 * @return The time at which the message was sent.
 	 */
 	long getSendTime();
+
+	/**
+	 * @return The nodeID of the last node this message hopped on.
+	 */
+	long getLastHop();
 
 	/**
 	 * @return The node that the message came from.

@@ -13,16 +13,31 @@ public class MessageWrapper implements Message {
 	private boolean isPropagating;
 
 	private final long sendTime;
+	private final long lastHop;
+
 	private final Node originNode;
 	private final String messageId;
 
-	public MessageWrapper(MessageType messageType, ProtocolMessage protocolMessage, Node node, long sendTime, String messageId) {
+	public MessageWrapper(
+			MessageType messageType,
+			ProtocolMessage protocolMessage,
+			Node node,
+			long sendTime,
+			long lastHop,
+			String messageId
+	) {
 		this.protocolMessage = protocolMessage;
 		this.messageType = messageType;
 		this.isPropagating = true;
+		this.lastHop = lastHop;
 		this.originNode = node;
 		this.sendTime = sendTime;
 		this.messageId = messageId;
+	}
+
+	@Override
+	public long getLastHop() {
+		return lastHop;
 	}
 
 	@Override

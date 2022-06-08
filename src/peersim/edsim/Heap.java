@@ -32,6 +32,13 @@ import peersim.config.IllegalParameterException;
  */
 public class Heap implements PriorityQueue {
 
+	// TODO: Debug
+
+	long numPush;
+	long numPop;
+
+	// TODO: Debug
+
 	//--------------------------------------------------------------------------
 	// Constants
 	//--------------------------------------------------------------------------
@@ -212,6 +219,8 @@ public class Heap implements PriorityQueue {
 			swap(pos, pos / 2);
 			pos = pos / 2;
 		}
+
+		System.err.println("HEAP SIZE: " + size());
 	}
 
 	//--------------------------------------------------------------------------
@@ -236,6 +245,7 @@ public class Heap implements PriorityQueue {
 		swap(1, size);
 		size--;
 		minHeapify(1);
+		System.err.println("HEAP SIZE: " + size());
 		return ev;
 	}
 

@@ -71,7 +71,8 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	public void startClients(Node node) {
 		for (int i = 0; i < numberClients; i++) {
 			Message message = getRandomMessage(node);
-			this.changeInitialMessage(node, message.getProtocolMessage());
+			this.changeInitialMessage(node, message);
+			System.out.println(message.getProtocolMessage());
 			EDSimulator.add(0, message, node, Configuration.lookupPid(CausalityProtocol.protName));
 		}
 	}
@@ -98,7 +99,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
-		this.changeResponseMessage(node, toSend.getProtocolMessage());
+		this.changeResponseMessage(node, toSend);
 		EDSimulator.add(0, toSend, node, Configuration.lookupPid(CausalityProtocol.protName));
 	}
 
@@ -121,7 +122,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 			messageType = Message.MessageType.READ;
 		}
 
-		return new MessageWrapper(messageType, null, node, CommonState.getTime(), messageId);
+		return new MessageWrapper(messageType, null, node, CommonState.getTime(), CommonState.getNode().getID(), messageId);
 	}
 
 	/**
@@ -138,7 +139,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * @param node The local node.
 	 * @param message The protocol specific message.
 	 */
-	public abstract void changeInitialMessage(Node node, ProtocolMessage message);
+	public abstract void changeInitialMessage(Node node, Message message);
 
 	/**
 	 * Implement this function in your Application class if you want the wrapped {@link simulator.protocols.messages.ProtocolMessage}
@@ -147,5 +148,5 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * @param node The local node.
 	 * @param message The protocol specific message.
 	 */
-	public abstract void changeResponseMessage(Node node, ProtocolMessage message);
+	public abstract void changeResponseMessage(Node node, Message message);
 }

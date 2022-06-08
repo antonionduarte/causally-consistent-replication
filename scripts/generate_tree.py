@@ -72,7 +72,7 @@ def tree_to_file(tree, out):
 	
 
 def main():
-	tree = generate_tree('../config/latencies/latency-10-mat.txt', 2)
+	tree = generate_tree('../config/latencies/latency-0-mat.txt', 2)
 	tree_to_file(tree, '../config/graphs/tree-graph-0.txt')
 
 main()

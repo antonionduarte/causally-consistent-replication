@@ -1,6 +1,6 @@
 # network size
 
-SIZE                    3
+SIZE                    7
 
 # parameters of periodic execution
 
@@ -12,7 +12,7 @@ EVENT_PROCESSING_TIME   1
 # ---- Simulation Parameters ---- #
 # ------------------------------- #
 
-random.seed             10
+random.seed             101212132131
 network.size            SIZE
 
 simulation.endtime      10000
@@ -31,9 +31,9 @@ protocol.urt            peersim.transport.UniformRandomTransport
 # ---- Application / Clients Config ---- #
 # -------------------------------------- #
 
-protocol.application    causalityprotocols.c3.C3Application
+protocol.application    causalityprotocols.saturn.SaturnApplication
 {
-    number_clients  3       # the number of clients being simulated per node
+    number_clients  1000       # the number of clients being simulated per node
     weight_reads    50         # the percentage/weight of reads being simulated
     weight_writes   50         # the percentage/weight of writes being simulated
 }
@@ -53,6 +53,7 @@ protocol.causality      causalityprotocols.saturn.Saturn
 # ---------------------------- #
 
 protocol.overlay        simulator.protocols.overlay.SimpleOverlay
+
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well
 
@@ -74,15 +75,14 @@ protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace p
 init.treeInit           WireFromFile
 {
     k                   20
-    file                config/graph/tree-0.txt
+    file                config/graphs/tree-graph-0.txt
+    protocol            overlay
 }
 
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
 {
     protocol            application
 }
-
-init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 
 # ---------------------------------- #
 # ----- Controls and Observers ----- #

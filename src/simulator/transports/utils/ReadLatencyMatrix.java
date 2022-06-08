@@ -39,6 +39,6 @@ public class ReadLatencyMatrix {
 	}
 
 	public static void main(String[] args) {
-		var mat = readLatencyMatrix("config/latencies/latency-10-mat.txt");
+		var mat = readLatencyMatrix("config/latencies/latency-0-mat.txt");
 	}
 }

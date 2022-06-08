@@ -1,13 +1,13 @@
-package causalityprotocols.c3;
+package causalityprotocols.saturn;
 
+import peersim.core.CommonState;
 import peersim.core.Node;
 import simulator.protocols.application.ApplicationProtocol;
 import simulator.protocols.messages.Message;
-import simulator.protocols.messages.ProtocolMessage;
 
-public class C3Application extends ApplicationProtocol {
+public class SaturnApplication extends ApplicationProtocol {
 
-	public C3Application(String prefix) {
+	public SaturnApplication(String prefix) {
 		super(prefix);
 	}
 
@@ -18,11 +18,17 @@ public class C3Application extends ApplicationProtocol {
 
 	@Override
 	public void changeInitialMessage(Node node, Message message) {
-		// do nothing
+		message.setProtocolMessage(new SaturnMessage(
+				CommonState.getNode().getID(),
+				-1)
+		);
 	}
 
 	@Override
 	public void changeResponseMessage(Node node, Message message) {
-		// do nothing
+		message.setProtocolMessage(new SaturnMessage(
+				CommonState.getNode().getID(),
+				-1)
+		);
 	}
 }

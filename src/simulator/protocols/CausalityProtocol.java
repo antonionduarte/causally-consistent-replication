@@ -20,6 +20,9 @@ public abstract class CausalityProtocol implements Causality {
 	private final int writeTime;
 	private final int readTime;
 
+	long numPush;
+	long numPop;
+
 	/**
 	 * Event Queue, saves the events that weren't able to be processed due to issues with causality.
 	 */
@@ -70,40 +73,33 @@ public abstract class CausalityProtocol implements Causality {
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
-
 		// Could throw NPE if not well verified within the protocol
 		if (message.isPropagating()) {
 			if (verifyCausality(node, message)) {
 				System.out.println(
 					"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
-					" - Node:" + CommonState.getNode().getID())
-				;
-
+					" - Node:" + CommonState.getNode().getID()
+				);
 				// Message was propagating, and starts executing
 				if (message.isPropagating()) {
 					message.togglePropagating();
 					this.executeOperation(node, message, pid);
 				}
-			} else {
+			}
+			else {
 				System.out.println(
 					"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
-					" - Node:" + CommonState.getNode().getID())
-				;
-
+					" - Node:" + CommonState.getNode().getID()
+				);
 				if (!executedMessages.contains(message.getMessageId())) {
-					// TODO: Debug - Delete
-					//if (message.getMessageId().equals("0_1")) {
-					//	System.out.println("TEST TEST TEST - 1");
-					//}
 					this.operationQueue.add(message);
 				}
 			}
-
 			// Message was executing
-		} else {
+		}
+		else {
 			this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
 			this.executedOperations++;
-
 			this.uponOperationFinishedExecution(node, message);
 
 			if (message.getOriginNode().getID() == node.getID()) {
@@ -112,7 +108,7 @@ public abstract class CausalityProtocol implements Causality {
 		}
 
 		if (!sentMessages.contains(message.getMessageId())) {
-			propagateMessage(node, message);
+			this.propagateMessage(node, message);
 		}
 
 		this.processQueue(node, pid);
@@ -127,12 +123,8 @@ public abstract class CausalityProtocol implements Causality {
 				this.executeOperation(node, message, pid);
 			}
 		}
-		// TODO: Debug - Delete
-		//for (var message : verifiedMessages) {
-		//	if (message.getMessageId().equals("0_1")) {
-		//		System.out.println("TEST TEST TEST - 2");
-		//	}
-		//}
+
+		System.out.println("QUEUE SIZE: " + operationQueue.size());
 		operationQueue.removeAll(verifiedMessages);
 	}
 
@@ -179,8 +171,7 @@ public abstract class CausalityProtocol implements Causality {
 	@Override
 	public abstract void uponOperationExecuted(Node node, Message message);
 
-	private void propagateMessage(Node node, Message message) {
-		// TODO: In C3 the messages are propagated before being executed in the local DC
+	public void propagateMessage(Node node, Message message) {
 		if (message.getMessageType() == Message.MessageType.WRITE) {
 			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
 
@@ -189,6 +180,7 @@ public abstract class CausalityProtocol implements Causality {
 					message.getProtocolMessage(),
 					message.getOriginNode(),
 					message.getSendTime(),
+					CommonState.getNode().getID(),
 					message.getMessageId()
 			);
 

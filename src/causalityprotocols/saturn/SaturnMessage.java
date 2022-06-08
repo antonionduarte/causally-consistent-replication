@@ -4,12 +4,10 @@ import simulator.protocols.messages.ProtocolMessage;
 
 public class SaturnMessage implements ProtocolMessage {
 
-	private long receivedFromId;
 	private long originNodeId;
 	private long timestamp;
 
-	public SaturnMessage(long receivedFromId, long originNodeId, long scalarTimestamp) {
-		this.receivedFromId = receivedFromId;
+	public SaturnMessage(long originNodeId, long scalarTimestamp) {
 		this.originNodeId = originNodeId;
 		this.timestamp = scalarTimestamp;
 	}
@@ -28,14 +26,6 @@ public class SaturnMessage implements ProtocolMessage {
 
 	public void setOriginNodeId(long originNodeId) {
 		this.originNodeId = originNodeId;
-	}
-
-	public long getReceivedFromId() {
-		return receivedFromId;
-	}
-
-	public void setReceivedFromId(long receivedFrom) {
-		this.receivedFromId = receivedFrom;
 	}
 
 	@Override

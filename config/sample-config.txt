@@ -28,7 +28,7 @@ protocol.application    simulator.protocols.application.ApplicationProtocol
 {
     write_time      8          # the amount of time a write takes to execute
     read_time       12           # the amount of time that a read takes to execute
-    number_clients  100         # the number of clients being simulated per node
+    number_clients  2         # the number of clients being simulated per node
 
     weigh_reads     50          # the percentage/weight of reads being simulated
     weight_writes   50          # the percentage/weight of writes being simulated
