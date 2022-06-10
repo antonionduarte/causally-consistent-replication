@@ -24,17 +24,19 @@ public class Saturn extends CausalityProtocol {
 	}
 
 	@Override
-	public boolean verifyCausality(Node node, Message message) {
+	public boolean checkCausality(Node node, Message message) {
 		if (message.getMessageType() == Message.MessageType.READ) {
 			return true;
 		}
+
+		// System.out.println("Operation Executing - " + operationExecuting + " - Time: " + CommonState.getTime() + " - Node: - " + CommonState.getNode().getID());
 
 		// if there isn't an operation executing, operation can execute.
 		return !operationExecuting;
 	}
 
 	@Override
-	public void uponOperationFinishedExecution(Node node, Message message) {
+	public void operationFinishedExecution(Node node, Message message) {
 		this.operationExecuting = false;
 
 		if (message.getMessageType() == Message.MessageType.WRITE) {
@@ -44,7 +46,7 @@ public class Saturn extends CausalityProtocol {
 	}
 
 	@Override
-	public void uponOperationExecuted(Node node, Message message) {
+	public void operationStartedExecution(Node node, Message message) {
 		this.operationExecuting = true;
 
 		if (message.getMessageType() == Message.MessageType.WRITE) {

@@ -1,0 +1,101 @@
+# network size
+
+SIZE                    7
+
+# parameters of periodic execution
+
+CYCLES                  100
+CYCLE                   SIZE * 10000
+EVENT_PROCESSING_TIME   1
+
+# ------------------------------- #
+# ---- Simulation Parameters ---- #
+# ------------------------------- #
+
+random.seed             101212132131
+network.size            SIZE
+
+simulation.endtime      10000
+
+# ------------------- #
+# ---- Transport ---- #
+# ------------------- #
+
+protocol.urt            peersim.transport.UniformRandomTransport
+{
+    mindelay   50
+    maxdelay   150
+}
+
+# -------------------------------------- #
+# ---- Application / Clients Config ---- #
+# -------------------------------------- #
+
+protocol.application    causalityprotocols.saturn.SaturnApplication
+{
+    number_clients  500       # the number of clients being simulated per node
+    weight_reads    50         # the percentage/weight of reads being simulated
+    weight_writes   50         # the percentage/weight of writes being simulated
+}
+
+# -------------------------- #
+# ---- Causality Config ---- #
+# -------------------------- #
+
+protocol.causality      causalityprotocols.saturn.Saturn
+{
+    write_time      8          # the amount of time a write takes to execute
+    read_time       12         # the amount of time that a read takes to execute
+}
+
+# ---------------------------- #
+# ---- Topology / Overlay ---- #
+# ---------------------------- #
+
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay
+
+# select the topology that you with to use and initialize it,
+# initialize the node inits as well
+
+# ------------------- #
+# ---- Broadcast ---- #
+# ------------------- #
+
+protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace path with desired broadcast protocol
+{
+    transport           urt
+}
+
+# select the broadcast protocol you wish to use, and initialize it
+
+# ---------------------- #
+# ---- Initializers ---- #
+# ---------------------- #
+
+init.treeInit           WireFromFile
+{
+    k                   20
+    file                config/graphs/tree-graph-0.txt
+    protocol            overlay
+}
+
+init.applicationInit    simulator.protocols.application.ApplicationInitializer
+{
+    protocol            application
+}
+
+# ---------------------------------- #
+# ----- Controls and Observers ----- #
+# ---------------------------------- #
+
+include.control         latencyObserver, throughputObserver
+
+control.latencyObserver     simulator.observers.LatencyObserver
+{
+    step    9999
+}
+
+control.throughputObserver  simulator.observers.ThroughputObserver
+{
+    step    9999
+}

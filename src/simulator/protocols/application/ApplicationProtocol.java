@@ -72,7 +72,6 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		for (int i = 0; i < numberClients; i++) {
 			Message message = getRandomMessage(node);
 			this.changeInitialMessage(node, message);
-			System.out.println(message.getProtocolMessage());
 			EDSimulator.add(0, message, node, Configuration.lookupPid(CausalityProtocol.protName));
 		}
 	}
@@ -90,7 +89,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		// Statistic collection
 		Message message = (Message) event;
 		long rtt = (CommonState.getTime() - message.getSendTime());
-		messageLatencies.add(rtt / 2);
+		messageLatencies.add(rtt);
 
 		System.out.println(
 				"DEBUG: Received by Application" + " - Time:" + CommonState.getTime() + " - " +

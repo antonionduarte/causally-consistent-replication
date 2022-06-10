@@ -24,7 +24,7 @@ public interface Causality extends EDProtocol {
 	 * @param node The local node.
 	 * @return Boolean indicating if it's possible to execute the operation.
 	 */
-	boolean verifyCausality(Node node, Message message);
+	boolean checkCausality(Node node, Message message);
 
 	/**
 	 * Processes a Protocol specific Message when it's possible according to causal consistency.
@@ -32,7 +32,7 @@ public interface Causality extends EDProtocol {
 	 * @param message The message / message to process.
 	 * @param node The local node.
 	 */
-	void uponOperationFinishedExecution(Node node, Message message);
+	void operationFinishedExecution(Node node, Message message);
 
 	/**
 	 * If a protocol needs to change it's internal state when it places a message in execution.
@@ -40,7 +40,7 @@ public interface Causality extends EDProtocol {
 	 * @param message The message that was placed in execution.
 	 * @param node The local node.
 	 */
-	void uponOperationExecuted(Node node, Message message);
+	void operationStartedExecution(Node node, Message message);
 
 	/**
 	 * Processes the operation Queue, checking if any operation that was in the Queue is now possible according to

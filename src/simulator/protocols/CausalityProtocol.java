@@ -72,19 +72,18 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
+		System.out.println("RECEIVED EVENT - Time: " + CommonState.getTime() + " - Node: " + CommonState.getNode().getID());
+
 		var message = (Message) event;
 		// Could throw NPE if not well verified within the protocol
 		if (message.isPropagating()) {
-			if (verifyCausality(node, message)) {
+			if (checkCausality(node, message)) {
 				System.out.println(
 					"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
 					" - Node:" + CommonState.getNode().getID()
 				);
-				// Message was propagating, and starts executing
-				if (message.isPropagating()) {
-					message.togglePropagating();
-					this.executeOperation(node, message, pid);
-				}
+				message.togglePropagating();
+				this.executeOperation(node, message, pid);
 			}
 			else {
 				System.out.println(
@@ -95,13 +94,14 @@ public abstract class CausalityProtocol implements Causality {
 					this.operationQueue.add(message);
 				}
 			}
-			// Message was executing
 		}
+		// Message was executing
 		else {
 			this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
 			this.executedOperations++;
-			this.uponOperationFinishedExecution(node, message);
+			this.operationFinishedExecution(node, message);
 
+			// Send the response back to the client
 			if (message.getOriginNode().getID() == node.getID()) {
 				EDSimulator.add(0, event, node, Configuration.lookupPid(ApplicationProtocol.protName));
 			}
@@ -118,21 +118,20 @@ public abstract class CausalityProtocol implements Causality {
 	public void processQueue(Node node, int pid) {
 		var verifiedMessages = new ArrayList<Message>();
 		for (Message message : operationQueue) {
-			if (verifyCausality(node, message)) {
+			if (checkCausality(node, message)) {
 				verifiedMessages.add(message);
 				this.executeOperation(node, message, pid);
 			}
 		}
 
-		System.out.println("QUEUE SIZE: " + operationQueue.size());
-		operationQueue.removeAll(verifiedMessages);
+		this.operationQueue.removeAll(verifiedMessages);
 	}
 
 	@Override
 	public void executeOperation(Node node, Message message, int pid) {
 		long expectedArrivalTime;
 		this.executedMessages.add(message.getMessageId());
-		this.uponOperationExecuted(node, message);
+		this.operationStartedExecution(node, message);
 
 		if (message.getMessageType() == Message.MessageType.READ) {
 			expectedArrivalTime = readTime;
@@ -163,13 +162,13 @@ public abstract class CausalityProtocol implements Causality {
 	}
 
 	@Override
-	public abstract boolean verifyCausality(Node node, Message message);
+	public abstract boolean checkCausality(Node node, Message message);
 
 	@Override
-	public abstract void uponOperationFinishedExecution(Node node, Message message);
+	public abstract void operationFinishedExecution(Node node, Message message);
 
 	@Override
-	public abstract void uponOperationExecuted(Node node, Message message);
+	public abstract void operationStartedExecution(Node node, Message message);
 
 	public void propagateMessage(Node node, Message message) {
 		if (message.getMessageType() == Message.MessageType.WRITE) {
@@ -180,7 +179,7 @@ public abstract class CausalityProtocol implements Causality {
 					message.getProtocolMessage(),
 					message.getOriginNode(),
 					message.getSendTime(),
-					CommonState.getNode().getID(),
+					node.getID(),
 					message.getMessageId()
 			);
 
