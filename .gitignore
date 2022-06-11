@@ -6,6 +6,10 @@
 
 # Python
 __pycache__/*
+*/__pycache__/*
+
+# Output
+output
 
 # Example Files
 example-config/
