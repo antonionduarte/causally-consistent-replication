@@ -8,6 +8,7 @@ import simulator.protocols.messages.Message;
 public class Saturn extends CausalityProtocol {
 
 	private boolean operationExecuting;
+	private String testOperation;
 
 	/**
 	 * The constructor for the protocol.
@@ -38,20 +39,22 @@ public class Saturn extends CausalityProtocol {
 	@Override
 	public void operationFinishedExecution(Node node, Message message) {
 		this.operationExecuting = false;
+		this.testOperation = null;
 
-		if (message.getMessageType() == Message.MessageType.WRITE) {
+		/*if (message.getMessageType() == Message.MessageType.WRITE) {
 			System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 			System.out.println();
-		}
+		}*/
 	}
 
 	@Override
 	public void operationStartedExecution(Node node, Message message) {
 		this.operationExecuting = true;
+		this.testOperation = message.getMessageId();
 
-		if (message.getMessageType() == Message.MessageType.WRITE) {
+		/*if (message.getMessageType() == Message.MessageType.WRITE) {
 			System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 			System.out.println();
-		}
+		}*/
 	}
 }

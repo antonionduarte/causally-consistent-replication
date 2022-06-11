@@ -8,6 +8,8 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
+EXPERIMENT_NAME saturn-100-clients
+
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
 # ------------------------------- #
@@ -15,16 +17,15 @@ EVENT_PROCESSING_TIME   1
 random.seed             101212132131
 network.size            SIZE
 
-simulation.endtime      10000
+simulation.endtime      5000
 
 # ------------------- #
 # ---- Transport ---- #
 # ------------------- #
 
-protocol.urt            peersim.transport.UniformRandomTransport
+protocol.urt            simulator.transports.LatencyMatrixTransport
 {
-    mindelay   50
-    maxdelay   150
+    latency_path        config/latencies/latency-0-mat.txt
 }
 
 # -------------------------------------- #
@@ -34,8 +35,8 @@ protocol.urt            peersim.transport.UniformRandomTransport
 protocol.application    causalityprotocols.saturn.SaturnApplication
 {
     number_clients  100       # the number of clients being simulated per node
-    weight_reads    50         # the percentage/weight of reads being simulated
-    weight_writes   50         # the percentage/weight of writes being simulated
+    weight_reads    20         # the percentage/weight of reads being simulated
+    weight_writes   80         # the percentage/weight of writes being simulated
 }
 
 # -------------------------- #
@@ -92,10 +93,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    9999
+    step    4999
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    9999
+    step    4999
 }

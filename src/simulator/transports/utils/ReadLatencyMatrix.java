@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class ReadLatencyMatrix {
 
-	public static int[][] readLatencyMatrix(String path) {
-		int[][] matrix = null;
+	public static long[][] readLatencyMatrix(String path) {
+		long[][] matrix = null;
 
 		try {
 			File file = new File(path);
@@ -18,7 +18,7 @@ public class ReadLatencyMatrix {
 				var splitData = data.split(",");
 
 				if (matrix == null) {
-					matrix = new int[splitData.length][splitData.length];
+					matrix = new long[splitData.length][splitData.length];
 				}
 
 				var j = 0;

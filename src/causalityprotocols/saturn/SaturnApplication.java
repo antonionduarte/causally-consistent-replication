@@ -22,8 +22,6 @@ public class SaturnApplication extends ApplicationProtocol {
 				CommonState.getNode().getID(),
 				-1)
 		);
-
-		System.out.println("Application I'm becoming mentally unstable: " + message.getMessageId());
 	}
 
 	@Override
@@ -32,7 +30,5 @@ public class SaturnApplication extends ApplicationProtocol {
 				CommonState.getNode().getID(),
 				-1)
 		);
-
-		System.out.println("Application I'm becoming mentally unstable: " + message.getMessageId());
 	}
 }

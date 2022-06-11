@@ -72,24 +72,25 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		System.out.println("RECEIVED EVENT - Time: " + CommonState.getTime() + " - Node: " + CommonState.getNode().getID());
+		if (CommonState.getTime() % 10 == 0) {
+			System.out.println("Received Event - Time: " + CommonState.getTime() + " - Node: " + CommonState.getNode().getID());
+		}
 
 		var message = (Message) event;
 		// Could throw NPE if not well verified within the protocol
 		if (message.isPropagating()) {
 			if (checkCausality(node, message)) {
-				System.out.println(
+				/*System.out.println(
 					"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
 					" - Node:" + CommonState.getNode().getID()
-				);
-				message.togglePropagating();
+				);*/
 				this.executeOperation(node, message, pid);
 			}
 			else {
-				System.out.println(
+				/*System.out.println(
 					"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
 					" - Node:" + CommonState.getNode().getID()
-				);
+				);*/
 				if (!executedMessages.contains(message.getMessageId())) {
 					this.operationQueue.add(message);
 				}
@@ -139,7 +140,18 @@ public abstract class CausalityProtocol implements Causality {
 			expectedArrivalTime = writeTime;
 		}
 
-		EDSimulator.add(expectedArrivalTime, message, node, pid);
+		Message toSend = new MessageWrapper(
+				message.getMessageType(),
+				message.getProtocolMessage(),
+				message.getOriginNode(),
+				message.getSendTime(),
+				node.getID(),
+				message.getMessageId()
+		);
+
+		toSend.setPropagating(false);
+
+		EDSimulator.add(expectedArrivalTime, toSend, node, pid);
 	}
 
 	/**

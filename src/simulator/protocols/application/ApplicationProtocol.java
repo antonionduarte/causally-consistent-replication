@@ -91,10 +91,10 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		long rtt = (CommonState.getTime() - message.getSendTime());
 		messageLatencies.add(rtt);
 
-		System.out.println(
+		/*System.out.println(
 				"DEBUG: Received by Application" + " - Time:" + CommonState.getTime() + " - " +
 				message.getMessageId() + " - Node:" + CommonState.getNode().getID()
-		);
+		);*/
 
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);

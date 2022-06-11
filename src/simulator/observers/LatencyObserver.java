@@ -6,6 +6,10 @@ import peersim.core.Control;
 import peersim.core.Network;
 import simulator.protocols.application.ApplicationProtocol;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * Runs in the end of the simulation,
  * retrieves the Client perceived Latency statistics.
@@ -16,21 +20,41 @@ public class LatencyObserver implements Control {
 
 	public LatencyObserver(String prefix) {}
 
+	public static final String PATH = "./output/latency/";
+	public static final String EXPERIMENT_NAME = "EXPERIMENT_NAME";
+
 	@Override
 	public boolean execute() {
-		System.err.println(CommonState.getTime() + ": " + this.getClass().getName() + " extracting client perceived Latencies.");
+		var experimentName = Configuration.getString(EXPERIMENT_NAME);
+		var filename = PATH + experimentName + ".txt";
 
-		for (int i = 0; i < Network.size(); i++) {
-			var node = Network.get(i);
-			var application = (ApplicationProtocol) node.getProtocol(Configuration.lookupPid(ApplicationProtocol.protName));
-			var nodeLatencies = application.getMessageLatencies();
-			System.out.print("perceived-latency-node-" + i + ": ");
+		System.out.println(CommonState.getTime() + ": " + this.getClass().getName() + " extracting client perceived Latencies.");
 
-			for (var latency : nodeLatencies) {
-				System.out.print(latency + ",");
+		File latencyObservation = new File(filename);
+
+		try (FileWriter fileWriter = new FileWriter(filename)) {
+			if (latencyObservation.createNewFile()) {
+				System.out.println("File created");
 			}
 
-			System.out.println();
+			for (int i = 0; i < Network.size(); i++) {
+				var node = Network.get(i);
+				var application = (ApplicationProtocol) node.getProtocol(Configuration.lookupPid(ApplicationProtocol.protName));
+				var nodeLatencies = application.getMessageLatencies();
+				System.out.print("perceived-latency-node-" + i + ": ");
+
+				fileWriter.write("" + i);
+
+				for (var latency : nodeLatencies) {
+					System.out.print(latency + ",");
+					fileWriter.write("," + latency);
+				}
+
+				fileWriter.write("\n");
+				System.out.println();
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 
 		return false;

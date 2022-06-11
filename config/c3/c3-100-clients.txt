@@ -8,16 +8,16 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
-EXPERIMENT_NAME saturn-200-clients
+EXPERIMENT_NAME c3-100-clients
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
 # ------------------------------- #
 
-random.seed             101212132131
+random.seed             10
 network.size            SIZE
 
-simulation.endtime      10000
+simulation.endtime      5000
 
 # ------------------- #
 # ---- Transport ---- #
@@ -32,9 +32,9 @@ protocol.urt            simulator.transports.LatencyMatrixTransport
 # ---- Application / Clients Config ---- #
 # -------------------------------------- #
 
-protocol.application    causalityprotocols.saturn.SaturnApplication
+protocol.application    causalityprotocols.c3.C3Application
 {
-    number_clients  200       # the number of clients being simulated per node
+    number_clients  100       # the number of clients being simulated per node
     weight_reads    20         # the percentage/weight of reads being simulated
     weight_writes   80         # the percentage/weight of writes being simulated
 }
@@ -43,7 +43,7 @@ protocol.application    causalityprotocols.saturn.SaturnApplication
 # ---- Causality Config ---- #
 # -------------------------- #
 
-protocol.causality      causalityprotocols.saturn.Saturn
+protocol.causality      causalityprotocols.c3.C3
 {
     write_time      8          # the amount of time a write takes to execute
     read_time       12         # the amount of time that a read takes to execute
@@ -53,7 +53,7 @@ protocol.causality      causalityprotocols.saturn.Saturn
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
 
-protocol.overlay        simulator.protocols.overlay.SimpleOverlay
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # replace path with desired overlay protocol
 
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well
@@ -62,7 +62,7 @@ protocol.overlay        simulator.protocols.overlay.SimpleOverlay
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace path with desired broadcast protocol
+protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # replace path with desired broadcast protocol
 {
     transport           urt
 }
@@ -73,17 +73,12 @@ protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace p
 # ---- Initializers ---- #
 # ---------------------- #
 
-init.treeInit           WireFromFile
-{
-    k                   20
-    file                config/graphs/tree-graph-0.txt
-    protocol            overlay
-}
-
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
 {
     protocol            application
 }
+
+init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 
 # ---------------------------------- #
 # ----- Controls and Observers ----- #
@@ -93,10 +88,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    9999
+    step    4999
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    9999
+    step    4999
 }
