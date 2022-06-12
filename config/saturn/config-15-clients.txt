@@ -8,7 +8,7 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
-EXPERIMENT_NAME saturn-400-clients
+EXPERIMENT_NAME saturn-15-clients
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
@@ -34,7 +34,7 @@ protocol.urt            simulator.transports.LatencyMatrixTransport
 
 protocol.application    causalityprotocols.saturn.SaturnApplication
 {
-    number_clients  400       # the number of clients being simulated per node
+    number_clients  15       # the number of clients being simulated per node
     weight_reads    20         # the percentage/weight of reads being simulated
     weight_writes   80         # the percentage/weight of writes being simulated
 }

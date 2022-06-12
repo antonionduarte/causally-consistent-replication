@@ -75,13 +75,19 @@ def generate_graph(latencies, throughputs):
 
 def main():
     input_experiments = [
+        "saturn-5-clients.txt",
         "saturn-10-clients.txt",
-        "saturn-25-clients.txt",
+        "saturn-10-clients.txt",
+        "saturn-15-clients.txt",
+        "saturn-20-clients.txt",
+        "saturn-30-clients.txt",
+        "saturn-35-clients.txt",
         "saturn-50-clients.txt",
-        "saturn-100-clients.txt",
-        "saturn-500-clients.txt",
-        #"saturn-1000-clients.txt"
-
+        "saturn-55-clients.txt",
+        "saturn-60-clients.txt",
+        "saturn-65-clients.txt",
+        #"saturn-80-clients.txt",
+        #"saturn-100-clients.txt"
         #"c3-10-clients.txt",
         #"c3-25-clients.txt",
         #"c3-50-clients.txt",

@@ -17,7 +17,7 @@ EXPERIMENT_NAME saturn-25-clients
 random.seed             101212132131
 network.size            SIZE
 
-simulation.endtime      5000
+simulation.endtime      10000
 
 # ------------------- #
 # ---- Transport ---- #
@@ -93,10 +93,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    4999
+    step    9999
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    4999
+    step    9999
 }
