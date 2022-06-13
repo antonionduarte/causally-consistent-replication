@@ -18,14 +18,14 @@
 
 package peersim.edsim;
 
-import peersim.core.Node;
-import peersim.core.CommonState;
 import peersim.config.Configuration;
 import peersim.config.IllegalParameterException;
+import peersim.core.CommonState;
+import peersim.core.Node;
 
 /**
- * The Heap data structure used to maintain events "sorted" by
- * scheduled time and to obtain the next event to be executed.
+ * The Heap data structure used to maintain events "sorted" by scheduled time and to obtain the next event to be
+ * executed.
  *
  * @author Alberto Montresor
  * @version $Revision: 1.10 $
@@ -44,11 +44,9 @@ public class Heap implements PriorityQueue {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * This parameter specifies how many
-	 * bits are used to order events that occur at the same time. Defaults
-	 * to 8. A value smaller than 8 causes an IllegalParameterException.
-	 * Higher values allow for a better discrimination, but reduce
-	 * the maximal time steps that can be simulated.
+	 * This parameter specifies how many bits are used to order events that occur at the same time. Defaults to 8. A
+	 * value smaller than 8 causes an IllegalParameterException. Higher values allow for a better discrimination, but
+	 * reduce the maximal time steps that can be simulated.
 	 *
 	 * @config
 	 */
@@ -107,8 +105,7 @@ public class Heap implements PriorityQueue {
 	private final int pbits;
 
 	/**
-	 * The mask to test whether the time value fits into the range we can
-	 * represent
+	 * The mask to test whether the time value fits into the range we can represent
 	 */
 	private final long overflowMask;
 
@@ -133,16 +130,17 @@ public class Heap implements PriorityQueue {
 		int size = Configuration.getInt(prefix + "." + PAR_SIZE, 65536);
 
 		// some complex stuff to deal with legacy parameter names...
-		if (!Configuration.contains(PAR_PBITS_LEGACY))
+		if (!Configuration.contains(PAR_PBITS_LEGACY)) {
 			pbits = Configuration.getInt(prefix + "." + PAR_PBITS, 8);
-		else {
+		} else {
 			pbits = Configuration.getInt(PAR_PBITS_LEGACY);
-			if (Configuration.contains(prefix + "." + PAR_PBITS))
+			if (Configuration.contains(prefix + "." + PAR_PBITS)) {
 				throw new IllegalParameterException(PAR_PBITS_LEGACY,
 						"Your configuration file contains both " +
 								prefix + "." + PAR_PBITS + " and " +
 								PAR_PBITS_LEGACY + "; please remove " +
 								PAR_PBITS_LEGACY);
+			}
 		}
 
 		if (pbits < 8 || pbits >= 31) {
@@ -172,10 +170,10 @@ public class Heap implements PriorityQueue {
 	/**
 	 * Add a new event, to be scheduled at the specified time.
 	 *
-	 * @param time the time at which this event should be scheduled
+	 * @param time  the time at which this event should be scheduled
 	 * @param event the object describing the event
-	 * @param node the node at which the event has to be delivered
-	 * @param pid the protocol that handles the event
+	 * @param node  the node at which the event has to be delivered
+	 * @param pid   the protocol that handles the event
 	 */
 	public void add(long time, Object event, Node node, byte pid) {
 		add(time, event, node, pid, CommonState.random.nextInt(1 << pbits));
@@ -186,14 +184,16 @@ public class Heap implements PriorityQueue {
 	/**
 	 * Add a new event, to be scheduled at the specified time.
 	 *
-	 * @param time the time at which this event should be scheduled
+	 * @param time  the time at which this event should be scheduled
 	 * @param event the object describing the event
-	 * @param node the node at which the event has to be delivered
-	 * @param pid the protocol that handles the event
+	 * @param node  the node at which the event has to be delivered
+	 * @param pid   the protocol that handles the event
 	 */
 	public void add(long time, Object event, Node node, byte pid, long priority) {
-		if ((time & overflowMask) != 0) throw new
-				IllegalArgumentException("Time overflow: time=" + time);
+		if ((time & overflowMask) != 0) {
+			throw new
+					IllegalArgumentException("Time overflow: time=" + time);
+		}
 		//XXX should we test priority overflow? How much does it cost?
 		boolean stop = node == null;
 		while (!stop) {
@@ -224,17 +224,17 @@ public class Heap implements PriorityQueue {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * Removes the first event in the heap and returns it.
-	 * Note that, to avoid garbage collection, a singleton instance of
-	 * the Event class is used. This means that data contained in the
-	 * returned event are overwritten when a new invocation of this
-	 * method is performed.
+	 * Removes the first event in the heap and returns it. Note that, to avoid garbage collection, a singleton instance
+	 * of the Event class is used. This means that data contained in the returned event are overwritten when a new
+	 * invocation of this method is performed.
 	 *
 	 * @return first event or null if size is zero
 	 */
 	public Event removeFirst() {
 
-		if (size == 0) return null;
+		if (size == 0) {
+			return null;
+		}
 
 		ev.time = times[0] >> pbits;
 		ev.event = events[0];

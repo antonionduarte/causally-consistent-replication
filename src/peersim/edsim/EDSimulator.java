@@ -330,7 +330,7 @@ public class EDSimulator {
 		if (Configuration.contains(PAR_PQ))
 			heap = (PriorityQueue) Configuration.getInstance(PAR_PQ);
 		else
-			heap = new OldHeap();
+			heap = new Heap();
 		endtime = Configuration.getLong(PAR_ENDTIME);
 		if (CommonState.getEndTime() < 0) // not initialized yet
 			CommonState.setEndTime(endtime);

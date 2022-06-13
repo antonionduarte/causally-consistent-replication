@@ -8,7 +8,7 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
-EXPERIMENT_NAME saturn-100-clients
+EXPERIMENT_NAME saturn-test-clients
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
@@ -93,10 +93,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    499
+    step    simulation.endtime - 1
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    499
+    step    simulation.endtime - 1
 }

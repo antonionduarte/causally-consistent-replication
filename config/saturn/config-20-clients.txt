@@ -1,5 +1,6 @@
-# network size
+simulation.endtime 	 	 1
 
+# network size
 SIZE                    7
 
 # parameters of periodic execution
@@ -16,8 +17,6 @@ EXPERIMENT_NAME saturn-20-clients
 
 random.seed             101212132131
 network.size            SIZE
-
-simulation.endtime      10000
 
 # ------------------- #
 # ---- Transport ---- #
@@ -93,10 +92,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    9999
+    step    simulation.endtime - 1
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    9999
+    step    simulation.endtime - 1
 }
