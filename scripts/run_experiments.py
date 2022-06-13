@@ -4,7 +4,7 @@ import multiprocessing
 NUM_CPUS = None
 COMPILE_COMMAND = 'mvn clean compile assembly:single'
 RUN_COMMAND = 'java -cp target/peersim.jar peersim.Simulator {}'
-TIME = 20000
+TIME = 10000
 
 def run_command(cmd):
     os.system(RUN_COMMAND.format(cmd))
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         'config/saturn/config-50-clients.txt',
     ]
 
-    if time != None:
+    if TIME != None:
         for command in commands:
             file = open(command, 'r')
             lines = file.readlines()

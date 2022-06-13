@@ -1,4 +1,4 @@
-simulation.endtime 	 	 1
+simulation.endtime 	 	 10000
 
 # network size
 SIZE                    7
@@ -75,7 +75,7 @@ protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace p
 init.treeInit           WireFromFile
 {
     k                   20
-    file                config/graphs/tree-graph-0.txt
+    file                config/graphs/tree-graph-1.txt
     protocol            overlay
 }
 
