@@ -43,7 +43,7 @@ if __name__ == "__main__":
             for line in lines:
                 file.write(line)
     
-    run_commands(commands, n_parallel=5)      
+    run_commands(commands, n_parallel=10)      
 
     print('\n----------------------------')
     print('Finished Running Experiments')

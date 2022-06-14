@@ -12,7 +12,8 @@ public interface Broadcast extends EDProtocol {
 	 * and calls the uponBroadcast function.
 	 * @param node The current node.
 	 * @param message The message to broadcast.
+	 * @param lastHop The last node the message went by.
 	 */
-	void broadcastMessage(Node node, Message message);
+	void broadcastMessage(Node node, Message message, long lastHop);
 
 }

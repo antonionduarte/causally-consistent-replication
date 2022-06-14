@@ -34,10 +34,10 @@ public abstract class BroadcastProtocol implements Broadcast {
 	}
 
 	@Override
-	public void broadcastMessage(Node node, Message message) {
+	public void broadcastMessage(Node node, Message message, long lastHop) {
 		List<Node> neighbors = ((OverlayProtocol) node.getProtocol(Configuration.lookupPid(OverlayProtocol.protName)))
 				.getNeighbors();
-		uponBroadcast(node, message, neighbors);
+		uponBroadcast(node, message, neighbors, lastHop);
 	}
 
 	/**
@@ -46,6 +46,7 @@ public abstract class BroadcastProtocol implements Broadcast {
 	 * @param node The local node.
 	 * @param message The message to broadcast.
 	 * @param neighbors The list of neighbors.
+	 * @param lastHop The last hop that the message went through
 	 */
-	public abstract void uponBroadcast(Node node, Message message, List<Node> neighbors);
+	public abstract void uponBroadcast(Node node, Message message, List<Node> neighbors, long lastHop);
 }

@@ -64,6 +64,3 @@ if __name__ == "__main__":
     for command in commands:
         os.system(DOCKER_COPY.format(get_container_name(command), os.getcwd()))
         os.system(DOCKER_RM_CONTAINER.format(get_container_name(command)))
-
-    # Extract results to folder:
-

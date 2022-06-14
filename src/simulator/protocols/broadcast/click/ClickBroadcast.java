@@ -27,7 +27,7 @@ public class ClickBroadcast extends BroadcastProtocol {
 	}
 
 	@Override
-	public void uponBroadcast(Node node, Message message, List<Node> neighbors) {
+	public void uponBroadcast(Node node, Message message, List<Node> neighbors, long lastHop) {
 		if (message.getOriginNode().getID() == node.getID()) {
 			System.out.print(
 					"DEBUG: Propagating - " + message.getMessageId()

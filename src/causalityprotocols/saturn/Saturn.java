@@ -30,9 +30,9 @@ public class Saturn extends CausalityProtocol {
 			return true;
 		}
 
-		//if (message.getOriginNode().getID() == node.getID()) {
-		//	return true;
-		//}
+		if (message.getOriginNode().getID() == node.getID()) {
+			return true;
+		}
 
 		// System.out.println("Checking Causality - " + message.getMessageId() + " - " + operationExecuting + " - Time: " + CommonState.getTime() + " - Node: - " + CommonState.getNode().getID());
 

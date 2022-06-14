@@ -152,6 +152,7 @@ public abstract class CausalityProtocol implements Causality {
 
 	public void propagateMessage(Node node, Message message) {
 		if (message.getOperationType() == Message.OperationType.WRITE) {
+			var lastHop = message.getLastHop();
 			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
 
 			Message toSend = new MessageWrapper(
@@ -165,7 +166,7 @@ public abstract class CausalityProtocol implements Causality {
 			);
 
 			this.sentMessages.add(message.getMessageId());
-			broadcast.broadcastMessage(node, toSend);
+			broadcast.broadcastMessage(node, toSend, lastHop);
 		}
 	}
 

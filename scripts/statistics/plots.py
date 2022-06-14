@@ -80,14 +80,14 @@ if __name__ == "__main__":
         "saturn-10-clients.txt",
         "saturn-15-clients.txt",
         "saturn-20-clients.txt",
-        #"saturn-25-clients.txt",
-        #"saturn-30-clients.txt",
-        #"saturn-35-clients.txt",
-        #"saturn-50-clients.txt",
-        #"saturn-55-clients.txt",
-        #"saturn-60-clients.txt",
-        #"saturn-65-clients.txt",
-        #"saturn-80-clients.txt",
+        "saturn-25-clients.txt",
+        "saturn-30-clients.txt",
+        "saturn-35-clients.txt",
+        "saturn-50-clients.txt",
+        "saturn-55-clients.txt",
+        "saturn-60-clients.txt",
+        "saturn-65-clients.txt",
+        "saturn-80-clients.txt",
         #"saturn-100-clients.txt"
     ]
 
