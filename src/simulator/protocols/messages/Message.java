@@ -4,11 +4,19 @@ import peersim.core.Node;
 
 public interface Message {
 
-	enum MessageType {
+	enum OperationType {
 		WRITE,
 		READ;
 	}
 
+	enum EventType {
+		PROPAGATING,
+		EXECUTING
+	}
+
+	/**
+	 * @return The id of the message
+	 */
 	String getMessageId();
 
 	/**
@@ -27,30 +35,25 @@ public interface Message {
 	Node getOriginNode();
 
 	/**
-	 * @return State of the message, it's either propagating or executing.
+	 * @return The type of the event, either Propagating, Executing or Migrating.
+	 * TODO: Migrating
 	 */
-	boolean isPropagating();
+	EventType getEventType();
 
 	/**
-	 * Toggles if the message is propagating or not (not being executing)
+	 * Sets the event type.
 	 */
-	void togglePropagating();
-
-	/**
-	 * Changes the state of the setPropagating.
-	 * @param state The new state of isPropagating (true or false).
-	 */
-	void setPropagating(boolean state);
+	void setEventType(EventType eventType);
 
 	/**
 	 * Messages in the system are either Write messages or Read messages.
 	 */
-	MessageType getMessageType();
+	OperationType getOperationType();
 
 	/**
 	 * Changes the type of message.
 	 */
-	void setMessageType(MessageType messageType);
+	void setOperationType(OperationType operationType);
 
 	/**
 	 * The Message class acts as a wrapper for classes specific to Protocols.

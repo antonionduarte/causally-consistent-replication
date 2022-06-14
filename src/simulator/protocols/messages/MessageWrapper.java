@@ -8,9 +8,9 @@ import peersim.core.Node;
 public class MessageWrapper implements Message {
 
 	private ProtocolMessage protocolMessage;
-	private MessageType messageType;
+	private OperationType operationType;
+	private EventType eventType;
 
-	private boolean isPropagating;
 
 	private final long sendTime;
 	private final long lastHop;
@@ -19,7 +19,8 @@ public class MessageWrapper implements Message {
 	private final String messageId;
 
 	public MessageWrapper(
-			MessageType messageType,
+			OperationType operationType,
+			EventType eventType,
 			ProtocolMessage protocolMessage,
 			Node node,
 			long sendTime,
@@ -27,8 +28,8 @@ public class MessageWrapper implements Message {
 			String messageId
 	) {
 		this.protocolMessage = protocolMessage;
-		this.messageType = messageType;
-		this.isPropagating = true;
+		this.operationType = operationType;
+		this.eventType = eventType;
 		this.lastHop = lastHop;
 		this.originNode = node;
 		this.sendTime = sendTime;
@@ -56,28 +57,23 @@ public class MessageWrapper implements Message {
 	}
 
 	@Override
-	public void setPropagating(boolean propagating) {
-		isPropagating = propagating;
+	public EventType getEventType() {
+		return this.eventType;
 	}
 
 	@Override
-	public boolean isPropagating() {
-		return isPropagating;
+	public void setEventType(EventType eventType) {
+		this.eventType = eventType;
 	}
 
 	@Override
-	public void togglePropagating() {
-		this.isPropagating = !isPropagating;
+	public OperationType getOperationType() {
+		return this.operationType;
 	}
 
 	@Override
-	public MessageType getMessageType() {
-		return messageType;
-	}
-
-	@Override
-	public void setMessageType(MessageType messageType) {
-		this.messageType = messageType;
+	public void setOperationType(OperationType operationType) {
+		this.operationType = operationType;
 	}
 
 	@Override

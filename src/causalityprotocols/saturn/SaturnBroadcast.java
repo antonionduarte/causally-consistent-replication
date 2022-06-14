@@ -32,11 +32,11 @@ public class SaturnBroadcast extends BroadcastProtocol {
 		for (var neighbor : neighbors) {
 			// send to everyone that is not himself
 			if (neighbor.getID() != message.getLastHop()) {
-				//System.out.println(
-				//		"DEBUG: Propagating - " + message.getMessageId()
-				//		+ " - Time:" + CommonState.getTime() + " - Node:" + CommonState.getNode().getID() + " - " +
-				//				neighbor.getID()
-				//);
+				System.out.println(
+						"DEBUG: Propagating - " + message.getMessageId()
+						+ " - Time:" + CommonState.getTime() + " - Node:" + CommonState.getNode().getID() + " - " +
+								neighbor.getID()
+				);
 
 				((Transport) node.getProtocol(transportId)).send(node, neighbor, message, pid);
 			}

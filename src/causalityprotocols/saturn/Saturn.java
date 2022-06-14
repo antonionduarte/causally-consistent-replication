@@ -26,13 +26,17 @@ public class Saturn extends CausalityProtocol {
 
 	@Override
 	public boolean checkCausality(Node node, Message message) {
-		if (message.getMessageType() == Message.MessageType.READ) {
+		if (message.getOperationType() == Message.OperationType.READ) {
 			return true;
 		}
 
-		// System.out.println("Operation Executing - " + operationExecuting + " - Time: " + CommonState.getTime() + " - Node: - " + CommonState.getNode().getID());
+		//if (message.getOriginNode().getID() == node.getID()) {
+		//	return true;
+		//}
 
-		// if there isn't an operation executing, operation can execute.
+		System.out.println("Operation Executing - " + message.getMessageId() + " - " + operationExecuting + " - Time: " + CommonState.getTime() + " - Node: - " + CommonState.getNode().getID());
+
+		// If there isn't an operation executing, operation can execute.
 		return !operationExecuting;
 	}
 
@@ -41,10 +45,10 @@ public class Saturn extends CausalityProtocol {
 		this.operationExecuting = false;
 		this.testOperation = null;
 
-		/*if (message.getMessageType() == Message.MessageType.WRITE) {
+		if (message.getOperationType() == Message.OperationType.WRITE) {
 			System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 			System.out.println();
-		}*/
+		}
 	}
 
 	@Override

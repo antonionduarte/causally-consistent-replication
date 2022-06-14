@@ -44,7 +44,7 @@ public class C3 extends CausalityProtocol {
 
 	@Override
 	public boolean checkCausality(Node node, Message message) {
-		if (message.getMessageType() == Message.MessageType.READ) {
+		if (message.getOperationType() == Message.OperationType.READ) {
 			return true;
 		}
 
@@ -76,7 +76,7 @@ public class C3 extends CausalityProtocol {
 
 	@Override
 	public void operationFinishedExecution(Node node, Message message) {
-		if (message.getMessageType() == Message.MessageType.READ) {
+		if (message.getOperationType() == Message.OperationType.READ) {
 			return;
 		}
 
@@ -111,7 +111,7 @@ public class C3 extends CausalityProtocol {
 
 	@Override
 	public void operationStartedExecution(Node node, Message message) {
-		if (message.getMessageType() == Message.MessageType.READ) {
+		if (message.getOperationType() == Message.OperationType.READ) {
 			return;
 		}
 

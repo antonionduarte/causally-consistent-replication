@@ -1,14 +1,13 @@
 package simulator.protocols.application;
 
-import simulator.protocols.CausalityProtocol;
-import simulator.protocols.messages.Message;
-import simulator.protocols.messages.MessageWrapper;
 import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 import peersim.edsim.EDSimulator;
-import simulator.protocols.messages.ProtocolMessage;
+import simulator.protocols.CausalityProtocol;
+import simulator.protocols.messages.Message;
+import simulator.protocols.messages.MessageWrapper;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -91,10 +90,10 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		long rtt = (CommonState.getTime() - message.getSendTime());
 		messageLatencies.add(rtt);
 
-		/*System.out.println(
+		System.out.println(
 				"DEBUG: Received by Application" + " - Time:" + CommonState.getTime() + " - " +
 				message.getMessageId() + " - Node:" + CommonState.getNode().getID()
-		);*/
+		);
 
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
@@ -111,17 +110,25 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	private Message getRandomMessage(Node node) {
 		long totalWeight = weightWrites + weightReads;
 		long random = CommonState.random.nextLong(totalWeight);
-		Message.MessageType messageType;
+		Message.OperationType operationType;
 
 		String messageId = node.getID() + "_" + idCounter++;
 
 		if (random <= weightWrites) {
-			messageType = Message.MessageType.WRITE;
+			operationType = Message.OperationType.WRITE;
 		} else {
-			messageType = Message.MessageType.READ;
+			operationType = Message.OperationType.READ;
 		}
 
-		return new MessageWrapper(messageType, null, node, CommonState.getTime(), CommonState.getNode().getID(), messageId);
+		return new MessageWrapper(
+				operationType,
+				Message.EventType.PROPAGATING,
+				null,
+				node,
+				CommonState.getTime(),
+				CommonState.getNode().getID(),
+				messageId
+		);
 	}
 
 	/**

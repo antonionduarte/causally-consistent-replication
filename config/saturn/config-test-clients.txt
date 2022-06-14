@@ -34,7 +34,7 @@ protocol.urt            simulator.transports.LatencyMatrixTransport
 
 protocol.application    causalityprotocols.saturn.SaturnApplication
 {
-    number_clients  2       # the number of clients being simulated per node
+    number_clients  5       # the number of clients being simulated per node
     weight_reads    20         # the percentage/weight of reads being simulated
     weight_writes   80         # the percentage/weight of writes being simulated
 }

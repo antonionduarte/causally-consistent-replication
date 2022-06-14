@@ -20,9 +20,6 @@ public abstract class CausalityProtocol implements Causality {
 	private final int writeTime;
 	private final int readTime;
 
-	long numPush;
-	long numPop;
-
 	/**
 	 * Event Queue, saves the events that weren't able to be processed due to issues with causality.
 	 */
@@ -78,33 +75,34 @@ public abstract class CausalityProtocol implements Causality {
 
 		var message = (Message) event;
 		// Could throw NPE if not well verified within the protocol
-		if (message.isPropagating()) {
-			if (checkCausality(node, message)) {
-				System.out.println(
-					"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
-					" - Node:" + CommonState.getNode().getID()
-				);
-				this.executeOperation(node, message, pid);
-			}
-			else {
-				System.out.println(
-					"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
-					" - Node:" + CommonState.getNode().getID()
-				);
-				if (!executedMessages.contains(message.getMessageId())) {
-					this.operationQueue.add(message);
+		switch (message.getEventType()) {
+			case PROPAGATING -> {
+				if (checkCausality(node, message)) {
+					System.out.println(
+						"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
+						" - Node:" + CommonState.getNode().getID()
+					);
+					this.executeOperation(node, message, pid);
+				}
+				else {
+					System.out.println(
+						"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
+						" - Node:" + CommonState.getNode().getID()
+					);
+					if (!executedMessages.contains(message.getMessageId())) {
+						this.operationQueue.add(message);
+					}
 				}
 			}
-		}
-		// Message was executing
-		else {
-			this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
-			this.executedOperations++;
-			this.operationFinishedExecution(node, message);
+			case EXECUTING -> {
+				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
+				this.executedOperations++;
+				this.operationFinishedExecution(node, message);
 
-			// Send the response back to the client
-			if (message.getOriginNode().getID() == node.getID()) {
-				EDSimulator.add(0, event, node, Configuration.lookupPid(ApplicationProtocol.protName));
+				// Send the response back to the client
+				if (message.getOriginNode().getID() == node.getID()) {
+					EDSimulator.add(0, event, node, Configuration.lookupPid(ApplicationProtocol.protName));
+				}
 			}
 		}
 
@@ -134,22 +132,21 @@ public abstract class CausalityProtocol implements Causality {
 		this.executedMessages.add(message.getMessageId());
 		this.operationStartedExecution(node, message);
 
-		if (message.getMessageType() == Message.MessageType.READ) {
+		if (message.getOperationType() == Message.OperationType.READ) {
 			expectedArrivalTime = readTime;
 		} else {
 			expectedArrivalTime = writeTime;
 		}
 
 		Message toSend = new MessageWrapper(
-				message.getMessageType(),
+				message.getOperationType(),
+				Message.EventType.EXECUTING,
 				message.getProtocolMessage(),
 				message.getOriginNode(),
 				message.getSendTime(),
 				node.getID(),
 				message.getMessageId()
 		);
-
-		toSend.setPropagating(false);
 
 		EDSimulator.add(expectedArrivalTime, toSend, node, pid);
 	}
@@ -183,11 +180,12 @@ public abstract class CausalityProtocol implements Causality {
 	public abstract void operationStartedExecution(Node node, Message message);
 
 	public void propagateMessage(Node node, Message message) {
-		if (message.getMessageType() == Message.MessageType.WRITE) {
+		if (message.getOperationType() == Message.OperationType.WRITE) {
 			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
 
 			Message toSend = new MessageWrapper(
-					message.getMessageType(),
+					message.getOperationType(),
+					Message.EventType.PROPAGATING,
 					message.getProtocolMessage(),
 					message.getOriginNode(),
 					message.getSendTime(),
@@ -196,7 +194,6 @@ public abstract class CausalityProtocol implements Causality {
 			);
 
 			this.sentMessages.add(message.getMessageId());
-			toSend.setPropagating(true);
 			broadcast.broadcastMessage(node, toSend);
 		}
 	}
