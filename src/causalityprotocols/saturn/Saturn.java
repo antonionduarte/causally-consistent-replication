@@ -34,7 +34,7 @@ public class Saturn extends CausalityProtocol {
 		//	return true;
 		//}
 
-		System.out.println("Checking Causality - " + message.getMessageId() + " - " + operationExecuting + " - Time: " + CommonState.getTime() + " - Node: - " + CommonState.getNode().getID());
+		// System.out.println("Checking Causality - " + message.getMessageId() + " - " + operationExecuting + " - Time: " + CommonState.getTime() + " - Node: - " + CommonState.getNode().getID());
 
 		// If there isn't an operation executing, operation can execute.
 		return !operationExecuting;

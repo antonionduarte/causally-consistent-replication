@@ -69,10 +69,10 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		System.out.println("Received Event - Time: " + CommonState.getTime() + " - Node: " + CommonState.getNode().getID());
-
-
 		var message = (Message) event;
+
+		System.out.println("Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: " + CommonState.getNode().getID());
+
 		// Could throw NPE if not well verified within the protocol
 		switch (message.getEventType()) {
 			case PROPAGATING -> {
@@ -150,6 +150,25 @@ public abstract class CausalityProtocol implements Causality {
 		EDSimulator.add(expectedArrivalTime, toSend, node, pid);
 	}
 
+	public void propagateMessage(Node node, Message message) {
+		if (message.getOperationType() == Message.OperationType.WRITE) {
+			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
+
+			Message toSend = new MessageWrapper(
+					message.getOperationType(),
+					Message.EventType.PROPAGATING,
+					message.getProtocolMessage(),
+					message.getOriginNode(),
+					message.getSendTime(),
+					node.getID(),
+					message.getMessageId()
+			);
+
+			this.sentMessages.add(message.getMessageId());
+			broadcast.broadcastMessage(node, toSend);
+		}
+	}
+
 	/**
 	 * @return The time at which a message was made visible within this node.
 	 */
@@ -177,25 +196,4 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public abstract void operationStartedExecution(Node node, Message message);
-
-	public void propagateMessage(Node node, Message message) {
-		if (message.getOperationType() == Message.OperationType.WRITE) {
-			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
-
-			Message toSend = new MessageWrapper(
-					message.getOperationType(),
-					Message.EventType.PROPAGATING,
-					message.getProtocolMessage(),
-					message.getOriginNode(),
-					message.getSendTime(),
-					node.getID(),
-					message.getMessageId()
-			);
-
-			this.sentMessages.add(message.getMessageId());
-			broadcast.broadcastMessage(node, toSend);
-		}
-	}
-
-
 }
