@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 LATENCY_PATH = "output/latency/"
 THROUGHPUT_PATH = "output/throughput/"
-EXPERIMENT_TIME_SECONDS = 10
+EXPERIMENT_TIME_SECONDS = 20
 
 """ 
 Processes the latencies and returns the medium latency for each 
@@ -63,18 +63,18 @@ def throughput(inputs):
     return total_throughput
 
 
-def plot_graph(latencies, throughputs, color):
+def generate_graph(latencies, throughputs):
     plt.title('Saturn Experiments')
     plt.xlabel('Throughput (Op/s)')
     plt.ylabel('Perceived Latency (ms)')
     
-    plt.plot(throughputs, latencies, color, linestyle="dashed")
-    plt.plot(throughputs, latencies, color + '*')
-
+    plt.plot(throughputs, latencies, 'b', linestyle="dashed")
+    plt.plot(throughputs, latencies, 'b*')
     plt.show()
 
-if __name__ == "__main__":
-    input_saturn = [
+
+def main():
+    input_experiments = [
         "saturn-3-clients.txt",
         "saturn-5-clients.txt",
         "saturn-10-clients.txt",
@@ -83,15 +83,6 @@ if __name__ == "__main__":
         "saturn-25-clients.txt",
         "saturn-30-clients.txt",
         "saturn-35-clients.txt",
-        "saturn-50-clients.txt",
-        "saturn-55-clients.txt",
-        "saturn-60-clients.txt",
-        "saturn-65-clients.txt",
-        "saturn-80-clients.txt",
-        "saturn-100-clients.txt"
-    ]
-
-    input_c3 = [
         #"saturn-50-clients.txt",
         #"saturn-55-clients.txt",
         #"saturn-60-clients.txt",
@@ -103,18 +94,17 @@ if __name__ == "__main__":
         #"c3-50-clients.txt",
         #"c3-100-clients.txt",
         #"c3-500-clients.txt",
-        #"c3-1000-clients.txt",
+        #"c3-1000-clients.txt"
     ]
 
-    throughputs_saturn = throughput(input_saturn)
-    latencies_saturn = latency(input_saturn)
+    throughputs = throughput(input_experiments)
+    latencies = latency(input_experiments)
 
-    print(throughputs_saturn)
-    print(latencies_saturn)
+    print(throughputs)
+    print(latencies)
 
-    #throughputs_c3 = throughput(input_c3)
-    #latencies_c3 = latency(input_c3)
+    generate_graph(latencies, throughputs)
 
-    plot_graph(latencies_saturn, throughputs_saturn, 'b')
-    #plot_graph(latencies_c3, throughputs_c3, 'r')
-    #plt.show()
+
+main()
+

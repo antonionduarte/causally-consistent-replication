@@ -19,7 +19,7 @@ public class SaturnApplication extends ApplicationProtocol {
 	@Override
 	public void changeInitialMessage(Node node, Message message) {
 		message.setProtocolMessage(new SaturnMessage(
-				CommonState.getNode().getID(),
+				node.getID(),
 				-1)
 		);
 	}
@@ -27,7 +27,7 @@ public class SaturnApplication extends ApplicationProtocol {
 	@Override
 	public void changeResponseMessage(Node node, Message message) {
 		message.setProtocolMessage(new SaturnMessage(
-				CommonState.getNode().getID(),
+				node.getID(),
 				-1)
 		);
 	}

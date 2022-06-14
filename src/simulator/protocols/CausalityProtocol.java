@@ -69,9 +69,8 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		if (CommonState.getTime() % 10 == 0) {
-			System.out.println("Received Event - Time: " + CommonState.getTime() + " - Node: " + CommonState.getNode().getID());
-		}
+		System.out.println("Received Event - Time: " + CommonState.getTime() + " - Node: " + CommonState.getNode().getID());
+
 
 		var message = (Message) event;
 		// Could throw NPE if not well verified within the protocol
@@ -117,7 +116,7 @@ public abstract class CausalityProtocol implements Causality {
 	public void processQueue(Node node, int pid) {
 		var verifiedMessages = new ArrayList<Message>();
 		for (Message message : operationQueue) {
-			if (checkCausality(node, message)) {
+			if (this.checkCausality(node, message)) {
 				verifiedMessages.add(message);
 				this.executeOperation(node, message, pid);
 			}
