@@ -83,7 +83,7 @@ def main():
         "saturn-25-clients.txt",
         "saturn-30-clients.txt",
         "saturn-35-clients.txt",
-        "saturn-50-clients.txt",
+        #"saturn-50-clients.txt",
         #"saturn-55-clients.txt",
         #"saturn-60-clients.txt",
         #"saturn-65-clients.txt",
