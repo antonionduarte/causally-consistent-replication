@@ -40,7 +40,7 @@ public abstract class CausalityProtocol implements Causality {
 	/**
 	 * The total amount of executed operations within this node.
 	 */
-	private long executedOperations;
+	//private long executedOperations;
 
 	/**
 	 * The constructor for the protocol.
@@ -55,7 +55,7 @@ public abstract class CausalityProtocol implements Causality {
 	public Object clone() {
 		try {
 			CausalityProtocol clone = (CausalityProtocol) super.clone();
-			clone.executedOperations = 0;
+			//clone.executedOperations = 0;
 			clone.operationQueue = new LinkedList<>();
 			clone.visibilityTimes = new HashMap<>();
 			clone.executedMessages = new HashSet<>();
@@ -71,23 +71,24 @@ public abstract class CausalityProtocol implements Causality {
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
 
-		System.out.println("Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: " + CommonState.getNode().getID());
+		if (CommonState.getTime() % 100 == 0)
+			System.out.println("Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: " + CommonState.getNode().getID());
 
 		// Could throw NPE if not well verified within the protocol
 		switch (message.getEventType()) {
 			case PROPAGATING -> {
 				if (checkCausality(node, message)) {
-					System.out.println(
+					/*System.out.println(
 						"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
 						" - Node:" + CommonState.getNode().getID()
-					);
+					);*/
 					this.executeOperation(node, message, pid);
 				}
 				else {
-					System.out.println(
+					/*System.out.println(
 						"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
 						" - Node:" + CommonState.getNode().getID()
-					);
+					);*/
 					if (!executedMessages.contains(message.getMessageId())) {
 						this.operationQueue.add(message);
 					}
@@ -95,7 +96,7 @@ public abstract class CausalityProtocol implements Causality {
 			}
 			case EXECUTING -> {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
-				this.executedOperations++;
+				//this.executedOperations++;
 				this.operationFinishedExecution(node, message);
 
 				// Send the response back to the client
@@ -180,9 +181,9 @@ public abstract class CausalityProtocol implements Causality {
 	/**
 	 * @return The total amount of executed operations within the node.
 	 */
-	public long getExecutedOperations() {
-		return executedOperations;
-	}
+	//public long getExecutedOperations() {
+	//	return executedOperations;
+	//}
 
 	@Override
 	public Queue<Message> getOperationQueue() {

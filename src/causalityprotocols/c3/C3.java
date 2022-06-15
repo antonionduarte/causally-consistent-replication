@@ -38,7 +38,7 @@ public class C3 extends CausalityProtocol {
 		clone.executedClock = new HashMap<>();
 		clone.executingClock = new HashMap<>();
 		clone.aheadExecutedOps = new HashMap<>();
-		clone.writeCounter = -1;
+		clone.writeCounter = 0;
 		return clone;
 	}
 
@@ -54,9 +54,8 @@ public class C3 extends CausalityProtocol {
 		if (wrappedMessage == null) {
 			this.writeCounter++;
 			message.setProtocolMessage(new C3Message(new HashMap<>(), writeCounter));
-			C3Message wrapped = (C3Message) message.getProtocolMessage();
-			wrapped.getLblDeps().putAll(executingClock);
-			return false;
+			wrappedMessage = (C3Message) message.getProtocolMessage();
+			wrappedMessage.getLblDeps().putAll(executingClock);
 		}
 
 		Map<Long, Long> messageDeps = wrappedMessage.getLblDeps();
@@ -81,9 +80,9 @@ public class C3 extends CausalityProtocol {
 		}
 
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
-		var executedState = executedClock.get(message.getOriginNode().getID());
+		var executedState = executedClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
 		// Previous writes are still executing
-		if (executedState == null || (executedState + 1 != c3Message.getLblId())) {
+		if (executedState + 1 != c3Message.getLblId()) {
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
 				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
 			}
@@ -103,10 +102,10 @@ public class C3 extends CausalityProtocol {
 			}
 		}
 
-		System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
+		/*System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 		System.out.println("Executed Clock - " + this.executedClock);
 		System.out.println("Executing Clock - " + this.executingClock);
-		System.out.println();
+		System.out.println();*/
 	}
 
 	@Override
@@ -116,16 +115,24 @@ public class C3 extends CausalityProtocol {
 		}
 
 		// If the message is from a local client/datastore, do nothing
-		var time = CommonState.getTime();
-		var lblDeps = ((C3Message) message.getProtocolMessage()).getLblDeps();
-		var currentClock = this.executingClock.get(message.getOriginNode().getID());
-		if (currentClock == null) this.executingClock.put(message.getOriginNode().getID(), 0L); // TODO: Wrong?
-		else this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
+		//var time = CommonState.getTime();
+		//var lblDeps = ((C3Message) message.getProtocolMessage()).getLblDeps();
 
-		System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
+		long currentClock = this.executingClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
+		/*if (currentClock != ((C3Message) message.getProtocolMessage()).getLblId() - 1) {
+			System.out.println("Possible Sus - " + message.getMessageId() + " - " + message.getOriginNode().getID() + " - " + node.getID());
+			System.out.println(((C3Message) message.getProtocolMessage()).getLblDeps());
+			System.out.println(executedClock);
+			System.out.println(((C3Message) message.getProtocolMessage()).getLblId());
+			System.out.println(currentClock);
+		}*/
+
+		this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
+
+		/*System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing -k : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 		System.out.println("Executed Clock - " + this.executedClock);
 		System.out.println("Executing Clock - " + this.executingClock);
-		System.out.println();
+		System.out.println();*/
 	}
 
 	/**z
@@ -136,11 +143,16 @@ public class C3 extends CausalityProtocol {
 	 */
 	private void checkAheadOps(Node originNode, List<Long> toCheck) {
 		var toRemove = new ArrayList<Long>();
-		for (var lblId : toCheck) {
-			var nodeClock = this.executedClock.get(originNode.getID());
-			if (nodeClock + 1 == lblId) {
-				this.executedClock.put(originNode.getID(), lblId);
-				toRemove.add(lblId);
+		var didThings=true;
+		while (didThings) {
+			didThings = false;
+			for (var lblId : toCheck) {
+				var nodeClock = this.executedClock.get(originNode.getID());
+				if (nodeClock + 1 == lblId) {
+					this.executedClock.put(originNode.getID(), lblId);
+					toRemove.add(lblId);
+					didThings = true;
+				}
 			}
 		}
 		toCheck.removeAll(toRemove);

@@ -29,23 +29,23 @@ public class ClickBroadcast extends BroadcastProtocol {
 	@Override
 	public void uponBroadcast(Node node, Message message, List<Node> neighbors, long lastHop) {
 		if (message.getOriginNode().getID() == node.getID()) {
-			System.out.print(
+			/*System.out.print(
 					"DEBUG: Propagating - " + message.getMessageId()
 					+ " - Time:" + CommonState.getNode().getID() + " - Node:" + CommonState.getNode().getID() + " - "
-			);
+			);*/
 
 			int pid = Configuration.lookupPid(BroadcastProtocol.protName);
 
-			System.out.print("[");
+			//System.out.print("[");
 			for (Node neighbour : neighbors) {
-				System.out.print(neighbour.getID() + ",");
+				//System.out.print(neighbour.getID() + ",");
 				((Transport) node.getProtocol(transportId))
 						.send(node, neighbour, message, pid);
 			}
-			System.out.print("]");
+			//System.out.print("]");
 
-			System.out.println();
-			System.out.println();
+			//System.out.println();
+			//System.out.println();
 		}
 	}
 }

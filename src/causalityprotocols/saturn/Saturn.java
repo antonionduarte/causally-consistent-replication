@@ -45,10 +45,10 @@ public class Saturn extends CausalityProtocol {
 		this.operationExecuting = false;
 		this.testOperation = null;
 
-		if (message.getOperationType() == Message.OperationType.WRITE) {
+		/*if (message.getOperationType() == Message.OperationType.WRITE) {
 			System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 			System.out.println();
-		}
+		}*/
 	}
 
 	@Override
@@ -56,9 +56,9 @@ public class Saturn extends CausalityProtocol {
 		this.operationExecuting = true;
 		this.testOperation = message.getMessageId();
 
-		if (message.getOperationType() == Message.OperationType.WRITE) {
+		/*if (message.getOperationType() == Message.OperationType.WRITE) {
 			System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 			System.out.println();
-		}
+		}*/
 	}
 }

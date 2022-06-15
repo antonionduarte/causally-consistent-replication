@@ -37,23 +37,6 @@ public class VisibilityObserver implements Control {
 			}
 		}
 
-		writeToFile();
 		return false;
-	}
-
-	/**
-	 * Writes the collected statistics in visibilityTimes to a file.
-	 */
-	private void writeToFile() {
-		for (var messageId : visibilityTimes.keySet()) {
-			String toPrint = messageId;
-
-			for (var visibility : visibilityTimes.get(messageId)) {
-				toPrint = "," + visibility;
-			}
-
-			System.out.println(toPrint);
-			System.out.println();
-		}
 	}
 }

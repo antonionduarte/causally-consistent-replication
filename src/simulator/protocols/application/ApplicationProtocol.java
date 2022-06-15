@@ -41,6 +41,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 	// Statistic Collection - Probably will be queried in a control that runs periodically
 	private List<Long> messageLatencies;
+	private long executedOperations;
 
 	public ApplicationProtocol(String prefix) {
 		protName = (prefix.split("\\."))[1];
@@ -55,6 +56,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 			ApplicationProtocol clone = (ApplicationProtocol) super.clone();
 			clone.messageLatencies = new LinkedList<>();
 			clone.idCounter = 0;
+			clone.executedOperations = 0;
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -88,12 +90,13 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		// Statistic collection
 		Message message = (Message) event;
 		long rtt = (CommonState.getTime() - message.getSendTime());
-		messageLatencies.add(rtt);
+		this.messageLatencies.add(rtt);
+		this.executedOperations++;
 
-		System.out.println(
+		/*System.out.println(
 				"DEBUG: Received by Application" + " - Time:" + CommonState.getTime() + " - " +
 				message.getMessageId() + " - Node:" + CommonState.getNode().getID()
-		);
+		);*/
 
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
@@ -129,6 +132,13 @@ public abstract class ApplicationProtocol implements EDProtocol {
 				CommonState.getNode().getID(),
 				messageId
 		);
+	}
+
+	/**
+	 * @return The amount of executed operations.
+	 */
+	public long getExecutedOperations() {
+		return executedOperations;
 	}
 
 	/**

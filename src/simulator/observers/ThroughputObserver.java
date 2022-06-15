@@ -5,6 +5,7 @@ import peersim.core.CommonState;
 import peersim.core.Control;
 import peersim.core.Network;
 import simulator.protocols.CausalityProtocol;
+import simulator.protocols.application.ApplicationProtocol;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -37,14 +38,12 @@ public class ThroughputObserver implements Control {
 
 			for (int i = 0; i < Network.size(); i++) {
 				var node = Network.get(i);
-				var protocol = (CausalityProtocol) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
+				var protocol = (ApplicationProtocol) node.getProtocol(Configuration.lookupPid(ApplicationProtocol.protName));
 				var executedOperations = protocol.getExecutedOperations();
 				System.out.println("throughput-node-" + i + ": " + executedOperations);
 
 				fileWriter.write("" + i + ",");
 				fileWriter.write("" + executedOperations + "\n");
-
-				System.out.println("DEBUG - Queue size - " + node.getID() + " - " + protocol.getOperationQueue().size());
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

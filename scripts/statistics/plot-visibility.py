@@ -1,10 +1,15 @@
 import matplotlib.pyplot as plt
 
-LATENCY_PATH = "output/latency/"
-THROUGHPUT_PATH = "output/throughput/"
+VISIBILITY_PATH = "output/visibility/"
 
-EXPERIMENT_TIME_SATURN = 10
-EXPERIMENT_TIME_C3 = 10
+EXPERIMENT_TIME_SATURN = 30
+EXPERIMENT_TIME_C3 = 30
+
+def visibility(inputs):
+    for experiment in inputs:
+        processed_lines = []
+        experiment_path = VISIBILITY_PATH + experiment
+        experiment_file = 
 
 """ 
 Processes the latencies and returns the medium latency for each 
