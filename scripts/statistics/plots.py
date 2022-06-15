@@ -2,7 +2,10 @@ import matplotlib.pyplot as plt
 
 LATENCY_PATH = "output/latency/"
 THROUGHPUT_PATH = "output/throughput/"
-EXPERIMENT_TIME_SECONDS = 5
+EXPERIMENT_TIME_SECONDS = 10
+
+EXPERIMENT_TIME_SATURN = 60
+EXPERIMENT_TIME_C3 = 10
 
 """ 
 Processes the latencies and returns the medium latency for each 
@@ -39,7 +42,7 @@ def latency(inputs):
 Processes the throughputs and returns 
 the medium throughput of each experiment.
 """
-def throughput(inputs):
+def throughput(inputs, time):
     total_throughput = []
     for experiment in inputs:
         processed_lines = []
@@ -58,20 +61,18 @@ def throughput(inputs):
             throughput = int(splitted[1])
             experiment_throughput = experiment_throughput + throughput
         
-        total_throughput.append(int(experiment_throughput / EXPERIMENT_TIME_SECONDS))
+        total_throughput.append(int(experiment_throughput / time))
     
     return total_throughput
 
 
 def plot_graph(latencies, throughputs, color):
-    plt.title('Saturn Experiments')
+    plt.title('Saturn vs C3')
     plt.xlabel('Throughput (Op/s)')
     plt.ylabel('Perceived Latency (ms)')
     
     plt.plot(throughputs, latencies, color, linestyle="dashed")
-    plt.plot(throughputs, latencies, color + '*')
-
-    plt.show()
+    plt.plot(throughputs, latencies, color + 'o')
 
 if __name__ == "__main__":
     input_saturn = [
@@ -88,33 +89,34 @@ if __name__ == "__main__":
         "saturn-60-clients.txt",
         "saturn-65-clients.txt",
         "saturn-80-clients.txt",
-        #"saturn-100-clients.txt"
     ]
 
     input_c3 = [
-        #"saturn-50-clients.txt",
-        #"saturn-55-clients.txt",
-        #"saturn-60-clients.txt",
-        #"saturn-65-clients.txt",
-        #"saturn-80-clients.txt",
-        #"saturn-100-clients.txt"
-        #"c3-10-clients.txt",
-        #"c3-25-clients.txt",
-        #"c3-50-clients.txt",
-        #"c3-100-clients.txt",
-        #"c3-500-clients.txt",
-        #"c3-1000-clients.txt",
+        "c3-3-clients.txt",
+        "c3-5-clients.txt",
+        "c3-10-clients.txt",
+        "c3-15-clients.txt",
+        "c3-20-clients.txt",
+        "c3-25-clients.txt",
+        "c3-30-clients.txt",
+        "c3-35-clients.txt",
+        "c3-50-clients.txt",
+        "c3-55-clients.txt",
+        "c3-60-clients.txt",
+        "c3-65-clients.txt",
+        "c3-80-clients.txt",
     ]
 
-    throughputs_saturn = throughput(input_saturn)
+    throughputs_saturn = throughput(input_saturn, EXPERIMENT_TIME_SATURN)
     latencies_saturn = latency(input_saturn)
 
-    print(throughputs_saturn)
-    print(latencies_saturn)
+    #print(throughputs_saturn)
+    #print(latencies_saturn)
 
-    #throughputs_c3 = throughput(input_c3)
-    #latencies_c3 = latency(input_c3)
+    throughputs_c3 = throughput(input_c3, EXPERIMENT_TIME_C3)
+    latencies_c3 = latency(input_c3)
 
     plot_graph(latencies_saturn, throughputs_saturn, 'b')
-    #plot_graph(latencies_c3, throughputs_c3, 'r')
+    plot_graph(latencies_c3, throughputs_c3, 'r')
     #plt.show()
+    plt.savefig('plot.png')

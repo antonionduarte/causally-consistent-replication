@@ -1,4 +1,4 @@
-simulation.endtime      10000
+simulation.endtime      5000
 
 # network size
 SIZE                    7
@@ -9,7 +9,7 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
-EXPERIMENT_NAME c3-100-clients
+EXPERIMENT_NAME c3-80-clients
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
@@ -33,7 +33,7 @@ protocol.urt            simulator.transports.LatencyMatrixTransport
 
 protocol.application    causalityprotocols.c3.C3Application
 {
-    number_clients  100       # the number of clients being simulated per node
+    number_clients  80       # the number of clients being simulated per node
     weight_reads    20         # the percentage/weight of reads being simulated
     weight_writes   80         # the percentage/weight of writes being simulated
 }

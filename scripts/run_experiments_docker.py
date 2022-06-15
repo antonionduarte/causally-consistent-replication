@@ -27,11 +27,11 @@ if __name__ == "__main__":
     os.system(COMPILE_COMMAND)
 
     commands = [
-        'config/saturn/config-3-clients.txt',
-        'config/saturn/config-5-clients.txt',
-        'config/saturn/config-10-clients.txt',
-        'config/saturn/config-15-clients.txt',
-        'config/saturn/config-20-clients.txt',
+        #'config/saturn/config-3-clients.txt',
+        #'config/saturn/config-5-clients.txt',
+        #'config/saturn/config-10-clients.txt',
+        #'config/saturn/config-15-clients.txt',
+        #'config/saturn/config-20-clients.txt',
         #'config/saturn/config-25-clients.txt',
         #'config/saturn/config-30-clients.txt',
         #'config/saturn/config-35-clients.txt',
@@ -41,6 +41,21 @@ if __name__ == "__main__":
         #'config/saturn/config-65-clients.txt',
         #'config/saturn/config-80-clients.txt',
         #'config/saturn/config-100-clients.txt',
+
+        'config/c3/c3-3-clients.txt',
+        'config/c3/c3-5-clients.txt',
+        'config/c3/c3-10-clients.txt',
+        'config/c3/c3-15-clients.txt',
+        'config/c3/c3-20-clients.txt',
+        'config/c3/c3-25-clients.txt',
+        'config/c3/c3-30-clients.txt',
+        'config/c3/c3-35-clients.txt',
+        'config/c3/c3-50-clients.txt',
+        'config/c3/c3-55-clients.txt',
+        'config/c3/c3-60-clients.txt',
+        'config/c3/c3-65-clients.txt',
+        'config/c3/c3-80-clients.txt',
+        'config/c3/c3-100-clients.txt',
     ]
 
     if TIME != None:

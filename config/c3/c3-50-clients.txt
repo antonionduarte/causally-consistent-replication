@@ -1,5 +1,6 @@
-# network size
+simulation.endtime      5000
 
+# network size
 SIZE                    7
 
 # parameters of periodic execution
@@ -16,8 +17,6 @@ EXPERIMENT_NAME c3-50-clients
 
 random.seed             10
 network.size            SIZE
-
-simulation.endtime      5000
 
 # ------------------- #
 # ---- Transport ---- #
@@ -45,8 +44,8 @@ protocol.application    causalityprotocols.c3.C3Application
 
 protocol.causality      causalityprotocols.c3.C3
 {
-    write_time      8          # the amount of time a write takes to execute
-    read_time       12         # the amount of time that a read takes to execute
+    write_time      4          # the amount of time a write takes to execute
+    read_time       6         # the amount of time that a read takes to execute
 }
 
 # ---------------------------- #
@@ -88,10 +87,10 @@ include.control         latencyObserver, throughputObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    4999
+    step    simulation.endtime - 1
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    4999
+    step    simulation.endtime - 1
 }
