@@ -2,81 +2,66 @@ import matplotlib.pyplot as plt
 
 VISIBILITY_PATH = "output/visibility/"
 
+NUMBER_NODES = 7
+
 EXPERIMENT_TIME_SATURN = 30
 EXPERIMENT_TIME_C3 = 30
 
-def visibility(inputs):
-    for experiment in inputs:
-        processed_lines = []
-        experiment_path = VISIBILITY_PATH + experiment
-        experiment_file = 
+""" 
+Returns the lowest value of a list
+"""
+def lowest(lst):
+    lowest = float('inf')
+    for elem in lst:
+        if elem < lowest: lowest = elem
+    return lowest
 
 """ 
-Processes the latencies and returns the medium latency for each 
-experiment.
-"""
-def latency(inputs):
-    total_latency = []
-    for experiment in inputs:
-        processed_lines = []
-        num_results = 0
-        experiment_latency = 0
-        experiment_path = LATENCY_PATH + experiment
-        experiment_file = open(experiment_path)
-
-        for line in experiment_file.readlines():
-            processed_lines.append(line.strip().split(','))
-
-        experiment_file.close()
-
-        for line in processed_lines:
-            line.pop(0)
-            num_results = num_results + len(line)
-            for latency in line:
-                experiment_latency = experiment_latency + int(latency)
-
-        medium_latency = int(experiment_latency / num_results)
-
-        total_latency.append(medium_latency)      
-
-    return total_latency
-
+Returns the highest value of a list
+""" 
+def highest(lst):
+    highest = -1 
+    for elem in lst:
+        if elem > highest: highest = elem
+    return highest
 
 """ 
-Processes the throughputs and returns 
-the medium throughput of each experiment.
-"""
-def throughput(inputs, time):
-    total_throughput = []
-    for experiment in inputs:
-        processed_lines = []
-        experiment_throughput = 0
-        experiment_path = THROUGHPUT_PATH + experiment
-        experiment_file = open(experiment_path)
+Processes one specific experiment
+""" 
+def visibility(experiment):
+    x = []
+    y = []
 
-        for line in experiment_file.readlines():
-            processed_lines.append(line.strip())
-        
-        experiment_file.close()
-        processed_lines.pop(0) # TODO: Probably delete from output
+    experiment_path = VISIBILITY_PATH + experiment
+    experiment_file = open(experiment_path)
 
-        for result in processed_lines:
-            splitted = result.split(',')
-            throughput = int(splitted[1])
-            experiment_throughput = experiment_throughput + throughput
-        
-        total_throughput.append(int(experiment_throughput / time))
+    file = open(experiment_path)
+    lines = file.readlines()
+    file.close()
     
-    return total_throughput
+    for line in lines: 
+        splitted = line.strip().split(',')
+        splitted.pop()
+        to_int = []
 
+        for elem in splitted: 
+            to_int.append(int(elem))
 
-def plot_graph(latencies, throughputs, color):
+        lowest_val = lowest(to_int)
+        highest_val = highest(to_int)
+
+        if len(to_int) == NUMBER_NODES:
+            x.append(lowest_val)
+            y.append(highest_val - lowest_val)
+
+    return x, y
+
+def plot_graph(x, y, color):
     plt.title('Saturn vs C3')
-    plt.xlabel('Throughput (Op/s)')
-    plt.ylabel('Perceived Latency (ms)')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Message visibility time')
     
-    plt.plot(throughputs, latencies, color, linestyle="dashed")
-    plt.plot(throughputs, latencies, color + 'o')
+    plt.plot(x, y, color + 'o')
 
 if __name__ == "__main__":
     input_saturn = [
@@ -111,16 +96,10 @@ if __name__ == "__main__":
         "c3-80-clients.txt",
     ]
 
-    throughputs_saturn = throughput(input_saturn, EXPERIMENT_TIME_SATURN)
-    latencies_saturn = latency(input_saturn)
+    x_visibility_c3, y_visibility_c3 = visibility("c3-50-clients.txt")
+    x_visibility_sat, y_visibility_sat = visibility("saturn-50-clients.txt")
 
-    #print(throughputs_saturn)
-    #print(latencies_saturn)
+    plot_graph(x_visibility_c3, y_visibility_c3, 'r')
+    plot_graph(x_visibility_sat, y_visibility_sat, 'b')
 
-    throughputs_c3 = throughput(input_c3, EXPERIMENT_TIME_C3)
-    latencies_c3 = latency(input_c3)
-
-    plot_graph(latencies_saturn, throughputs_saturn, 'b')
-    plot_graph(latencies_c3, throughputs_c3, 'r')
-    #plt.show()
-    plt.savefig('plot.png')
+    plt.savefig('plot-visibility.png')

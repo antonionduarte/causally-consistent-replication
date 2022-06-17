@@ -84,7 +84,7 @@ init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 # ----- Controls and Observers ----- #
 # ---------------------------------- #
 
-include.control         latencyObserver, throughputObserver
+include.control         latencyObserver, throughputObserver, visibilityObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
@@ -94,4 +94,9 @@ control.latencyObserver     simulator.observers.LatencyObserver
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
     step    4999
+}
+
+control.visibilityObserver  simulator.observers.VisibilityObserver
+{
+    step    simulation.endtime - 1
 }

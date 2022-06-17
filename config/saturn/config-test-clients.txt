@@ -89,7 +89,7 @@ init.applicationInit    simulator.protocols.application.ApplicationInitializer
 # ----- Controls and Observers ----- #
 # ---------------------------------- #
 
-include.control         latencyObserver, throughputObserver
+include.control         latencyObserver, throughputObserver, visibilityObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
@@ -97,6 +97,11 @@ control.latencyObserver     simulator.observers.LatencyObserver
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
+{
+    step    simulation.endtime - 1
+}
+
+control.visibilityObserver  simulator.observers.VisibilityObserver
 {
     step    simulation.endtime - 1
 }
