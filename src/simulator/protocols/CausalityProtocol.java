@@ -78,17 +78,17 @@ public abstract class CausalityProtocol implements Causality {
 		switch (message.getEventType()) {
 			case PROPAGATING -> {
 				if (checkCausality(node, message)) {
-					System.out.println(
+					/*System.out.println(
 						"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
 						" - Node:" + CommonState.getNode().getID()
-					);
+					);*/
 					this.executeOperation(node, message, pid);
 				}
 				else {
-					System.out.println(
+					/*System.out.println(
 						"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
 						" - Node:" + CommonState.getNode().getID()
-					);
+					);*/
 					if (!executedMessages.contains(message.getMessageId())) {
 						this.operationQueue.add(message);
 					}
