@@ -44,8 +44,8 @@ protocol.application    causalityprotocols.c3.C3Application
 
 protocol.causality      causalityprotocols.c3.C3
 {
-    write_time      4          # the amount of time a write takes to execute
-    read_time       6         # the amount of time that a read takes to execute
+    write_time      40          # the amount of time a write takes to execute
+    read_time       60         # the amount of time that a read takes to execute
 }
 
 # ---------------------------- #

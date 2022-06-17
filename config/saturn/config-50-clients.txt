@@ -1,4 +1,4 @@
-simulation.endtime 	 	 5000
+simulation.endtime 	 	 500
 
 # network size
 SIZE                    7
@@ -44,8 +44,8 @@ protocol.application    causalityprotocols.saturn.SaturnApplication
 
 protocol.causality      causalityprotocols.saturn.Saturn
 {
-    write_time      4          # the amount of time a write takes to execute
-    read_time       6         # the amount of time that a read takes to execute
+    write_time      40          # the amount of time a write takes to execute
+    read_time       60         # the amount of time that a read takes to execute
 }
 
 # ---------------------------- #

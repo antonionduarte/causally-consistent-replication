@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import itertools
 
 VISIBILITY_PATH = "output/visibility/"
 
@@ -6,6 +7,8 @@ NUMBER_NODES = 7
 
 EXPERIMENT_TIME_SATURN = 30
 EXPERIMENT_TIME_C3 = 30
+
+TIME_INTERVAL = 1000
 
 """ 
 Returns the lowest value of a list
@@ -32,6 +35,9 @@ def visibility(experiment):
     x = []
     y = []
 
+    x_total = []
+    y_total = []
+
     experiment_path = VISIBILITY_PATH + experiment
     experiment_file = open(experiment_path)
 
@@ -45,14 +51,41 @@ def visibility(experiment):
         to_int = []
 
         for elem in splitted: 
-            to_int.append(int(elem))
+            to_int.append(int(int(elem) / 10))
 
         lowest_val = lowest(to_int)
         highest_val = highest(to_int)
 
         if len(to_int) == NUMBER_NODES:
-            x.append(lowest_val)
-            y.append(highest_val - lowest_val)
+            x_total.append(lowest_val)
+            y_total.append(highest_val - lowest_val)
+
+    max_time = highest(x_total)
+    curr_timestamp = 0
+    while curr_timestamp + TIME_INTERVAL < max_time:
+        i = 0
+        interval_x = []
+        interval_y = []
+        while i < len(x_total):
+            if x_total[i] >= curr_timestamp and x_total[i] < curr_timestamp + TIME_INTERVAL:
+                interval_x.append(x_total[i])
+                interval_y.append(y_total[i])
+
+            i = i + 1
+
+        sum_x = 0
+        sum_y = 0
+        for (x_val, y_val) in zip(interval_x, interval_y):
+            sum_x = sum_x + x_val
+            sum_y = sum_y + y_val 
+
+        final_x = sum_x / len(interval_x)
+        final_y = sum_y / len(interval_y)
+
+        x.append(final_x)
+        y.append(final_y)
+
+        curr_timestamp = curr_timestamp + TIME_INTERVAL
 
     return x, y
 
@@ -96,10 +129,13 @@ if __name__ == "__main__":
         "c3-80-clients.txt",
     ]
 
-    x_visibility_c3, y_visibility_c3 = visibility("c3-50-clients.txt")
-    x_visibility_sat, y_visibility_sat = visibility("saturn-50-clients.txt")
+    #x_visibility_c3, y_visibility_c3 = visibility("c3-50-clients.txt")
+    x_visibility_sat, y_visibility_sat = visibility("saturn-20-clients.txt")
 
-    plot_graph(x_visibility_c3, y_visibility_c3, 'r')
+    # print(x_visibility_c3)
+    # print(y_visibility_c3)
+
+    #plot_graph(x_visibility_c3, y_visibility_c3, 'r')
     plot_graph(x_visibility_sat, y_visibility_sat, 'b')
 
     plt.savefig('plot-visibility.png')

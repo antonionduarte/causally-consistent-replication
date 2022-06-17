@@ -31,7 +31,7 @@ def sub_matrix(matrix, indexes, out):
 
 	for line in matrix:
 		for latency in line:
-			file.write(str(latency) + ',')
+			file.write(str(float(latency) * 10) + ',')
 		file.write('\n')
 
 	file.close()
@@ -40,9 +40,9 @@ def sub_matrix(matrix, indexes, out):
 def main():
 	indexes = [0, 19, 7, 8, 14, 13, 16]
 	sub_matrix(
-		'../config/latencies/processed-latency-matrix.txt',
+		'config/latencies/processed-latency-matrix.txt',
 		indexes,
-		'../config/latencies/latency-0-mat.txt'
+		'config/latencies/latency-0-mat.txt'
 	)
 
 
