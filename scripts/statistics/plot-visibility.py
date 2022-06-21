@@ -28,6 +28,9 @@ def highest(lst):
         if elem > highest: highest = elem
     return highest
 
+
+# operações podem executar quando se verifica que já não podemos 
+
 """ 
 Processes one specific experiment
 """ 
@@ -50,8 +53,9 @@ def visibility(experiment):
         splitted.pop()
         to_int = []
 
-        for elem in splitted: 
-            to_int.append(int(int(elem) / 10))
+        #for elem in splitted:
+        #    if int(int(elem) / 10) < 20000: # TODO: Delete
+        #        to_int.append(int(int(elem) / 10))
 
         lowest_val = lowest(to_int)
         highest_val = highest(to_int)
@@ -89,12 +93,12 @@ def visibility(experiment):
 
     return x, y
 
-def plot_graph(x, y, color):
+def plot_graph(x, y, color, str_label):
     plt.title('Saturn vs C3')
-    plt.xlabel('Time (s)')
-    plt.ylabel('Message visibility time')
+    plt.xlabel('Time (ms)')
+    plt.ylabel('Message visibility time (ms)')
     
-    plt.plot(x, y, color + 'o')
+    line = plt.plot(x, y, color + 'o-', label=str_label)
 
 if __name__ == "__main__":
     input_saturn = [
@@ -129,13 +133,15 @@ if __name__ == "__main__":
         "c3-80-clients.txt",
     ]
 
-    #x_visibility_c3, y_visibility_c3 = visibility("c3-50-clients.txt")
+    x_visibility_c3, y_visibility_c3 = visibility("c3-50-clients.txt")
     x_visibility_sat, y_visibility_sat = visibility("saturn-20-clients.txt")
 
     # print(x_visibility_c3)
     # print(y_visibility_c3)
 
-    #plot_graph(x_visibility_c3, y_visibility_c3, 'r')
-    plot_graph(x_visibility_sat, y_visibility_sat, 'b')
+    plot_graph(x_visibility_c3, y_visibility_c3, 'r', 'C3')
+    plot_graph(x_visibility_sat, y_visibility_sat, 'b', 'Saturn')
+    
+    plt.legend()
 
-    plt.savefig('plot-visibility.png')
+    plt.savefig('plot-visibility.pdf')
