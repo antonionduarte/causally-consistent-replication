@@ -11,7 +11,8 @@ public interface Message {
 
 	enum EventType {
 		PROPAGATING,
-		EXECUTING
+		EXECUTING,
+		NEXT
 	}
 
 	/**

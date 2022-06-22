@@ -1,7 +1,7 @@
 package simulator.protocols.broadcast;
 
-import simulator.protocols.Causality;
-import simulator.protocols.CausalityProtocol;
+import simulator.protocols.causality.Causality;
+import simulator.protocols.causality.CausalityProtocol;
 import simulator.protocols.messages.Message;
 import simulator.protocols.overlay.OverlayProtocol;
 import peersim.config.Configuration;
@@ -29,14 +29,15 @@ public abstract class BroadcastProtocol implements Broadcast {
 
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		Causality causalityLayer = (Causality) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
-		causalityLayer.processEvent(node, Configuration.lookupPid(CausalityProtocol.protName), event);
+		var causalityPid = Configuration.lookupPid(CausalityProtocol.protName);
+		var causalityLayer = (Causality) node.getProtocol(causalityPid);
+		causalityLayer.processEvent(node, pid, event); // TODO: Probably can't do this -> send to PendingEvents
 	}
 
 	@Override
 	public void broadcastMessage(Node node, Message message, long lastHop) {
-		List<Node> neighbors = ((OverlayProtocol) node.getProtocol(Configuration.lookupPid(OverlayProtocol.protName)))
-				.getNeighbors();
+		var causalityPid = Configuration.lookupPid(OverlayProtocol.protName);
+		var neighbors = ((OverlayProtocol) node.getProtocol(causalityPid)).getNeighbors();
 		uponBroadcast(node, message, neighbors, lastHop);
 	}
 

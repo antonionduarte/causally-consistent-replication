@@ -1,8 +1,7 @@
 package causalityprotocols.saturn;
 
-import peersim.core.CommonState;
 import peersim.core.Node;
-import simulator.protocols.CausalityProtocol;
+import simulator.protocols.causality.CausalityProtocol;
 import simulator.protocols.messages.Message;
 
 public class Saturn extends CausalityProtocol {
@@ -41,7 +40,8 @@ public class Saturn extends CausalityProtocol {
 
 	@Override
 	public void operationFinishedExecution(Node node, Message message) {
-		this.operationExecuting = false;
+		if (message.getOriginNode().getID() != node.getID())
+			this.operationExecuting = false;
 		//if (message.getOperationType() == Message.OperationType.WRITE) {
 			//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 			//System.out.println();
@@ -50,7 +50,8 @@ public class Saturn extends CausalityProtocol {
 
 	@Override
 	public void operationStartedExecution(Node node, Message message) {
-		this.operationExecuting = true;
+		if (message.getOriginNode().getID() != node.getID())
+			this.operationExecuting = true;
 		//if (message.getOperationType() == Message.OperationType.WRITE) {
 			//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
 			//System.out.println();

@@ -5,7 +5,7 @@ import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 import peersim.edsim.EDSimulator;
-import simulator.protocols.CausalityProtocol;
+import simulator.protocols.causality.CausalityProtocol;
 import simulator.protocols.messages.Message;
 import simulator.protocols.messages.MessageWrapper;
 

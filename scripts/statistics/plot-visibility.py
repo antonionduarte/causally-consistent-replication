@@ -8,7 +8,7 @@ NUMBER_NODES = 7
 EXPERIMENT_TIME_SATURN = 30
 EXPERIMENT_TIME_C3 = 30
 
-TIME_INTERVAL = 1000
+TIME_INTERVAL = 500
 
 """ 
 Returns the lowest value of a list
@@ -53,9 +53,8 @@ def visibility(experiment):
         splitted.pop()
         to_int = []
 
-        #for elem in splitted:
-        #    if int(int(elem) / 10) < 20000: # TODO: Delete
-        #        to_int.append(int(int(elem) / 10))
+        for elem in splitted:
+            to_int.append(int(int(elem) / 10))
 
         lowest_val = lowest(to_int)
         highest_val = highest(to_int)
@@ -133,9 +132,11 @@ if __name__ == "__main__":
         "c3-80-clients.txt",
     ]
 
-    x_visibility_c3, y_visibility_c3 = visibility("c3-50-clients.txt")
-    x_visibility_sat, y_visibility_sat = visibility("saturn-20-clients.txt")
+    x_visibility_c3, y_visibility_c3 = visibility("c3-35-clients.txt")
+    x_visibility_sat, y_visibility_sat = visibility("saturn-35-clients.txt")
 
+    # print(x_visibility_c3)
+    # print(y_visibility_c3)
     # print(x_visibility_c3)
     # print(y_visibility_c3)
 

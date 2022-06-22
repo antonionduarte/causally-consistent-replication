@@ -1,4 +1,4 @@
-package simulator.protocols;
+package simulator.protocols.causality;
 
 import peersim.config.Configuration;
 import peersim.core.CommonState;
@@ -21,26 +21,21 @@ public abstract class CausalityProtocol implements Causality {
 	private final int readTime;
 
 	/**
-	 * Event Queue, saves the events that weren't able to be processed due to issues with causality.
+	 * Operation Queue, saves the events that weren't able to be processed due to issues with causality.
 	 */
-	private Queue<Message> operationQueue;
+	private Queue<Message> pendingOperations;
 
 	public static String protName;
 
 	public static final String WRITE_TIME = "write_time";
 	public static final String READ_TIME = "read_time";
+	public static final String PAR_PROT = "protocol";
 
 	/**
 	 * Statistic collection structure - Visibility times.
 	 */
 	private Map<String, Long> visibilityTimes;
 	private Set<String> sentMessages;
-	private Set<String> executedMessages;
-
-	/**
-	 * The total amount of executed operations within this node.
-	 */
-	//private long executedOperations;
 
 	/**
 	 * The constructor for the protocol.
@@ -55,10 +50,8 @@ public abstract class CausalityProtocol implements Causality {
 	public Object clone() {
 		try {
 			CausalityProtocol clone = (CausalityProtocol) super.clone();
-			//clone.executedOperations = 0;
-			clone.operationQueue = new LinkedList<>();
+			clone.pendingOperations = new LinkedList<>();
 			clone.visibilityTimes = new HashMap<>();
-			clone.executedMessages = new HashSet<>();
 			clone.sentMessages = new HashSet<>();
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -71,65 +64,52 @@ public abstract class CausalityProtocol implements Causality {
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
 
-		if (CommonState.getTime() % 100 == 0)
-			System.out.println("Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: " + CommonState.getNode().getID());
+		if (CommonState.getTime() % 1000 == 0) {
+			if (node.getID() == 0) {
+				System.out.println("Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: " + CommonState.getNode().getID());
+			}
+		}
 
-		// Could throw NPE if not well verified within the protocol
 		switch (message.getEventType()) {
 			case PROPAGATING -> {
 				if (checkCausality(node, message)) {
-					/*System.out.println(
-						"DEBUG: Verifies causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
-						" - Node:" + CommonState.getNode().getID()
-					);*/
 					this.executeOperation(node, message, pid);
-				}
-				else {
-					/*System.out.println(
-						"DEBUG: Doesn't verify causality - Time:" + CommonState.getTime() + " - " + message.getMessageId() +
-						" - Node:" + CommonState.getNode().getID()
-					);*/
-					if (!executedMessages.contains(message.getMessageId())) {
-						this.operationQueue.add(message);
-					}
+				} else {
+					this.pendingOperations.add(message);
 				}
 			}
 			case EXECUTING -> {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
-				//this.executedOperations++;
 				this.operationFinishedExecution(node, message);
 
-				// Send the response back to the client
 				if (message.getOriginNode().getID() == node.getID()) {
-					EDSimulator.add(0, event, node, Configuration.lookupPid(ApplicationProtocol.protName));
+					var applicationPid = Configuration.lookupPid(ApplicationProtocol.protName);
+					EDSimulator.add(0, event, node, applicationPid);
 				}
 			}
 		}
 
-		if (!sentMessages.contains(message.getMessageId())) {
+		if (!sentMessages.contains(message.getMessageId()))
 			this.propagateMessage(node, message);
-		}
-
 		this.processQueue(node, pid);
 	}
 
 	@Override
 	public void processQueue(Node node, int pid) {
 		var verifiedMessages = new ArrayList<Message>();
-		for (Message message : operationQueue) {
+		for (Message message : pendingOperations) {
 			if (this.checkCausality(node, message)) {
 				verifiedMessages.add(message);
 				this.executeOperation(node, message, pid);
 			}
 		}
 
-		this.operationQueue.removeAll(verifiedMessages);
+		this.pendingOperations.removeAll(verifiedMessages);
 	}
 
 	@Override
 	public void executeOperation(Node node, Message message, int pid) {
 		long expectedArrivalTime;
-		this.executedMessages.add(message.getMessageId());
 		this.operationStartedExecution(node, message);
 
 		if (message.getOperationType() == Message.OperationType.READ) {
@@ -148,13 +128,14 @@ public abstract class CausalityProtocol implements Causality {
 				message.getMessageId()
 		);
 
-		EDSimulator.add(expectedArrivalTime, toSend, node, pid);
+		EDSimulator.add(expectedArrivalTime, toSend, node, pid); // TODO: send to pending events
 	}
 
 	public void propagateMessage(Node node, Message message) {
 		if (message.getOperationType() == Message.OperationType.WRITE) {
 			var lastHop = message.getLastHop();
-			var broadcast = (Broadcast) node.getProtocol(Configuration.lookupPid(BroadcastProtocol.protName));
+			var broadcastPid = Configuration.lookupPid(BroadcastProtocol.protName);
+			var broadcast = (Broadcast) node.getProtocol(broadcastPid);
 
 			Message toSend = new MessageWrapper(
 					message.getOperationType(),
@@ -178,16 +159,9 @@ public abstract class CausalityProtocol implements Causality {
 		return visibilityTimes;
 	}
 
-	/**
-	 * @return The total amount of executed operations within the node.
-	 */
-	//public long getExecutedOperations() {
-	//	return executedOperations;
-	//}
-
 	@Override
-	public Queue<Message> getOperationQueue() {
-		return operationQueue;
+	public Queue<Message> getPendingOperations() {
+		return pendingOperations;
 	}
 
 	@Override

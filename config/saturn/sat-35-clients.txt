@@ -1,4 +1,4 @@
-simulation.endtime 	 	 500
+simulation.endtime 	 	 10000
 
 # network size
 SIZE                    7

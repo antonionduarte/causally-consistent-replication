@@ -1,4 +1,4 @@
-package simulator.protocols;
+package simulator.protocols.causality;
 
 import simulator.protocols.messages.Message;
 import peersim.core.Node;
@@ -53,6 +53,6 @@ public interface Causality extends EDProtocol {
 	/**
 	 * @return The operation Queue.
 	 */
-	Queue<Message> getOperationQueue();
+	Queue<Message> getPendingOperations();
 
 }

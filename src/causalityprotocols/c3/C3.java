@@ -1,8 +1,7 @@
 package causalityprotocols.c3;
 
-import peersim.core.CommonState;
 import peersim.core.Node;
-import simulator.protocols.CausalityProtocol;
+import simulator.protocols.causality.CausalityProtocol;
 import simulator.protocols.messages.Message;
 
 import java.util.*;

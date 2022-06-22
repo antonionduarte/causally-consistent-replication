@@ -4,7 +4,7 @@ import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Control;
 import peersim.core.Network;
-import simulator.protocols.CausalityProtocol;
+import simulator.protocols.causality.CausalityProtocol;
 
 import java.io.File;
 import java.io.FileWriter;
