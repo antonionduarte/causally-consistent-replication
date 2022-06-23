@@ -16,11 +16,11 @@ import java.util.Map;
 
 public class VisibilityObserver implements Control {
 
-	public static final String PATH = "./output/visibility/";
-	public static final String EXPERIMENT_NAME = "EXPERIMENT_NAME";
+	private static final String PATH = "./output/visibility/";
+	private static final String EXPERIMENT_NAME = "EXPERIMENT_NAME";
 
-
-	public VisibilityObserver(String prefix) {}
+	public VisibilityObserver(String prefix) {
+	}
 
 	@Override
 	public boolean execute() {
@@ -30,7 +30,7 @@ public class VisibilityObserver implements Control {
 
 		for (int i = 0; i < Network.size(); i++) {
 			var node = Network.get(i);
-			var protocol = (CausalityProtocol) node.getProtocol(Configuration.lookupPid(CausalityProtocol.protName));
+			var protocol = (CausalityProtocol) node.getProtocol(CausalityProtocol.pid);
 			var messageVisibilities = protocol.getVisibilityTimes();
 
 			for (var messageId : messageVisibilities.keySet()) {
@@ -49,20 +49,20 @@ public class VisibilityObserver implements Control {
 
 		File visibilityObservation = new File(filename);
 
-		 try (FileWriter fileWriter = new FileWriter(filename)) {
-			 if (visibilityObservation.createNewFile()) {
-				 System.out.println("File created");
-			 }
+		try (FileWriter fileWriter = new FileWriter(filename)) {
+			if (visibilityObservation.createNewFile()) {
+				System.out.println("File created");
+			}
 
-			 for (var message : visibilityTimes.keySet()) {
-				 for (var time : visibilityTimes.get(message)) {
-					 fileWriter.write(time + ",");
-				 }
-				 fileWriter.write('\n');
-			 }
-		 } catch (IOException e) {
-			 throw new RuntimeException(e);
-		 }
+			for (var message : visibilityTimes.keySet()) {
+				for (var time : visibilityTimes.get(message)) {
+					fileWriter.write(time + ",");
+				}
+				fileWriter.write('\n');
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		return false;
 	}

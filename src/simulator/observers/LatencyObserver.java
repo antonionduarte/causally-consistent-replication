@@ -13,19 +13,18 @@ import java.io.IOException;
 /**
  * Runs in the end of the simulation,
  * retrieves the Client perceived Latency statistics.
- *
- * TODO: Fix latency observations
  */
 public class LatencyObserver implements Control {
 
-	public LatencyObserver(String prefix) {}
+	public LatencyObserver(String prefix) {
+	}
 
-	public static final String PATH = "./output/latency/";
-	public static final String EXPERIMENT_NAME = "EXPERIMENT_NAME";
+	private static final String PATH = "./output/latency/";
+	private static final String PAR_EXPERIMENT_NAME = "EXPERIMENT_NAME";
 
 	@Override
 	public boolean execute() {
-		var experimentName = Configuration.getString(EXPERIMENT_NAME);
+		var experimentName = Configuration.getString(PAR_EXPERIMENT_NAME);
 		var filename = PATH + experimentName + ".txt";
 
 		System.out.println(CommonState.getTime() + ": " + this.getClass().getName() + " extracting client perceived Latencies.");
@@ -39,7 +38,7 @@ public class LatencyObserver implements Control {
 
 			for (int i = 0; i < Network.size(); i++) {
 				var node = Network.get(i);
-				var application = (ApplicationProtocol) node.getProtocol(Configuration.lookupPid(ApplicationProtocol.protName));
+				var application = (ApplicationProtocol) node.getProtocol(ApplicationProtocol.pid);
 				var nodeLatencies = application.getMessageLatencies();
 				System.out.print("perceived-latency-node-" + i + ": ");
 

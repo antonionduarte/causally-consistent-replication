@@ -5,6 +5,7 @@ import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 import peersim.edsim.EDSimulator;
+import simulator.protocols.application.ApplicationProtocol;
 import simulator.protocols.causality.CausalityProtocol;
 import simulator.protocols.messages.Message;
 import simulator.protocols.messages.MessageWrapper;
@@ -14,16 +15,24 @@ import java.util.Queue;
 
 public class PendingEvents implements EDProtocol {
 
-	public static final String EVENT_PROCESSING_TIME = "EVENT_PROCESSING_TIME";
+	private static final String PAR_EVENT_PROCESSING_TIME = "EVENT_PROCESSING_TIME";
+	private static final String PAR_MAX_PARALLEL_EVENTS = "MAX_PARALLEL_EVENTS";
+	private static final String PAR_PROT = "protocol";
 
 	private Queue<Message> pendingEvents;
-	private final int eventProcessingTime;
-	public static String protName;
 
+	private final int eventProcessingTime;
+	private final int maxParallelEvents;
+
+	private long currentTimestamp;
+	private int counterProcessedEvents;
+
+	public static int pid;
 
 	public PendingEvents(String prefix) {
-		protName = (prefix.split("\\."))[1];
-		eventProcessingTime = Configuration.getInt(EVENT_PROCESSING_TIME);
+		pid = Configuration.getPid(prefix + "." + PAR_PROT);
+		maxParallelEvents = Configuration.getInt(prefix + "." + PAR_MAX_PARALLEL_EVENTS);
+		eventProcessingTime = Configuration.getInt(prefix + "." + PAR_EVENT_PROCESSING_TIME);
 	}
 
 	@Override
@@ -31,6 +40,8 @@ public class PendingEvents implements EDProtocol {
 		try {
 			PendingEvents clone = (PendingEvents) super.clone();
 			clone.pendingEvents = new LinkedList<>();
+			clone.currentTimestamp = -1;
+			clone.counterProcessedEvents = 0;
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -44,18 +55,42 @@ public class PendingEvents implements EDProtocol {
 
 		if (message.getEventType() == Message.EventType.NEXT) {
 			var next = this.pendingEvents.remove();
-			var causalityPid = Configuration.lookupPid(CausalityProtocol.protName);
-			var causalityProtocol = (CausalityProtocol) node.getProtocol(causalityPid);
 
-			causalityProtocol.processEvent(node, pid, next);
-			var nextMessage = new MessageWrapper(null, Message.EventType.NEXT, null, null, 0, 0, null);
+			switch (next.getEventType()) {
+				case PROPAGATING, EXECUTING -> {
+					var causalityProtocol = (CausalityProtocol) node.getProtocol(CausalityProtocol.pid);
+					CommonState.setPid(CausalityProtocol.pid);
+					causalityProtocol.processEvent(node, CausalityProtocol.pid, next);
+				}
+				case RESPONSE -> {
+					var applicationProtocol = (ApplicationProtocol) node.getProtocol(ApplicationProtocol.pid);
+					CommonState.setPid(ApplicationProtocol.pid);
+					applicationProtocol.processEvent(node, ApplicationProtocol.pid, next);
+				}
+			}
 
-			if (!pendingEvents.isEmpty())
-				EDSimulator.add(eventProcessingTime, nextMessage, CommonState.getNode(), CommonState.getPid());
+			var nextMessage = new MessageWrapper(Message.EventType.NEXT);
+
+			if (!pendingEvents.isEmpty()) {
+				EDSimulator.add(eventProcessingTime, nextMessage, CommonState.getNode(), PendingEvents.pid);
+			}
 		} else {
+			if (CommonState.getTime() != currentTimestamp) {
+				this.currentTimestamp = CommonState.getTime();
+				this.counterProcessedEvents = 0;
+			}
+
+			if ((maxParallelEvents != -1) && (counterProcessedEvents > maxParallelEvents)) {
+				this.currentTimestamp++;
+				this.counterProcessedEvents = 0;
+			}
+
 			this.pendingEvents.add(message);
-			var nextMessage = new MessageWrapper(null, Message.EventType.NEXT, null, null, 0, 0, null);
-			EDSimulator.add(eventProcessingTime, nextMessage, CommonState.getNode(), CommonState.getPid());
+			this.counterProcessedEvents++;
+
+			var sendDelay = (currentTimestamp - CommonState.getTime()) + eventProcessingTime;
+			var nextMessage = new MessageWrapper(Message.EventType.NEXT);
+			EDSimulator.add(sendDelay, nextMessage, CommonState.getNode(), PendingEvents.pid);
 		}
 	}
 }

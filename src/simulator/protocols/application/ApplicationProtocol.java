@@ -5,7 +5,7 @@ import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 import peersim.edsim.EDSimulator;
-import simulator.protocols.causality.CausalityProtocol;
+import simulator.protocols.PendingEvents;
 import simulator.protocols.messages.Message;
 import simulator.protocols.messages.MessageWrapper;
 
@@ -14,16 +14,6 @@ import java.util.List;
 
 /**
  * Responsible for simulating Clients in the system.
- * <p>
- * [Ideas]: - In the beginning, initialize it, every client sends an Operation to the Node. - When a client receives an
- * operation, it immediately replies with another one. - The operation is either a Write or a Read, configurable
- * percentage of Writes and Reads. - Each Replica has a configurable number of Clients (global config. each replica has
- * that number).
- * <p>
- * [Metrics]: - Latency per operation (which we then convert to Medium Latency per Replica and Global. - Maybe
- * Writes/Reads separately. - Operations/s, per replica and Globally. - Maybe Writes/Reads separately
- * <p>
- * [Random]: - CommonState.r.nextInt/Long etc...
  */
 public abstract class ApplicationProtocol implements EDProtocol {
 
@@ -33,11 +23,13 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 	private long idCounter;
 
-	private static final String NUMBER_CLIENTS_CONFIG = "number_clients";
-	private static final String WEIGHT_WRITES_CONFIG = "weight_writes";
-	private static final String WEIGHT_READS_CONFIG = "weight_reads";
+	private static final String PAR_NUMBER_CLIENTS = "number_clients";
+	private static final String PAR_WEIGHT_WRITES = "weight_writes";
+	private static final String PAR_WEIGHT_READS = "weight_reads";
+	private static final String PAR_PROT = "protocol";
 
 	public static String protName;
+	public static int pid;
 
 	// Statistic Collection - Probably will be queried in a control that runs periodically
 	private List<Long> messageLatencies;
@@ -45,9 +37,10 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 	public ApplicationProtocol(String prefix) {
 		protName = (prefix.split("\\."))[1];
-		this.numberClients = Configuration.getInt(prefix + "." + NUMBER_CLIENTS_CONFIG);
-		this.weightWrites = Configuration.getInt(prefix + "." + WEIGHT_WRITES_CONFIG);
-		this.weightReads = Configuration.getInt(prefix + "." + WEIGHT_READS_CONFIG);
+		pid = Configuration.getPid(prefix + "." + PAR_PROT);
+		this.numberClients = Configuration.getInt(prefix + "." + PAR_NUMBER_CLIENTS);
+		this.weightWrites = Configuration.getInt(prefix + "." + PAR_WEIGHT_WRITES);
+		this.weightReads = Configuration.getInt(prefix + "." + PAR_WEIGHT_READS);
 	}
 
 	@Override
@@ -73,7 +66,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		for (int i = 0; i < numberClients; i++) {
 			Message message = getRandomMessage(node);
 			this.changeInitialMessage(node, message);
-			EDSimulator.add(0, message, node, Configuration.lookupPid(CausalityProtocol.protName));
+			EDSimulator.add(0, message, node, PendingEvents.pid);
 		}
 	}
 
@@ -101,7 +94,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		// Sends back a new message
 		Message toSend = getRandomMessage(node);
 		this.changeResponseMessage(node, toSend);
-		EDSimulator.add(0, toSend, node, Configuration.lookupPid(CausalityProtocol.protName));
+		EDSimulator.add(0, toSend, node, PendingEvents.pid);
 	}
 
 	/**

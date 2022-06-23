@@ -43,8 +43,8 @@ public class Saturn extends CausalityProtocol {
 		if (message.getOriginNode().getID() != node.getID())
 			this.operationExecuting = false;
 		//if (message.getOperationType() == Message.OperationType.WRITE) {
-			//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
-			//System.out.println();
+		//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
+		//System.out.println();
 		//}
 	}
 
@@ -53,8 +53,8 @@ public class Saturn extends CausalityProtocol {
 		if (message.getOriginNode().getID() != node.getID())
 			this.operationExecuting = true;
 		//if (message.getOperationType() == Message.OperationType.WRITE) {
-			//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
-			//System.out.println();
+		//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
+		//System.out.println();
 		//}
 	}
 }

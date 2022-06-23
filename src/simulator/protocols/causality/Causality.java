@@ -11,11 +11,10 @@ public interface Causality extends EDProtocol {
 	/**
 	 * Processes an operation by deciding its execution time, and sending an event to self.
 	 *
-	 * @param node    The local Node.
+	 * @param node The local Node.
 	 * @param message The Operation to execute.
-	 * @param pid     The identifier of this protocol.
 	 */
-	void executeOperation(Node node, Message message, int pid);
+	void executeOperation(Node node, Message message);
 
 	/**
 	 * Verifies if it's possible to execute an operation according to causal consistency.
@@ -49,10 +48,4 @@ public interface Causality extends EDProtocol {
 	 * @param node The local Node.
 	 */
 	void processQueue(Node node, int pid);
-
-	/**
-	 * @return The operation Queue.
-	 */
-	Queue<Message> getPendingOperations();
-
 }

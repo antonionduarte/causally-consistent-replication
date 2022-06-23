@@ -200,7 +200,7 @@ public class KebabHeap implements PriorityQueue {
 			pre = small ? 0 : size - 1;
 			while ((small ? pre < size : pre >= 0) && (small ? times[pre] <= eventTime : times[pre] >= eventTime)) {
 				if (times[pre] >> pbits == eventTime && nodes[pre] != null && nodes[pre].getID() == node.getID()) {
-					if (((eventTime << pbits) | maxPriority()) == times[pre]) {//max priority
+					if (((eventTime << pbits) | maxPriority()) == times[pre]) { //max priority
 						time++;
 						stop = false;
 						break;

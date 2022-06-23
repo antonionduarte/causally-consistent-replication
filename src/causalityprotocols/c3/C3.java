@@ -84,14 +84,12 @@ public class C3 extends CausalityProtocol {
 		if (executedState + 1 != c3Message.getLblId()) {
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
 				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
-			}
-			else {
+			} else {
 				List<Long> nodeAheadExecutedOps = new LinkedList<>();
 				nodeAheadExecutedOps.add(c3Message.getLblId());
 				aheadExecutedOps.put(message.getOriginNode().getID(), nodeAheadExecutedOps);
 			}
-		}
-		else {
+		} else {
 			executedClock.put(message.getOriginNode().getID(), c3Message.getLblId());
 			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
 				this.checkAheadOps(
@@ -134,7 +132,8 @@ public class C3 extends CausalityProtocol {
 		System.out.println();*/
 	}
 
-	/**z
+	/**
+	 * z
 	 * Check if subsequent operations already completed.
 	 *
 	 * @param originNode The originNode.
@@ -142,7 +141,7 @@ public class C3 extends CausalityProtocol {
 	 */
 	private void checkAheadOps(Node originNode, List<Long> toCheck) {
 		var toRemove = new ArrayList<Long>();
-		var didThings=true;
+		var didThings = true;
 		while (didThings) {
 			didThings = false;
 			for (var lblId : toCheck) {

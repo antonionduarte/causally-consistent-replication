@@ -60,7 +60,8 @@ public class SimpleOverlay extends OverlayProtocol implements Linkable {
 	}
 
 	@Override
-	public void pack() {}
+	public void pack() {
+	}
 
 	@Override
 	public List<Node> getNeighbors() {

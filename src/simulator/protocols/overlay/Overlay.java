@@ -11,5 +11,4 @@ public interface Overlay extends Linkable {
 	 * @return The list of neighbors of the current node in the overlay.
 	 */
 	List<Node> getNeighbors();
-
 }

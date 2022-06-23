@@ -118,4 +118,4 @@ if __name__ == "__main__":
     plot_graph(latencies_saturn, throughputs_saturn, 'b')
     plot_graph(latencies_c3, throughputs_c3, 'r')
     #plt.show()
-    plt.savefig('plot.png')
+    plt.savefig('plot-latency-throughput.pdf')

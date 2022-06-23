@@ -12,6 +12,7 @@ public interface Message {
 	enum EventType {
 		PROPAGATING,
 		EXECUTING,
+		RESPONSE,
 		NEXT
 	}
 
@@ -67,5 +68,4 @@ public interface Message {
 	 * @param protocolMessage Sets the wrapped protocolMessage class.
 	 */
 	void setProtocolMessage(ProtocolMessage protocolMessage);
-
 }

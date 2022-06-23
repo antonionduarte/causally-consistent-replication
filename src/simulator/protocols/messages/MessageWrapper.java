@@ -18,14 +18,13 @@ public class MessageWrapper implements Message {
 	private final Node originNode;
 	private final String messageId;
 
-	public MessageWrapper(
-			OperationType operationType,
-			EventType eventType,
-			ProtocolMessage protocolMessage,
-			Node node,
-			long sendTime,
-			long lastHop,
-			String messageId
+	public MessageWrapper(OperationType operationType,
+						  EventType eventType,
+						  ProtocolMessage protocolMessage,
+						  Node node,
+						  long sendTime,
+						  long lastHop,
+						  String messageId
 	) {
 		this.protocolMessage = protocolMessage;
 		this.operationType = operationType;
@@ -36,6 +35,26 @@ public class MessageWrapper implements Message {
 		this.messageId = messageId;
 	}
 
+	public MessageWrapper(Message message, EventType eventType, Node node) {
+		this.protocolMessage = message.getProtocolMessage();
+		this.eventType = eventType;
+		this.lastHop = node.getID();
+		this.operationType = message.getOperationType();
+		this.sendTime = message.getSendTime();
+		this.messageId = message.getMessageId();
+		this.originNode = message.getOriginNode();
+	}
+
+	public MessageWrapper(EventType eventType) {
+		this.protocolMessage = null;
+		this.eventType = eventType;
+		this.lastHop = -1;
+		this.operationType = null;
+		this.sendTime = -1;
+		this.messageId = null;
+		this.originNode = null;
+	}
+	
 	@Override
 	public long getLastHop() {
 		return lastHop;
