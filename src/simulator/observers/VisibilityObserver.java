@@ -17,7 +17,7 @@ import java.util.Map;
 public class VisibilityObserver implements Control {
 
 	private static final String PATH = "./output/visibility/";
-	private static final String EXPERIMENT_NAME = "EXPERIMENT_NAME";
+	private static final String PAR_EXPERIMENT_NAME = "EXPERIMENT_NAME";
 
 	public VisibilityObserver(String prefix) {
 	}
@@ -44,7 +44,7 @@ public class VisibilityObserver implements Control {
 			}
 		}
 
-		var experimentName = Configuration.getString(EXPERIMENT_NAME);
+		var experimentName = Configuration.getString(PAR_EXPERIMENT_NAME);
 		var filename = PATH + experimentName + ".txt";
 
 		File visibilityObservation = new File(filename);
