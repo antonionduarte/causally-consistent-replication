@@ -12,14 +12,12 @@ import java.util.List;
 
 public abstract class BroadcastProtocol implements Broadcast {
 
-	private static final String PAR_PROT = "protocol";
-
 	public static String protName;
 	public static int pid;
 
 	public BroadcastProtocol(String prefix) {
-		protName = (prefix.split("\\."))[1];
-		pid = Configuration.getPid(prefix + "." + PAR_PROT);
+		var protName = (prefix.split("\\."))[1];
+		pid = Configuration.lookupPid(protName);
 	}
 
 	@Override

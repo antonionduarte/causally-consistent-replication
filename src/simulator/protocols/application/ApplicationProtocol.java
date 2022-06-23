@@ -26,9 +26,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	private static final String PAR_NUMBER_CLIENTS = "number_clients";
 	private static final String PAR_WEIGHT_WRITES = "weight_writes";
 	private static final String PAR_WEIGHT_READS = "weight_reads";
-	private static final String PAR_PROT = "protocol";
 
-	public static String protName;
 	public static int pid;
 
 	// Statistic Collection - Probably will be queried in a control that runs periodically
@@ -36,8 +34,8 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	private long executedOperations;
 
 	public ApplicationProtocol(String prefix) {
-		protName = (prefix.split("\\."))[1];
-		pid = Configuration.getPid(prefix + "." + PAR_PROT);
+		var protName = (prefix.split("\\."))[1];
+		pid = Configuration.lookupPid(protName);
 		this.numberClients = Configuration.getInt(prefix + "." + PAR_NUMBER_CLIENTS);
 		this.weightWrites = Configuration.getInt(prefix + "." + PAR_WEIGHT_WRITES);
 		this.weightReads = Configuration.getInt(prefix + "." + PAR_WEIGHT_READS);

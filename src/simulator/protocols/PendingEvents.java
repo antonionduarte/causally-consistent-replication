@@ -15,9 +15,8 @@ import java.util.Queue;
 
 public class PendingEvents implements EDProtocol {
 
-	private static final String PAR_EVENT_PROCESSING_TIME = "EVENT_PROCESSING_TIME";
-	private static final String PAR_MAX_PARALLEL_EVENTS = "MAX_PARALLEL_EVENTS";
-	private static final String PAR_PROT = "protocol";
+	private static final String PAR_EVENT_PROCESSING_TIME = "event_processing_time";
+	private static final String PAR_MAX_PARALLEL_EVENTS = "max_parallel_events";
 
 	private Queue<Message> pendingEvents;
 
@@ -30,7 +29,8 @@ public class PendingEvents implements EDProtocol {
 	public static int pid;
 
 	public PendingEvents(String prefix) {
-		pid = Configuration.getPid(prefix + "." + PAR_PROT);
+		var protName = (prefix.split("\\."))[1];
+		pid = Configuration.lookupPid(protName);
 		maxParallelEvents = Configuration.getInt(prefix + "." + PAR_MAX_PARALLEL_EVENTS);
 		eventProcessingTime = Configuration.getInt(prefix + "." + PAR_EVENT_PROCESSING_TIME);
 	}

@@ -7,12 +7,11 @@ public abstract class OverlayProtocol implements Overlay, Protocol {
 
 	private static final String PAR_PROT = "protocol";
 
-	public static String protName;
 	public static int pid;
 
 	public OverlayProtocol(String prefix) {
-		protName = (prefix.split("\\."))[1];
-		pid = Configuration.getPid(prefix + "." + PAR_PROT);
+		var protName = (prefix.split("\\."))[1];
+		pid = Configuration.lookupPid(protName);
 	}
 
 	@Override

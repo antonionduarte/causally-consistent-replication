@@ -5,7 +5,6 @@ import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDSimulator;
 import simulator.protocols.PendingEvents;
-import simulator.protocols.application.ApplicationProtocol;
 import simulator.protocols.broadcast.Broadcast;
 import simulator.protocols.broadcast.BroadcastProtocol;
 import simulator.protocols.messages.Message;
@@ -15,9 +14,9 @@ import java.util.*;
 
 public abstract class CausalityProtocol implements Causality {
 
-	/**
-	 * The execution time for an operation.
-	 */
+	private static final String PAR_WRITE_TIME = "write_time";
+	private static final String PAR_READ_TIME = "read_time";
+
 	private final int writeTime;
 	private final int readTime;
 
@@ -26,16 +25,12 @@ public abstract class CausalityProtocol implements Causality {
 	 */
 	private Queue<Message> pendingOperations;
 
-	public static String protName;
 	public static int pid;
 
-	private static final String PAR_WRITE_TIME = "write_time";
-	private static final String PAR_READ_TIME = "read_time";
-	private static final String PAR_PROT = "protocol";
-
 	/**
-	 * Statistic collection structure - Visibility times.
+	 * Statistic collection variables.
 	 */
+
 	private Map<String, Long> visibilityTimes;
 	private Set<String> sentMessages;
 
@@ -43,8 +38,8 @@ public abstract class CausalityProtocol implements Causality {
 	 * The constructor for the protocol.
 	 */
 	public CausalityProtocol(String prefix) {
-		pid = Configuration.getPid(prefix + "." + PAR_PROT);
-		protName = (prefix.split("\\."))[1];
+		var protName = (prefix.split("\\."))[1];
+		pid = Configuration.lookupPid(protName);
 		this.writeTime = Configuration.getInt(prefix + "." + PAR_WRITE_TIME);
 		this.readTime = Configuration.getInt(prefix + "." + PAR_READ_TIME);
 	}
@@ -88,9 +83,8 @@ public abstract class CausalityProtocol implements Causality {
 				this.operationFinishedExecution(node, message);
 
 				if (message.getOriginNode().getID() == node.getID()) {
-					var applicationPid = Configuration.lookupPid(ApplicationProtocol.protName);
 					((Message) event).setEventType(Message.EventType.RESPONSE);
-					EDSimulator.add(0, event, node, applicationPid);
+					EDSimulator.add(0, event, node, PendingEvents.pid);
 				}
 			}
 		}
