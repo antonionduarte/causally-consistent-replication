@@ -42,7 +42,7 @@ public abstract class CausalityProtocol implements Causality {
 	public CausalityProtocol(String prefix) {
 		var protName = (prefix.split("\\."))[1];
 		pid = Configuration.lookupPid(protName);
-		this.checkAll = Configuration.getBoolean(PAR_CHECK_ALL);
+		this.checkAll = Configuration.getBoolean(prefix + "." + PAR_CHECK_ALL);
 		this.writeTime = Configuration.getInt(prefix + "." + PAR_WRITE_TIME);
 		this.readTime = Configuration.getInt(prefix + "." + PAR_READ_TIME);
 	}
