@@ -1,0 +1,112 @@
+simulation.endtime 	 	 10000
+
+# network size
+SIZE                    7
+
+# parameters of periodic execution
+
+CYCLES                  100
+CYCLE                   SIZE * 10000
+EVENT_PROCESSING_TIME   1
+
+EXPERIMENT_NAME saturn-35-clients
+
+# ------------------------------- #
+# ---- Simulation Parameters ---- #
+# ------------------------------- #
+
+protocol.pendingEvents      simulator.protocols.PendingEvents
+{
+    max_parallel_events         100000
+    event_processing_time       1
+}
+
+random.seed             101212132131
+network.size            SIZE
+
+# ------------------- #
+# ---- Transport ---- #
+# ------------------- #
+
+protocol.urt            simulator.transports.LatencyMatrixTransport
+{
+    latency_path        config/latencies/latency-0-mat.txt
+}
+
+# -------------------------------------- #
+# ---- Application / Clients Config ---- #
+# -------------------------------------- #
+
+protocol.application    causalityprotocols.saturn.SaturnApplication
+{
+    number_clients  35       # the number of clients being simulated per node
+    weight_reads    20         # the percentage/weight of reads being simulated
+    weight_writes   80         # the percentage/weight of writes being simulated
+}
+
+# -------------------------- #
+# ---- Causality Config ---- #
+# -------------------------- #
+
+protocol.causality      causalityprotocols.saturn.Saturn
+{
+    write_time      40          # the amount of time a write takes to execute
+    read_time       60         # the amount of time that a read takes to execute
+}
+
+# ---------------------------- #
+# ---- Topology / Overlay ---- #
+# ---------------------------- #
+
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay
+
+# select the topology that you with to use and initialize it,
+# initialize the node inits as well
+
+# ------------------- #
+# ---- Broadcast ---- #
+# ------------------- #
+
+protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace path with desired broadcast protocol
+{
+    transport           urt
+}
+
+# select the broadcast protocol you wish to use, and initialize it
+
+# ---------------------- #
+# ---- Initializers ---- #
+# ---------------------- #
+
+init.treeInit           WireFromFile
+{
+    k                   20
+    file                config/graphs/tree-graph-0.txt
+    protocol            overlay
+}
+
+init.applicationInit    simulator.protocols.application.ApplicationInitializer
+{
+    protocol            application
+}
+
+# ---------------------------------- #
+# ----- Controls and Observers ----- #
+# ---------------------------------- #
+
+include.control         latencyObserver, throughputObserver, visibilityObserver
+
+control.latencyObserver     simulator.observers.LatencyObserver
+{
+    step    simulation.endtime - 1
+}
+
+control.throughputObserver  simulator.observers.ThroughputObserver
+{
+    step    simulation.endtime - 1
+}
+
+control.visibilityObserver  simulator.observers.VisibilityObserver
+{
+    step    simulation.endtime - 1
+}

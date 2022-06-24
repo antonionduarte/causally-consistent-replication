@@ -27,8 +27,6 @@ public class SaturnBroadcast extends BroadcastProtocol {
 
 	@Override
 	public void uponBroadcast(Node node, Message message, List<Node> neighbors, long lastHop) {
-		int pid = Configuration.lookupPid(BroadcastProtocol.protName);
-
 		for (var neighbor : neighbors) {
 			// send to everyone that is not himself
 			if (neighbor.getID() != lastHop) {
@@ -38,7 +36,7 @@ public class SaturnBroadcast extends BroadcastProtocol {
 								neighbor.getID()
 				);*/
 
-				((Transport) node.getProtocol(transportId)).send(node, neighbor, message, pid);
+				((Transport) node.getProtocol(transportId)).send(node, neighbor, message, BroadcastProtocol.pid);
 			}
 		}
 	}

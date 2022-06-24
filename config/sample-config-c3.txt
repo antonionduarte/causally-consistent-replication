@@ -1,4 +1,4 @@
-simulation.endtime 	 	 500
+simulation.endtime 	 	 100
 
 # network size
 SIZE                    7
@@ -17,11 +17,11 @@ EXPERIMENT_NAME c3-3-clients
 
 protocol.pendingEvents  simulator.protocols.PendingEvents
 {
-    max_parallel_events         100000
-    event_processing_time       1
+    max_parallel_events         0
+    event_processing_time       0
 }
 
-random.seed             10
+random.seed             101212132131
 network.size            SIZE
 
 # ------------------- #

@@ -52,7 +52,7 @@ public class PendingEvents implements EDProtocol {
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
-
+		var debugTime = CommonState.getTime();
 		if (message.getEventType() == Message.EventType.NEXT) {
 			var next = this.pendingEvents.remove();
 
@@ -68,14 +68,8 @@ public class PendingEvents implements EDProtocol {
 					applicationProtocol.processEvent(node, ApplicationProtocol.pid, next);
 				}
 			}
-
-			var nextMessage = new MessageWrapper(Message.EventType.NEXT);
-
-			if (!pendingEvents.isEmpty()) {
-				EDSimulator.add(eventProcessingTime, nextMessage, CommonState.getNode(), PendingEvents.pid);
-			}
 		} else {
-			if (CommonState.getTime() != currentTimestamp) {
+			if (CommonState.getTime() > currentTimestamp) {
 				this.currentTimestamp = CommonState.getTime();
 				this.counterProcessedEvents = 0;
 			}
@@ -88,7 +82,9 @@ public class PendingEvents implements EDProtocol {
 			this.pendingEvents.add(message);
 			this.counterProcessedEvents++;
 
-			var sendDelay = (currentTimestamp - CommonState.getTime()) + eventProcessingTime;
+			var debug = CommonState.getTime();
+			var sendInterval = currentTimestamp - CommonState.getTime();
+			var sendDelay = sendInterval + eventProcessingTime;
 			var nextMessage = new MessageWrapper(Message.EventType.NEXT);
 			EDSimulator.add(sendDelay, nextMessage, CommonState.getNode(), PendingEvents.pid);
 		}

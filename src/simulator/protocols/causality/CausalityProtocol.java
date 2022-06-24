@@ -63,12 +63,14 @@ public abstract class CausalityProtocol implements Causality {
 		var message = (Message) event;
 
 		// TODO: These are DEBUG logs.
-		if (CommonState.getTime() % 1000 == 0) {
+		/*if (CommonState.getTime() % 1000 == 0) {
 			if (node.getID() == 0) {
 				System.out.println("Received Event - Time: " + CommonState.getTime() + " - " +
 						message.getMessageId() + " - Node: " + CommonState.getNode().getID());
 			}
-		}
+		}*/
+
+		System.out.println("Received Message: " + message.getMessageId() + " - Node: " + node.getID() + " - Time: " + CommonState.getTime());
 
 		switch (message.getEventType()) {
 			case PROPAGATING -> {
