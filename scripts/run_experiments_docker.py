@@ -9,7 +9,7 @@ DOCKER_COPY = 'docker cp {}:output {}'
 DOCKER_RM_CONTAINER = 'docker rm {}'
 
 RUN_COMMAND = 'docker run --name {} causality-sim {}'
-TIME = 500
+TIME = 100000
 
 def get_container_name(cmd):
     splitted = cmd.split('/')
@@ -17,6 +17,7 @@ def get_container_name(cmd):
     return name
 
 def run_command(cmd):
+    print(RUN_COMMAND.format(get_container_name(cmd), cmd))
     os.system(RUN_COMMAND.format(get_container_name(cmd), cmd))
 
 def run_commands(commands, n_parallel):
@@ -24,29 +25,29 @@ def run_commands(commands, n_parallel):
     worker.map(run_command, commands)
 
 if __name__ == "__main__":
-    os.system(COMPILE_COMMAND)
+    # os.system(COMPILE_COMMAND)
 
     commands = [
-        'config/saturn/config-3-clients.txt',
-        'config/saturn/config-5-clients.txt',
-        'config/saturn/config-10-clients.txt',
-        'config/saturn/config-15-clients.txt',
-        'config/saturn/config-20-clients.txt',
-        'config/saturn/config-25-clients.txt',
-        'config/saturn/config-30-clients.txt',
-        'config/saturn/config-35-clients.txt',
-        'config/saturn/config-50-clients.txt',
-        'config/saturn/config-55-clients.txt',
-        'config/saturn/config-60-clients.txt',
-        'config/saturn/config-65-clients.txt',
-        'config/saturn/config-80-clients.txt',
-        'config/saturn/config-100-clients.txt',
+        # 'config/saturn/sat-3-clients.txt',
+        # 'config/saturn/sat-5-clients.txt',
+        # 'config/saturn/sat-10-clients.txt',
+        # 'config/saturn/sat-15-clients.txt',
+        # 'config/saturn/sat-20-clients.txt',
+        # 'config/saturn/sat-25-clients.txt',
+        # 'config/saturn/sat-30-clients.txt',
+        # 'config/saturn/sat-35-clients.txt',
+        # 'config/saturn/sat-50-clients.txt',
+        # 'config/saturn/sat-55-clients.txt',
+        # 'config/saturn/sat-60-clients.txt',
+        # 'config/saturn/sat-65-clients.txt',
+        # 'config/saturn/sat-80-clients.txt',
+        # 'config/saturn/sat-100-clients.txt',
 
         # 'config/c3/c3-3-clients.txt',
         # 'config/c3/c3-5-clients.txt',
         # 'config/c3/c3-10-clients.txt',
         # 'config/c3/c3-15-clients.txt',
-        # 'config/c3/c3-20-clients.txt',
+        'config/c3/c3-20-clients.txt',
         # 'config/c3/c3-25-clients.txt',
         # 'config/c3/c3-30-clients.txt',
         # 'config/c3/c3-35-clients.txt',

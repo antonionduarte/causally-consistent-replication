@@ -1,4 +1,4 @@
-simulation.endtime 	 	 500
+simulation.endtime 	 	 100000
 
 # network size
 SIZE                    7
@@ -14,6 +14,12 @@ EXPERIMENT_NAME saturn-30-clients
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
 # ------------------------------- #
+
+protocol.pendingEvents  simulator.protocols.PendingEvents
+{
+    max_parallel_events         0
+    event_processing_time       0
+}
 
 random.seed             101212132131
 network.size            SIZE
