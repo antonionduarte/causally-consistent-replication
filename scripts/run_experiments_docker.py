@@ -68,6 +68,7 @@ if __name__ == "__main__":
             file = open(command, 'w')
             for line in lines:
                 file.write(line)
+            file.close()
 
     os.system(DOCKER_BUILD)
     
