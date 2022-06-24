@@ -8,7 +8,7 @@ NUMBER_NODES = 7
 EXPERIMENT_TIME_SATURN = 30
 EXPERIMENT_TIME_C3 = 30
 
-TIME_INTERVAL = 500
+TIME_INTERVAL = 5
 
 """ 
 Returns the lowest value of a list
@@ -65,7 +65,7 @@ def visibility(experiment):
 
     max_time = highest(x_total)
     curr_timestamp = 0
-    while curr_timestamp + TIME_INTERVAL < max_time:
+    while curr_timestamp + TIME_INTERVAL <= max_time:
         i = 0
         interval_x = []
         interval_y = []

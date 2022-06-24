@@ -44,6 +44,7 @@ protocol.application    causalityprotocols.saturn.SaturnApplication
 
 protocol.causality      causalityprotocols.saturn.Saturn
 {
+    check_all       false
     write_time      40          # the amount of time a write takes to execute
     read_time       60         # the amount of time that a read takes to execute
 }

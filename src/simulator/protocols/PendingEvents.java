@@ -52,7 +52,6 @@ public class PendingEvents implements EDProtocol {
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
-		var debugTime = CommonState.getTime();
 		if (message.getEventType() == Message.EventType.NEXT) {
 			var next = this.pendingEvents.remove();
 

@@ -16,9 +16,11 @@ public abstract class CausalityProtocol implements Causality {
 
 	private static final String PAR_WRITE_TIME = "write_time";
 	private static final String PAR_READ_TIME = "read_time";
+	private static final String PAR_CHECK_ALL = "check_all";
 
 	private final int writeTime;
 	private final int readTime;
+	private final boolean checkAll;
 
 	/**
 	 * Operation Queue, saves the events that weren't able to be processed due to issues with causality.
@@ -40,6 +42,7 @@ public abstract class CausalityProtocol implements Causality {
 	public CausalityProtocol(String prefix) {
 		var protName = (prefix.split("\\."))[1];
 		pid = Configuration.lookupPid(protName);
+		this.checkAll = Configuration.getBoolean(PAR_CHECK_ALL);
 		this.writeTime = Configuration.getInt(prefix + "." + PAR_WRITE_TIME);
 		this.readTime = Configuration.getInt(prefix + "." + PAR_READ_TIME);
 	}
@@ -63,14 +66,12 @@ public abstract class CausalityProtocol implements Causality {
 		var message = (Message) event;
 
 		// TODO: These are DEBUG logs.
-		/*if (CommonState.getTime() % 1000 == 0) {
+		if (CommonState.getTime() % 1000 == 0) {
 			if (node.getID() == 0) {
 				System.out.println("Received Event - Time: " + CommonState.getTime() + " - " +
 						message.getMessageId() + " - Node: " + CommonState.getNode().getID());
 			}
-		}*/
-
-		System.out.println("Received Message: " + message.getMessageId() + " - Node: " + node.getID() + " - Time: " + CommonState.getTime());
+		}
 
 		switch (message.getEventType()) {
 			case PROPAGATING -> {
@@ -98,12 +99,15 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processQueue(Node node, int pid) {
-		var verifiedMessages = new ArrayList<Message>();
+		var verifiedMessages = new LinkedList<Message>();
+
 		for (Message message : pendingOperations) {
 			if (this.checkCausality(node, message)) {
 				verifiedMessages.add(message);
 				this.executeOperation(node, message);
 			}
+
+			if (!checkAll) break;
 		}
 
 		this.pendingOperations.removeAll(verifiedMessages);

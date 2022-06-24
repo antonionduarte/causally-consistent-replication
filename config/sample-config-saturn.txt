@@ -1,4 +1,4 @@
-simulation.endtime 	 	 10000
+simulation.endtime 	 	 100000
 
 # network size
 SIZE                    7
@@ -17,8 +17,8 @@ EXPERIMENT_NAME saturn-35-clients
 
 protocol.pendingEvents      simulator.protocols.PendingEvents
 {
-    max_parallel_events         100000
-    event_processing_time       1
+    max_parallel_events         0
+    event_processing_time       0
 }
 
 random.seed             101212132131
@@ -50,6 +50,7 @@ protocol.application    causalityprotocols.saturn.SaturnApplication
 
 protocol.causality      causalityprotocols.saturn.Saturn
 {
+    check_all       false
     write_time      40          # the amount of time a write takes to execute
     read_time       60         # the amount of time that a read takes to execute
 }
