@@ -99,18 +99,16 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void processQueue(Node node, int pid) {
-		var verifiedMessages = new LinkedList<Message>();
-
-		for (Message message : pendingOperations) {
+		var iterator = pendingOperations.iterator();
+		while (iterator.hasNext()) {
+			var message = iterator.next();
 			if (this.checkCausality(node, message)) {
-				verifiedMessages.add(message);
+				iterator.remove();
 				this.executeOperation(node, message);
 			}
 
 			if (!checkAll) break;
 		}
-
-		this.pendingOperations.removeAll(verifiedMessages);
 	}
 
 	@Override
