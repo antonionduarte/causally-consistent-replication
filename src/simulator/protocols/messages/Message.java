@@ -6,7 +6,8 @@ public interface Message {
 
 	enum OperationType {
 		WRITE,
-		READ;
+		READ,
+		MIGRATION;
 	}
 
 	enum EventType {

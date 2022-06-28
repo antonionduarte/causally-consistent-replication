@@ -108,6 +108,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 		String messageId = node.getID() + "_" + idCounter++;
 
+		// TODO: Determine that an operation is of migration type
 		if (random <= weightWrites) {
 			operationType = Message.OperationType.WRITE;
 		} else {

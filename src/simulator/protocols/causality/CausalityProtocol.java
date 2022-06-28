@@ -14,12 +14,14 @@ import java.util.*;
 
 public abstract class CausalityProtocol implements Causality {
 
+	private static final String PAR_MIGRATION_TIME = "migration_time";
 	private static final String PAR_WRITE_TIME = "write_time";
 	private static final String PAR_READ_TIME = "read_time";
 	private static final String PAR_CHECK_ALL = "check_all";
 
 	private final int writeTime;
 	private final int readTime;
+	private final int migrationTime;
 	private final boolean checkAll;
 
 	/**
@@ -44,6 +46,7 @@ public abstract class CausalityProtocol implements Causality {
 		pid = Configuration.lookupPid(protName);
 		this.checkAll = Configuration.getBoolean(prefix + "." + PAR_CHECK_ALL);
 		this.writeTime = Configuration.getInt(prefix + "." + PAR_WRITE_TIME);
+		this.migrationTime = Configuration.getInt(prefix + "." + PAR_MIGRATION_TIME);
 		this.readTime = Configuration.getInt(prefix + "." + PAR_READ_TIME);
 	}
 
@@ -77,6 +80,8 @@ public abstract class CausalityProtocol implements Causality {
 			case PROPAGATING -> {
 				if (checkCausality(node, message)) {
 					this.executeOperation(node, message);
+
+					// TODO: if message op type is migration, do migration things (maybe not here)
 				} else {
 					this.pendingOperations.add(message);
 				}
@@ -113,14 +118,22 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void executeOperation(Node node, Message message) {
-		long expectedArrivalTime;
+		long expectedArrivalTime = -1;
 		this.operationStartedExecution(node, message);
 
-		if (message.getOperationType() == Message.OperationType.READ) {
-			expectedArrivalTime = readTime;
-		} else {
-			expectedArrivalTime = writeTime;
+		switch (message.getOperationType()) {
+			case READ -> {
+				expectedArrivalTime = readTime;
+			}
+			case WRITE -> {
+				expectedArrivalTime = writeTime;
+			}
+			case MIGRATION -> {
+				expectedArrivalTime = migrationTime;
+			}
 		}
+
+		// TODO: if message op type is migration, do migration things
 
 		Message toSend = new MessageWrapper(message, Message.EventType.EXECUTING, node);
 		EDSimulator.add(expectedArrivalTime, toSend, node, PendingEvents.pid);

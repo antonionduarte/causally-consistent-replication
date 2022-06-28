@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 LATENCY_PATH = "output/latency/"
 THROUGHPUT_PATH = "output/throughput/"
 
-EXPERIMENT_TIME_SATURN = 100
-EXPERIMENT_TIME_C3 = 100
+EXPERIMENT_TIME_SATURN = 120
+EXPERIMENT_TIME_C3 = 120
 
 """ 
 Processes the latencies and returns the medium latency for each 
