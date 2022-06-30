@@ -15,7 +15,7 @@ def run_commands(commands, n_parallel):
 
 if __name__ == "__main__":
     os.system(COMPILE_COMMAND)
-
+    
     commands = [
         'config/saturn/config-3-clients.txt',
         'config/saturn/config-5-clients.txt',

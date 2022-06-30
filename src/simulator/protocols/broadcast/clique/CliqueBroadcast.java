@@ -1,22 +1,20 @@
-package simulator.protocols.broadcast.click;
+package simulator.protocols.broadcast.clique;
 
 import peersim.config.Configuration;
-import peersim.core.CommonState;
 import simulator.protocols.broadcast.BroadcastProtocol;
 import simulator.protocols.messages.Message;
-import peersim.config.FastConfig;
 import peersim.core.Node;
 import peersim.transport.Transport;
 
 import java.util.List;
 
-public class ClickBroadcast extends BroadcastProtocol {
+public class CliqueBroadcast extends BroadcastProtocol {
 
 	private static final String PAR_TRANSPORT = "transport";
 
 	private final int transportId;
 
-	public ClickBroadcast(String prefix) {
+	public CliqueBroadcast(String prefix) {
 		super(prefix);
 		transportId = Configuration.getPid(prefix + "." + PAR_TRANSPORT);
 	}

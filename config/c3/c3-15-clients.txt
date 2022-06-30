@@ -68,7 +68,7 @@ protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # repl
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # replace path with desired broadcast protocol
+protocol.broadcast      simulator.protocols.broadcast.clique.CliqueBroadcast    # replace path with desired broadcast protocol
 {
     transport           urt
 }

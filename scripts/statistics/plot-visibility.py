@@ -8,7 +8,7 @@ NUMBER_NODES = 7
 EXPERIMENT_TIME_SATURN = 30
 EXPERIMENT_TIME_C3 = 30
 
-TIME_INTERVAL = 5
+TIME_INTERVAL = 1000
 
 """ 
 Returns the lowest value of a list
@@ -139,6 +139,8 @@ if __name__ == "__main__":
     # print(y_visibility_c3)
     # print(x_visibility_c3)
     # print(y_visibility_c3)
+
+    plt.style.use('seaborn')
 
     plot_graph(x_visibility_c3, y_visibility_c3, 'r', 'C3')
     plot_graph(x_visibility_sat, y_visibility_sat, 'b', 'Saturn')
