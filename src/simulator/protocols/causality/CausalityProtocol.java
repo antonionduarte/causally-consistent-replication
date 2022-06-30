@@ -21,7 +21,7 @@ public abstract class CausalityProtocol implements Causality {
 
 	private final int writeTime;
 	private final int readTime;
-	private final int migrationTime;
+	private final int migrationTime = 0;
 	private final boolean checkAll;
 
 	/**
@@ -46,7 +46,7 @@ public abstract class CausalityProtocol implements Causality {
 		pid = Configuration.lookupPid(protName);
 		this.checkAll = Configuration.getBoolean(prefix + "." + PAR_CHECK_ALL);
 		this.writeTime = Configuration.getInt(prefix + "." + PAR_WRITE_TIME);
-		this.migrationTime = Configuration.getInt(prefix + "." + PAR_MIGRATION_TIME);
+		// this.migrationTime = Configuration.getInt(prefix + "." + PAR_MIGRATION_TIME);
 		this.readTime = Configuration.getInt(prefix + "." + PAR_READ_TIME);
 	}
 
