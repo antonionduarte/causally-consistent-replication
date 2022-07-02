@@ -54,7 +54,13 @@ public class MessageWrapper implements Message {
 		this.messageId = null;
 		this.originNode = null;
 	}
-	
+
+	// TODO: Implement this
+	@Override
+	public Character getPartition() {
+		return null;
+	}
+
 	@Override
 	public long getLastHop() {
 		return lastHop;

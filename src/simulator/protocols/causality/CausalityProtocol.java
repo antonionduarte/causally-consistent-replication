@@ -4,6 +4,7 @@ import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDSimulator;
+import simulator.node.PartitionsNode;
 import simulator.protocols.PendingEvents;
 import simulator.protocols.broadcast.Broadcast;
 import simulator.protocols.broadcast.BroadcastProtocol;
@@ -67,6 +68,7 @@ public abstract class CausalityProtocol implements Causality {
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
+		var partitionsNode = (PartitionsNode) node;
 
 		// TODO: These are DEBUG logs.
 		if (CommonState.getTime() % 1000 == 0) {
@@ -93,12 +95,19 @@ public abstract class CausalityProtocol implements Causality {
 				if (message.getOriginNode().getID() == node.getID()) {
 					((Message) event).setEventType(Message.EventType.RESPONSE);
 					EDSimulator.add(0, event, node, PendingEvents.pid);
+				} else {
+					// case where it's a remote node with the correct partition
+					if (partitionsNode.getPartitions().contains(message.getPartition())) {
+						// what does this do? does it answer directly to the client?
+					}
 				}
 			}
 		}
 
-		if (!sentMessages.contains(message.getMessageId()))
+		if (!sentMessages.contains(message.getMessageId())) {
 			this.propagateMessage(node, message);
+		}
+
 		this.processQueue(node, pid);
 	}
 
@@ -118,19 +127,27 @@ public abstract class CausalityProtocol implements Causality {
 
 	@Override
 	public void executeOperation(Node node, Message message) {
-		long expectedArrivalTime = -1;
+		var expectedArrivalTime = -1L;
+		var partitionsNode = (PartitionsNode) node;
+
 		this.operationStartedExecution(node, message);
 
-		switch (message.getOperationType()) {
-			case READ -> {
-				expectedArrivalTime = readTime;
+		if (partitionsNode.getPartitions().contains(message.getPartition())) {
+			// If it's in the correct partition the operation actually executes
+			switch (message.getOperationType()) {
+				case READ -> {
+					expectedArrivalTime = readTime;
+				}
+				case WRITE -> {
+					expectedArrivalTime = writeTime;
+				}
+				case MIGRATION -> {
+					expectedArrivalTime = migrationTime;
+				}
 			}
-			case WRITE -> {
-				expectedArrivalTime = writeTime;
-			}
-			case MIGRATION -> {
-				expectedArrivalTime = migrationTime;
-			}
+			// If it's in the wrong partition it takes no time to execute
+		} else {
+			expectedArrivalTime = 0L;
 		}
 
 		// TODO: if message op type is migration, do migration things
@@ -143,6 +160,7 @@ public abstract class CausalityProtocol implements Causality {
 		if (message.getOperationType() == Message.OperationType.WRITE) {
 			var lastHop = message.getLastHop();
 			var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.pid);
+
 
 			Message toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
 			this.sentMessages.add(message.getMessageId());

@@ -23,6 +23,12 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 	private long idCounter;
 
+	private List<String> receivedMessages; // TODO: Not necessary probably
+	// TODO: THE STRATEGY HAS SHIFTED, NOW:
+	/**
+	 * @link talk with fouto
+	 */
+
 	private static final String PAR_NUMBER_CLIENTS = "number_clients";
 	private static final String PAR_WEIGHT_WRITES = "weight_writes";
 	private static final String PAR_WEIGHT_READS = "weight_reads";
@@ -71,6 +77,9 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	/**
 	 * This function will only trigger when it receives a message back from the Protocol. Basically calculated and
 	 * stores statistics, and triggers sending a new message.
+	 * It only processes messages that haven't been received yet, the others are discarded.
+	 * I'm doing this since it can receive several responses from Nodes that have the correct partition, but only the first
+	 * response is relevant.
 	 *
 	 * @param node the local node
 	 * @param pid the identifier of this protocol
@@ -78,21 +87,20 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 */
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		// Statistic collection
 		Message message = (Message) event;
-		long rtt = (CommonState.getTime() - message.getSendTime());
-		this.messageLatencies.add(rtt);
-		this.executedOperations++;
 
-		/*System.out.println(
-				"DEBUG: Received by Application" + " - Time:" + CommonState.getTime() + " - " +
-				message.getMessageId() + " - Node:" + CommonState.getNode().getID()
-		);*/
+		if (!receivedMessages.contains(message.getMessageId())) {
+			// Statistic collection
+			long rtt = (CommonState.getTime() - message.getSendTime());
+			this.messageLatencies.add(rtt);
+			this.receivedMessages.add(message.getMessageId());
+			this.executedOperations++;
 
-		// Sends back a new message
-		Message toSend = getRandomMessage(node);
-		this.changeResponseMessage(node, toSend);
-		EDSimulator.add(0, toSend, node, PendingEvents.pid);
+			// Sends back a new message
+			Message toSend = getRandomMessage(node);
+			this.changeResponseMessage(node, toSend);
+			EDSimulator.add(0, toSend, node, PendingEvents.pid);
+		}
 	}
 
 	/**

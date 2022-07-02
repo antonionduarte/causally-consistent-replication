@@ -27,10 +27,8 @@ public class PartitionsNode extends GeneralNode {
 	 */
 	public PartitionsNode(String prefix) {
 		super(prefix);
-		this.partitions = new HashMap<>();
 		var path = Configuration.getString(prefix + "." + PAR_PARTITIONS_PATH);
-		var file = new File(path);
-		this.parsePartitions(file);
+		this.partitions = parsePartitions(path);
 	}
 
 	@Override
@@ -38,35 +36,48 @@ public class PartitionsNode extends GeneralNode {
 		return super.clone();
 	}
 
-	public Map<Long, List<Character>> getPartitions() {
+	public Map<Long, List<Character>> getAllPartitions() {
 		return partitions;
 	}
 
-	public List<Character> getNodePartitions(long nodeId) {
+	/**
+	 * @return The partition list of the current node.
+	 */
+	public List<Character> getPartitions() {
+		return partitions.get(this.getID());
+	}
+
+	/**
+	 * @param nodeId The Id of the node to get the partition list of.
+	 * @return The partition list of the node identified by nodeId.
+	 */
+	public List<Character> getPartitions(long nodeId) {
 		return partitions.get(nodeId);
 	}
 
-	private void parsePartitions(File file) {
+	private static Map<Long, List<Character>> parsePartitions(String path) {
 		// read partitions from the specified file
+		var partitions = new HashMap<Long, List<Character>>();
+		var file = new File(path);
 		try (var scanner = new Scanner(file)) {
 			// parse the file
 			var nodeCounter = 0L;
 
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
-				String[] partitions = line.split(",");
-				List<Character> partitionList = new ArrayList<>(partitions.length);
+				String[] partitionsList = line.split(",");
+				List<Character> partitionList = new ArrayList<>(partitionsList.length);
 
-				for (var partition : partitions) {
+				for (var partition : partitionsList) {
 					partitionList.add(partition.charAt(0));
 				}
 
-				this.partitions.put(nodeCounter, partitionList);
-
+				partitions.put(nodeCounter, partitionList);
 				nodeCounter++;
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		return partitions;
 	}
 }

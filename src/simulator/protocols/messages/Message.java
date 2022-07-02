@@ -54,6 +54,11 @@ public interface Message {
 	OperationType getOperationType();
 
 	/**
+	 * @return The partition that the message is destined to.
+	 */
+	Character getPartition();
+
+	/**
 	 * Changes the type of message.
 	 */
 	void setOperationType(OperationType operationType);

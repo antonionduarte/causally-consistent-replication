@@ -5,5 +5,3 @@ B,C
 B,D
 C,D
 B,A
-
-# each line represents a node
