@@ -6,17 +6,15 @@ import peersim.core.Node;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Array;
 import java.util.*;
 
 public class PartitionsNode extends GeneralNode {
 
 	private static final String PAR_PARTITIONS_PATH = "partitions_file";
 
-	/**
-	 * Map from nodeID -> List of Character,
-	 * where each Character represents a Partition.
-	 */
 	private final Map<Long, List<Character>> partitions;
+	private final List<Character> distinctPartitions;
 
 	/**
 	 * Used to construct the prototype node. This class currently does not
@@ -29,11 +27,24 @@ public class PartitionsNode extends GeneralNode {
 		super(prefix);
 		var path = Configuration.getString(prefix + "." + PAR_PARTITIONS_PATH);
 		this.partitions = parsePartitions(path);
+		this.distinctPartitions = new ArrayList<>();
+
+		for (var partitionList : partitions.values()) {
+			for (var partition : partitionList) {
+				if (!distinctPartitions.contains(partition)) {
+					this.distinctPartitions.add(partition);
+				}
+			}
+		}
 	}
 
 	@Override
 	public Object clone() {
 		return super.clone();
+	}
+
+	public List<Character> getDistinctPartitions() {
+		return distinctPartitions;
 	}
 
 	public Map<Long, List<Character>> getAllPartitions() {
@@ -48,7 +59,7 @@ public class PartitionsNode extends GeneralNode {
 	}
 
 	/**
-	 * @param nodeId The Id of the node to get the partition list of.
+	 * @param nodeId The id of the node to get the partition list of.
 	 * @return The partition list of the node identified by nodeId.
 	 */
 	public List<Character> getPartitions(long nodeId) {

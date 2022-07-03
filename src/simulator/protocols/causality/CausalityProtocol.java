@@ -6,6 +6,7 @@ import peersim.core.Node;
 import peersim.edsim.EDSimulator;
 import simulator.node.PartitionsNode;
 import simulator.protocols.PendingEvents;
+import simulator.protocols.application.ApplicationProtocol;
 import simulator.protocols.broadcast.Broadcast;
 import simulator.protocols.broadcast.BroadcastProtocol;
 import simulator.protocols.messages.Message;
@@ -70,7 +71,6 @@ public abstract class CausalityProtocol implements Causality {
 		var message = (Message) event;
 		var partitionsNode = (PartitionsNode) node;
 
-		// TODO: These are DEBUG logs.
 		if (CommonState.getTime() % 1000 == 0) {
 			if (node.getID() == 0) {
 				System.out.println("Received Event - Time: " + CommonState.getTime() + " - " +
@@ -82,8 +82,6 @@ public abstract class CausalityProtocol implements Causality {
 			case PROPAGATING -> {
 				if (checkCausality(node, message)) {
 					this.executeOperation(node, message);
-
-					// TODO: if message op type is migration, do migration things (maybe not here)
 				} else {
 					this.pendingOperations.add(message);
 				}
@@ -91,21 +89,24 @@ public abstract class CausalityProtocol implements Causality {
 			case EXECUTING -> {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
 				this.operationFinishedExecution(node, message);
-
 				if (message.getOriginNode().getID() == node.getID()) {
 					((Message) event).setEventType(Message.EventType.RESPONSE);
 					EDSimulator.add(0, event, node, PendingEvents.pid);
-				} else {
-					// case where it's a remote node with the correct partition
-					if (partitionsNode.getPartitions().contains(message.getPartition())) {
-						// what does this do? does it answer directly to the client?
+				}
+				if (message.getOperationType() == Message.OperationType.MIGRATION) { // [NEW]
+					if (message.getOriginNode().getID() == node.getID()) {
+						EDSimulator.add(0, event, node, ApplicationProtocol.pid);
 					}
 				}
 			}
 		}
 
 		if (!sentMessages.contains(message.getMessageId())) {
-			this.propagateMessage(node, message);
+			if (message.getOperationType() == Message.OperationType.MIGRATION) {
+				// choose to which nodes propagate the message
+			} else {
+				this.propagateMessage(node, message);
+			}
 		}
 
 		this.processQueue(node, pid);
@@ -120,7 +121,6 @@ public abstract class CausalityProtocol implements Causality {
 				iterator.remove();
 				this.executeOperation(node, message);
 			}
-
 			if (!checkAll) break;
 		}
 	}
@@ -129,11 +129,8 @@ public abstract class CausalityProtocol implements Causality {
 	public void executeOperation(Node node, Message message) {
 		var expectedArrivalTime = -1L;
 		var partitionsNode = (PartitionsNode) node;
-
 		this.operationStartedExecution(node, message);
-
 		if (partitionsNode.getPartitions().contains(message.getPartition())) {
-			// If it's in the correct partition the operation actually executes
 			switch (message.getOperationType()) {
 				case READ -> {
 					expectedArrivalTime = readTime;
@@ -145,13 +142,9 @@ public abstract class CausalityProtocol implements Causality {
 					expectedArrivalTime = migrationTime;
 				}
 			}
-			// If it's in the wrong partition it takes no time to execute
 		} else {
 			expectedArrivalTime = 0L;
 		}
-
-		// TODO: if message op type is migration, do migration things
-
 		Message toSend = new MessageWrapper(message, Message.EventType.EXECUTING, node);
 		EDSimulator.add(expectedArrivalTime, toSend, node, PendingEvents.pid);
 	}
@@ -160,9 +153,7 @@ public abstract class CausalityProtocol implements Causality {
 		if (message.getOperationType() == Message.OperationType.WRITE) {
 			var lastHop = message.getLastHop();
 			var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.pid);
-
-
-			Message toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
+			var toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
 			this.sentMessages.add(message.getMessageId());
 			broadcast.broadcastMessage(node, toSend, lastHop);
 		}

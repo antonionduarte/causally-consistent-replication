@@ -11,29 +11,14 @@ public class MessageWrapper implements Message {
 	private OperationType operationType;
 	private EventType eventType;
 
-
 	private final long sendTime;
 	private final long lastHop;
+	private final long migrationTarget;
+	private final char partition;
 
 	private final Node originNode;
 	private final String messageId;
 
-	public MessageWrapper(OperationType operationType,
-						  EventType eventType,
-						  ProtocolMessage protocolMessage,
-						  Node node,
-						  long sendTime,
-						  long lastHop,
-						  String messageId
-	) {
-		this.protocolMessage = protocolMessage;
-		this.operationType = operationType;
-		this.eventType = eventType;
-		this.lastHop = lastHop;
-		this.originNode = node;
-		this.sendTime = sendTime;
-		this.messageId = messageId;
-	}
 
 	public MessageWrapper(Message message, EventType eventType, Node node) {
 		this.protocolMessage = message.getProtocolMessage();
@@ -43,6 +28,8 @@ public class MessageWrapper implements Message {
 		this.sendTime = message.getSendTime();
 		this.messageId = message.getMessageId();
 		this.originNode = message.getOriginNode();
+		this.migrationTarget = message.getMigrationTarget();
+		this.partition = message.getPartition();
 	}
 
 	public MessageWrapper(EventType eventType) {
@@ -51,14 +38,32 @@ public class MessageWrapper implements Message {
 		this.lastHop = -1;
 		this.operationType = null;
 		this.sendTime = -1;
+		this.migrationTarget = -1;
 		this.messageId = null;
 		this.originNode = null;
+		this.partition = '0';
 	}
 
-	// TODO: Implement this
+	public MessageWrapper(MessageBuilder messageBuilder) {
+		this.protocolMessage = messageBuilder.getProtocolMessage();
+		this.operationType = messageBuilder.getOperationType();
+		this.eventType = messageBuilder.getEventType();
+		this.lastHop = messageBuilder.getLastHop();
+		this.sendTime = messageBuilder.getSendTime();
+		this.originNode = messageBuilder.getOriginNode();
+		this.messageId = messageBuilder.getMessageId();
+		this.migrationTarget = messageBuilder.getMigrationTarget();
+		this.partition = messageBuilder.getPartition();
+	}
+
 	@Override
 	public Character getPartition() {
-		return null;
+		return this.partition;
+	}
+
+	@Override
+	public long getMigrationTarget() {
+		return this.migrationTarget;
 	}
 
 	@Override

@@ -39,7 +39,6 @@ public interface Message {
 
 	/**
 	 * @return The type of the event, either Propagating, Executing or Migrating.
-	 * TODO: Migrating
 	 */
 	EventType getEventType();
 
@@ -57,6 +56,11 @@ public interface Message {
 	 * @return The partition that the message is destined to.
 	 */
 	Character getPartition();
+
+	/**
+	 * @return The id of the node to migrate to.
+	 */
+	long getMigrationTarget();
 
 	/**
 	 * Changes the type of message.

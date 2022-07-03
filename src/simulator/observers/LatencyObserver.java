@@ -28,7 +28,6 @@ public class LatencyObserver implements Control {
 		var filename = PATH + experimentName + ".txt";
 
 		System.out.println(CommonState.getTime() + ": " + this.getClass().getName() + " extracting client perceived Latencies.");
-
 		File latencyObservation = new File(filename);
 
 		try (FileWriter fileWriter = new FileWriter(filename)) {

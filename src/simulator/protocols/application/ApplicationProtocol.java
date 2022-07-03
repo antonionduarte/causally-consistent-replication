@@ -5,12 +5,15 @@ import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
 import peersim.edsim.EDSimulator;
+import simulator.node.PartitionsNode;
 import simulator.protocols.PendingEvents;
 import simulator.protocols.messages.Message;
-import simulator.protocols.messages.MessageWrapper;
+import simulator.protocols.messages.MessageBuilder;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.spi.LocaleNameProvider;
 
 /**
  * Responsible for simulating Clients in the system.
@@ -23,11 +26,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 	private long idCounter;
 
-	private List<String> receivedMessages; // TODO: Not necessary probably
-	// TODO: THE STRATEGY HAS SHIFTED, NOW:
-	/**
-	 * @link talk with fouto
-	 */
+	private List<String> receivedMessages;
 
 	private static final String PAR_NUMBER_CLIENTS = "number_clients";
 	private static final String PAR_WEIGHT_WRITES = "weight_writes";
@@ -52,6 +51,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		try {
 			ApplicationProtocol clone = (ApplicationProtocol) super.clone();
 			clone.messageLatencies = new LinkedList<>();
+			clone.receivedMessages = new LinkedList<>();
 			clone.idCounter = 0;
 			clone.executedOperations = 0;
 			return clone;
@@ -76,62 +76,114 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 	/**
 	 * This function will only trigger when it receives a message back from the Protocol. Basically calculated and
-	 * stores statistics, and triggers sending a new message.
-	 * It only processes messages that haven't been received yet, the others are discarded.
-	 * I'm doing this since it can receive several responses from Nodes that have the correct partition, but only the first
-	 * response is relevant.
+	 * stores statistics, and triggers sending a new message. It only processes messages that haven't been received yet,
+	 * the others are discarded. I'm doing this since it can receive several responses from Nodes that have the correct
+	 * partition, but only the first response is relevant.
 	 *
-	 * @param node the local node
-	 * @param pid the identifier of this protocol
+	 * @param node  the local node
+	 * @param pid   the identifier of this protocol
 	 * @param event the delivered event
 	 */
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		Message message = (Message) event;
 
-		if (!receivedMessages.contains(message.getMessageId())) {
-			// Statistic collection
-			long rtt = (CommonState.getTime() - message.getSendTime());
-			this.messageLatencies.add(rtt);
-			this.receivedMessages.add(message.getMessageId());
-			this.executedOperations++;
-
-			// Sends back a new message
-			Message toSend = getRandomMessage(node);
+		if (message.getOperationType() == Message.OperationType.MIGRATION) {
+			var toSend = getRandomPartitionMessage(node, message.getPartition());
 			this.changeResponseMessage(node, toSend);
 			EDSimulator.add(0, toSend, node, PendingEvents.pid);
+		}
+		else {
+			if (!receivedMessages.contains(message.getMessageId())) {
+				long rtt = (CommonState.getTime() - message.getSendTime());
+				this.messageLatencies.add(rtt);
+				this.receivedMessages.add(message.getMessageId());
+				this.executedOperations++;
+
+				Message toSend = getRandomMessage(node);
+				this.changeResponseMessage(node, toSend);
+				EDSimulator.add(0, toSend, node, PendingEvents.pid);
+			}
 		}
 	}
 
 	/**
-	 * Returns a random message, ready to send to the causality layer, that is either a Write or Read.
+	 * Returns a random message, ready to send to the causality layer, that is either a Write or Read or Migration.
+	 * In case it is a Migration message, it includes a valid migrationTarget (the node to migrate to).
 	 *
 	 * @param node The local node.
 	 * @return The message.
 	 */
 	private Message getRandomMessage(Node node) {
-		long totalWeight = weightWrites + weightReads;
-		long random = CommonState.random.nextLong(totalWeight);
-		Message.OperationType operationType;
+		var partition = selectPartition(node);
+		var partitionNode = (PartitionsNode) node;
+		var partitions = partitionNode.getPartitions();
+		var totalWeight = weightWrites + weightReads;
+		var random = CommonState.random.nextLong(totalWeight);
+		var messageBuilder = new MessageBuilder();
 
-		String messageId = node.getID() + "_" + idCounter++;
+		messageBuilder.setMessageId(node.getID() + "_" + idCounter++);
 
-		// TODO: Determine that an operation is of migration type
-		if (random <= weightWrites) {
-			operationType = Message.OperationType.WRITE;
+		if (partitions.contains(partition)) {
+			if (random <= weightWrites) {
+				messageBuilder.setOperationType(Message.OperationType.WRITE);
+			} else {
+				messageBuilder.setOperationType(Message.OperationType.READ);
+			}
 		} else {
-			operationType = Message.OperationType.READ;
+			messageBuilder.setOperationType(Message.OperationType.MIGRATION);
+			messageBuilder.setMigrationTarget(selectMigrateNode(node, partition));
 		}
 
-		return new MessageWrapper(
-				operationType,
-				Message.EventType.PROPAGATING,
-				null,
-				node,
-				CommonState.getTime(),
-				CommonState.getNode().getID(),
-				messageId
-		);
+		return messageBuilder
+				.setEventType(Message.EventType.PROPAGATING)
+				.setOriginNode(node)
+				.setPartition(partition)
+				.setSendTime(CommonState.getTime())
+				.setLastHop(node.getID())
+				.build();
+	}
+
+	private Message getRandomPartitionMessage(Node node, char partition) {
+		var totalWeight = weightWrites + weightReads;
+		var random = CommonState.random.nextLong(totalWeight);
+		var messageBuilder = new MessageBuilder();
+
+		if (random <= weightWrites) {
+			messageBuilder.setOperationType(Message.OperationType.WRITE);
+		} else {
+			messageBuilder.setOperationType(Message.OperationType.READ);
+		}
+
+		messageBuilder.setMessageId(node.getID() + "_" + idCounter++);
+
+		return messageBuilder
+				.setEventType(Message.EventType.PROPAGATING)
+				.setOriginNode(node)
+				.setPartition(partition)
+				.setSendTime(CommonState.getTime())
+				.setLastHop(node.getID())
+				.build();
+	}
+
+	private long selectMigrateNode(Node node, Character partition) {
+		var partitionNode = (PartitionsNode) node;
+		var partitions = partitionNode.getAllPartitions();
+		var possibleNodes = new LinkedList<Long>();
+		for (var toCheck : partitions.keySet()) {
+			if (partitions.get(toCheck).contains(partition)) {
+				possibleNodes.add(toCheck);
+			}
+		}
+
+		var selectedIndex = CommonState.random.nextLong(possibleNodes.size());
+		return possibleNodes.get((int) selectedIndex);
+	}
+
+	private Character selectPartition(Node node) {
+		var partitionNode = (PartitionsNode) node;
+		var partitionIndex = CommonState.random.nextLong(partitionNode.getDistinctPartitions().size());
+		return partitionNode.getDistinctPartitions().get((int) partitionIndex);
 	}
 
 	/**
@@ -149,19 +201,20 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	}
 
 	/**
-	 * Implement this function in your Application class if you want the
-	 * Initial wrapped {@link simulator.protocols.messages.ProtocolMessage} to be different from null.
+	 * Implement this function in your Application class if you want the Initial wrapped
+	 * {@link simulator.protocols.messages.ProtocolMessage} to be different from null.
 	 *
-	 * @param node The local node.
+	 * @param node    The local node.
 	 * @param message The protocol specific message.
 	 */
 	public abstract void changeInitialMessage(Node node, Message message);
 
 	/**
-	 * Implement this function in your Application class if you want the wrapped {@link simulator.protocols.messages.ProtocolMessage}
-	 * that are sent as responses in the middle of the simulation to be changed.
+	 * Implement this function in your Application class if you want the wrapped
+	 * {@link simulator.protocols.messages.ProtocolMessage} that are sent as responses in the middle of the simulation
+	 * to be changed.
 	 *
-	 * @param node The local node.
+	 * @param node    The local node.
 	 * @param message The protocol specific message.
 	 */
 	public abstract void changeResponseMessage(Node node, Message message);

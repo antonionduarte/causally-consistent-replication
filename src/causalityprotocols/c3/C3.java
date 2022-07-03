@@ -49,7 +49,6 @@ public class C3 extends CausalityProtocol {
 
 		C3Message wrappedMessage = (C3Message) message.getProtocolMessage();
 
-		// Means it came from local DS
 		if (wrappedMessage == null) {
 			this.writeCounter++;
 			message.setProtocolMessage(new C3Message(new HashMap<>(), writeCounter));
@@ -63,7 +62,6 @@ public class C3 extends CausalityProtocol {
 			if (!executedClock.containsKey(nodeId)) {
 				executedClock.put(nodeId, 0L);
 			}
-
 			if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
 				return false;
 			}
@@ -98,11 +96,6 @@ public class C3 extends CausalityProtocol {
 				);
 			}
 		}
-
-		/*System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
-		System.out.println("Executed Clock - " + this.executedClock);
-		System.out.println("Executing Clock - " + this.executingClock);
-		System.out.println();*/
 	}
 
 	@Override
@@ -110,26 +103,8 @@ public class C3 extends CausalityProtocol {
 		if (message.getOperationType() == Message.OperationType.READ) {
 			return;
 		}
-
-		// If the message is from a local client/datastore, do nothing
-		//var time = CommonState.getTime();
-		//var lblDeps = ((C3Message) message.getProtocolMessage()).getLblDeps();
-
 		long currentClock = this.executingClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
-		/*if (currentClock != ((C3Message) message.getProtocolMessage()).getLblId() - 1) {
-			System.out.println("Possible Sus - " + message.getMessageId() + " - " + message.getOriginNode().getID() + " - " + node.getID());
-			System.out.println(((C3Message) message.getProtocolMessage()).getLblDeps());
-			System.out.println(executedClock);
-			System.out.println(((C3Message) message.getProtocolMessage()).getLblId());
-			System.out.println(currentClock);
-		}*/
-
 		this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
-
-		/*System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing -k : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
-		System.out.println("Executed Clock - " + this.executedClock);
-		System.out.println("Executing Clock - " + this.executingClock);
-		System.out.println();*/
 	}
 
 	/**
