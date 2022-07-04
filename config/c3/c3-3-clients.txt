@@ -22,7 +22,15 @@ protocol.pendingEvents  simulator.protocols.PendingEvents
 }
 
 random.seed             10
-network.size            SIZE
+
+network
+{
+    size    SIZE
+    node    simulator.node.PartitionsNode
+    {
+        partitions_file     config/partitions/partitions.txt
+    }
+}
 
 # ------------------- #
 # ---- Transport ---- #

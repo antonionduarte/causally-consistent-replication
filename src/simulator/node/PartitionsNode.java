@@ -6,7 +6,6 @@ import peersim.core.Node;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Array;
 import java.util.*;
 
 public class PartitionsNode extends GeneralNode {

@@ -142,6 +142,16 @@ public abstract class ApplicationProtocol implements EDProtocol {
 				.build();
 	}
 
+	/**
+	 * Returns a Message with the given partition and the given protocol message.
+	 * Necessary when the protocol receives a Migration message and needs to propagate a new
+	 * read or write message with the given partition and already existing protocol message.
+	 *
+	 * @param node The local node.
+	 * @param protocolMessage The protocol message.
+	 * @param partition The partition.
+	 * @return A Message with the specified properties.
+	 */
 	private Message getRandomPartitionMessage(Node node, ProtocolMessage protocolMessage, char partition) {
 		var totalWeight = weightWrites + weightReads;
 		var random = CommonState.random.nextLong(totalWeight);
@@ -165,6 +175,14 @@ public abstract class ApplicationProtocol implements EDProtocol {
 				.build();
 	}
 
+	/**
+	 * Selects a valid node for the current node to migrate to,
+	 * i.e a random node in the set of nodes with the required partition.
+	 *
+	 * @param node The local node.
+	 * @param partition The necessary partition.
+	 * @return The nodeId of a valid node to migrate to.
+	 */
 	private long selectMigrateNode(Node node, char partition) {
 		var partitionNode = (PartitionsNode) node;
 		var partitions = partitionNode.getAllPartitions();
@@ -178,7 +196,13 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		return possibleNodes.get((int) selectedIndex);
 	}
 
-	private Character selectPartition(Node node) {
+	/**
+	 * Selects a random partition from the list of distinct partitions.
+	 *
+	 * @param node The local node.
+	 * @return A char that represents the partition.
+	 */
+	private char selectPartition(Node node) {
 		var partitionNode = (PartitionsNode) node;
 		var partitionIndex = CommonState.random.nextLong(partitionNode.getDistinctPartitions().size());
 		return partitionNode.getDistinctPartitions().get((int) partitionIndex);

@@ -207,7 +207,7 @@ public abstract class CausalityProtocol implements Causality {
 		var hadTarget = false;
 		for (var neighbour : neighbors) {
 			if (neighbour.getID() == message.getMigrationTarget()) {
-				// send to neighbor only
+				// TODO: Send to that neighbor in specific only
 				hadTarget = true;
 			}
 		}

@@ -22,12 +22,12 @@ Simulator to build and test causal consistency algorithms.
     - [X] Internal event queue for non processed events
     - [X] Changes to account for difference between reads/writes
     - [X] Base protocolMessage container class getSize() for Transport etc...
-    - [ ] New layer to add message processing time support instead of being done through the Heap
+    - [X] New layer to add message processing time support instead of being done through the Heap
     - [ ] **Partial Replication** support
       - [X] Each node includes the list of Partitions of every node.
-      - [ ] Operation propagation according to Partitions
-      - [ ] Reads / Writes accessing correct partition
-      - [ ] Writes accessing
+      - [X] Operation propagation according to Partitions
+      - [X] Reads / Writes accessing correct partition
+      - [ ] Migrations
 - [X] **Operation propagation** through the system
   - [X] AllToAll Broadcast and Overlay Init - 1 Click
   - [X] Saturn Tree Propagation
