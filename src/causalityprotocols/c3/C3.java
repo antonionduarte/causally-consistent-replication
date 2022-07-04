@@ -103,6 +103,11 @@ public class C3 extends CausalityProtocol {
 		if (message.getOperationType() == Message.OperationType.READ) {
 			return;
 		}
+
+		if (message.getOperationType() == Message.OperationType.MIGRATION) {
+			return;
+		}
+
 		long currentClock = this.executingClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
 		this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
 	}

@@ -11,6 +11,7 @@ import simulator.protocols.broadcast.Broadcast;
 import simulator.protocols.broadcast.BroadcastProtocol;
 import simulator.protocols.messages.Message;
 import simulator.protocols.messages.MessageWrapper;
+import simulator.protocols.overlay.OverlayProtocol;
 
 import java.util.*;
 
@@ -77,6 +78,37 @@ public abstract class CausalityProtocol implements Causality {
 			}
 		}
 
+		this.handleMessage(node, event);
+
+		if (!sentMessages.contains(message.getMessageId())) {
+			if (message.getOperationType() == Message.OperationType.MIGRATION) {
+				if (!(message.getMigrationTarget() == node.getID())) {
+					this.propagateMigration(node, message);
+				}
+			} else {
+				this.propagateMessage(node, message);
+			}
+		}
+
+		this.processQueue(node);
+	}
+
+	/**
+	 * @return The time at which a message was made visible within this node.
+	 */
+	public Map<String, Long> getVisibilityTimes() {
+		return visibilityTimes;
+	}
+
+	/**
+	 * Processes the message, calling the right method according to the type of Event and Operation
+	 * of the message.
+	 *
+	 * @param node The local node.
+	 * @param event The message.
+	 */
+	private void handleMessage(Node node, Object event) {
+		var message = (Message) event;
 		switch (message.getEventType()) {
 			case PROPAGATING -> {
 				if (checkCausality(node, message)) {
@@ -87,32 +119,29 @@ public abstract class CausalityProtocol implements Causality {
 			}
 			case EXECUTING -> {
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
-				this.operationFinishedExecution(node, message);
+				if (!(message.getOperationType() == Message.OperationType.MIGRATION)) {
+					this.operationFinishedExecution(node, message);
+				}
 				if (message.getOriginNode().getID() == node.getID()) {
 					((Message) event).setEventType(Message.EventType.RESPONSE);
 					EDSimulator.add(0, event, node, PendingEvents.pid);
 				}
-				if (message.getOperationType() == Message.OperationType.MIGRATION) { // [NEW]
+				if (message.getOperationType() == Message.OperationType.MIGRATION) {
 					if (message.getMigrationTarget() == node.getID()) {
 						EDSimulator.add(0, event, node, ApplicationProtocol.pid);
 					}
 				}
 			}
 		}
-
-		if (!sentMessages.contains(message.getMessageId())) {
-			if (message.getOperationType() == Message.OperationType.MIGRATION) {
-				// TODO: choose to which nodes propagate the message
-			} else {
-				this.propagateMessage(node, message);
-			}
-		}
-
-		this.processQueue(node, pid);
 	}
 
-	@Override
-	public void processQueue(Node node, int pid) {
+	/**
+	 * Processes the Message Queue, verifying if there are new operations that
+	 * comply to the causality checks of the protocol and are therefore allowed to execute.
+	 *
+	 * @param node The local node.
+	 */
+	private void processQueue(Node node) {
 		var iterator = pendingOperations.iterator();
 		while (iterator.hasNext()) {
 			var message = iterator.next();
@@ -124,11 +153,20 @@ public abstract class CausalityProtocol implements Causality {
 		}
 	}
 
-	@Override
-	public void executeOperation(Node node, Message message) {
+	/**
+	 * Decides the amount of time an operation takes to execute, according to it's type.
+	 * Processes the operation and calls the internal Protocol methods that change the state
+	 * of the protocol upon the execution of an operation.
+	 *
+	 * @param node The local node.
+	 * @param message The message with the operation to execute.
+	 */
+	private void executeOperation(Node node, Message message) {
 		var expectedArrivalTime = -1L;
 		var partitionsNode = (PartitionsNode) node;
-		this.operationStartedExecution(node, message);
+		if (!(message.getOperationType() == Message.OperationType.MIGRATION)) {
+			this.operationStartedExecution(node, message);
+		}
 		if (partitionsNode.getPartitions().contains(message.getPartition())) {
 			switch (message.getOperationType()) {
 				case READ -> expectedArrivalTime = readTime;
@@ -142,7 +180,13 @@ public abstract class CausalityProtocol implements Causality {
 		EDSimulator.add(expectedArrivalTime, toSend, node, PendingEvents.pid);
 	}
 
-	public void propagateMessage(Node node, Message message) {
+	/**
+	 * Propagates a message using the Broadcast Protocol.
+	 *
+	 * @param node The local node.
+	 * @param message The message to propagate.
+	 */
+	private void propagateMessage(Node node, Message message) {
 		if (message.getOperationType() == Message.OperationType.WRITE) {
 			var lastHop = message.getLastHop();
 			var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.pid);
@@ -153,10 +197,23 @@ public abstract class CausalityProtocol implements Causality {
 	}
 
 	/**
-	 * @return The time at which a message was made visible within this node.
+	 * Propagates the Migration message to the necessary nodes.
+	 *
+	 * @param node The local node.
+	 * @param message The migration message to propagate.
 	 */
-	public Map<String, Long> getVisibilityTimes() {
-		return visibilityTimes;
+	private void propagateMigration(Node node, Message message) {
+		var neighbors = ((OverlayProtocol) node.getProtocol(OverlayProtocol.pid)).getNeighbors();
+		var hadTarget = false;
+		for (var neighbour : neighbors) {
+			if (neighbour.getID() == message.getMigrationTarget()) {
+				// send to neighbor only
+				hadTarget = true;
+			}
+		}
+		if (!hadTarget) {
+			this.propagateMessage(node, message);
+		}
 	}
 
 	@Override

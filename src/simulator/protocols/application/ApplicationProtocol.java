@@ -9,6 +9,7 @@ import simulator.node.PartitionsNode;
 import simulator.protocols.PendingEvents;
 import simulator.protocols.messages.Message;
 import simulator.protocols.messages.MessageBuilder;
+import simulator.protocols.messages.ProtocolMessage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -78,8 +79,8 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * the others are discarded. I'm doing this since it can receive several responses from Nodes that have the correct
 	 * partition, but only the first response is relevant.
 	 *
-	 * @param node  the local node
-	 * @param pid   the identifier of this protocol
+	 * @param node the local node
+	 * @param pid the identifier of this protocol
 	 * @param event the delivered event
 	 */
 	@Override
@@ -87,12 +88,10 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		Message message = (Message) event;
 
 		if (message.getOperationType() == Message.OperationType.MIGRATION) {
-			// TODO: Possibly need to create the new event with the protocolMessage assigned by the old node?
-			var toSend = getRandomPartitionMessage(node, message.getPartition());
+			var toSend = getRandomPartitionMessage(node, message.getProtocolMessage(), message.getPartition());
 			this.changeResponseMessage(node, toSend);
 			EDSimulator.add(0, toSend, node, PendingEvents.pid);
-		}
-		else {
+		} else {
 			if (!receivedMessages.contains(message.getMessageId())) {
 				long rtt = (CommonState.getTime() - message.getSendTime());
 				this.messageLatencies.add(rtt);
@@ -143,7 +142,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 				.build();
 	}
 
-	private Message getRandomPartitionMessage(Node node, char partition) {
+	private Message getRandomPartitionMessage(Node node, ProtocolMessage protocolMessage, char partition) {
 		var totalWeight = weightWrites + weightReads;
 		var random = CommonState.random.nextLong(totalWeight);
 		var messageBuilder = new MessageBuilder();
@@ -159,13 +158,14 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		return messageBuilder
 				.setEventType(Message.EventType.PROPAGATING)
 				.setOriginNode(node)
+				.setProtocolMessage(protocolMessage)
 				.setPartition(partition)
 				.setSendTime(CommonState.getTime())
 				.setLastHop(node.getID())
 				.build();
 	}
 
-	private long selectMigrateNode(Node node, Character partition) {
+	private long selectMigrateNode(Node node, char partition) {
 		var partitionNode = (PartitionsNode) node;
 		var partitions = partitionNode.getAllPartitions();
 		var possibleNodes = new LinkedList<Long>();
@@ -174,7 +174,6 @@ public abstract class ApplicationProtocol implements EDProtocol {
 				possibleNodes.add(toCheck);
 			}
 		}
-
 		var selectedIndex = CommonState.random.nextLong(possibleNodes.size());
 		return possibleNodes.get((int) selectedIndex);
 	}
@@ -204,7 +203,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * {@link simulator.protocols.messages.ProtocolMessage} to be different from null.
 	 * Useful if the Protocol requires the Clients / Client layer to save state.
 	 *
-	 * @param node    The local node.
+	 * @param node The local node.
 	 * @param message The protocol specific message.
 	 */
 	public abstract void changeInitialMessage(Node node, Message message);
@@ -215,7 +214,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * to be changed.
 	 * Useful if the Protocol requires the Clients / Client layer to save state.
 	 *
-	 * @param node    The local node.
+	 * @param node The local node.
 	 * @param message The protocol specific message.
 	 */
 	public abstract void changeResponseMessage(Node node, Message message);

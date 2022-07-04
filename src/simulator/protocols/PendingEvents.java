@@ -31,8 +31,8 @@ public class PendingEvents implements EDProtocol {
 	public PendingEvents(String prefix) {
 		var protName = (prefix.split("\\."))[1];
 		pid = Configuration.lookupPid(protName);
-		maxParallelEvents = Configuration.getInt(prefix + "." + PAR_MAX_PARALLEL_EVENTS);
-		eventProcessingTime = Configuration.getInt(prefix + "." + PAR_EVENT_PROCESSING_TIME);
+		this.maxParallelEvents = Configuration.getInt(prefix + "." + PAR_MAX_PARALLEL_EVENTS);
+		this.eventProcessingTime = Configuration.getInt(prefix + "." + PAR_EVENT_PROCESSING_TIME);
 	}
 
 	@Override
