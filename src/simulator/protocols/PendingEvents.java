@@ -81,7 +81,6 @@ public class PendingEvents implements EDProtocol {
 			this.pendingEvents.add(message);
 			this.counterProcessedEvents++;
 
-			var debug = CommonState.getTime();
 			var sendInterval = currentTimestamp - CommonState.getTime();
 			var sendDelay = sendInterval + eventProcessingTime;
 			var nextMessage = new MessageWrapper(Message.EventType.NEXT);

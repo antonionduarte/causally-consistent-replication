@@ -23,7 +23,7 @@ public abstract class CausalityProtocol implements Causality {
 
 	private final int writeTime;
 	private final int readTime;
-	private final int migrationTime = 0;
+	private final int migrationTime;
 	private final boolean checkAll;
 
 	/**
@@ -48,7 +48,7 @@ public abstract class CausalityProtocol implements Causality {
 		pid = Configuration.lookupPid(protName);
 		this.checkAll = Configuration.getBoolean(prefix + "." + PAR_CHECK_ALL);
 		this.writeTime = Configuration.getInt(prefix + "." + PAR_WRITE_TIME);
-		// this.migrationTime = Configuration.getInt(prefix + "." + PAR_MIGRATION_TIME);
+		this.migrationTime = Configuration.getInt(prefix + "." + PAR_MIGRATION_TIME);
 		this.readTime = Configuration.getInt(prefix + "." + PAR_READ_TIME);
 	}
 
@@ -69,7 +69,6 @@ public abstract class CausalityProtocol implements Causality {
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
-		var partitionsNode = (PartitionsNode) node;
 
 		if (CommonState.getTime() % 1000 == 0) {
 			if (node.getID() == 0) {
@@ -94,7 +93,7 @@ public abstract class CausalityProtocol implements Causality {
 					EDSimulator.add(0, event, node, PendingEvents.pid);
 				}
 				if (message.getOperationType() == Message.OperationType.MIGRATION) { // [NEW]
-					if (message.getOriginNode().getID() == node.getID()) {
+					if (message.getMigrationTarget() == node.getID()) {
 						EDSimulator.add(0, event, node, ApplicationProtocol.pid);
 					}
 				}
@@ -103,7 +102,7 @@ public abstract class CausalityProtocol implements Causality {
 
 		if (!sentMessages.contains(message.getMessageId())) {
 			if (message.getOperationType() == Message.OperationType.MIGRATION) {
-				// choose to which nodes propagate the message
+				// TODO: choose to which nodes propagate the message
 			} else {
 				this.propagateMessage(node, message);
 			}
@@ -132,15 +131,9 @@ public abstract class CausalityProtocol implements Causality {
 		this.operationStartedExecution(node, message);
 		if (partitionsNode.getPartitions().contains(message.getPartition())) {
 			switch (message.getOperationType()) {
-				case READ -> {
-					expectedArrivalTime = readTime;
-				}
-				case WRITE -> {
-					expectedArrivalTime = writeTime;
-				}
-				case MIGRATION -> {
-					expectedArrivalTime = migrationTime;
-				}
+				case READ -> expectedArrivalTime = readTime;
+				case WRITE -> expectedArrivalTime = writeTime;
+				case MIGRATION -> expectedArrivalTime = migrationTime;
 			}
 		} else {
 			expectedArrivalTime = 0L;

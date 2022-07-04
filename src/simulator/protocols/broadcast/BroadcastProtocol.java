@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class BroadcastProtocol implements Broadcast {
 
-	public static String protName;
 	public static int pid;
 
 	public BroadcastProtocol(String prefix) {

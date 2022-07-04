@@ -10,10 +10,8 @@ import simulator.protocols.PendingEvents;
 import simulator.protocols.messages.Message;
 import simulator.protocols.messages.MessageBuilder;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.spi.LocaleNameProvider;
 
 /**
  * Responsible for simulating Clients in the system.
@@ -89,6 +87,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		Message message = (Message) event;
 
 		if (message.getOperationType() == Message.OperationType.MIGRATION) {
+			// TODO: Possibly need to create the new event with the protocolMessage assigned by the old node?
 			var toSend = getRandomPartitionMessage(node, message.getPartition());
 			this.changeResponseMessage(node, toSend);
 			EDSimulator.add(0, toSend, node, PendingEvents.pid);
@@ -203,6 +202,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	/**
 	 * Implement this function in your Application class if you want the Initial wrapped
 	 * {@link simulator.protocols.messages.ProtocolMessage} to be different from null.
+	 * Useful if the Protocol requires the Clients / Client layer to save state.
 	 *
 	 * @param node    The local node.
 	 * @param message The protocol specific message.
@@ -213,6 +213,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * Implement this function in your Application class if you want the wrapped
 	 * {@link simulator.protocols.messages.ProtocolMessage} that are sent as responses in the middle of the simulation
 	 * to be changed.
+	 * Useful if the Protocol requires the Clients / Client layer to save state.
 	 *
 	 * @param node    The local node.
 	 * @param message The protocol specific message.
