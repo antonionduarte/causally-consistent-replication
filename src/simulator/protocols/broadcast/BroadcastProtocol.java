@@ -1,12 +1,10 @@
 package simulator.protocols.broadcast;
 
-import simulator.protocols.PendingEvents;
-import simulator.protocols.causality.Causality;
-import simulator.protocols.causality.CausalityProtocol;
-import simulator.protocols.messages.Message;
-import simulator.protocols.overlay.OverlayProtocol;
 import peersim.config.Configuration;
 import peersim.core.Node;
+import simulator.protocols.PendingEvents;
+import simulator.protocols.messages.Message;
+import simulator.protocols.overlay.OverlayProtocol;
 
 import java.util.List;
 

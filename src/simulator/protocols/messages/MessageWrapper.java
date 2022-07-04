@@ -7,17 +7,15 @@ import peersim.core.Node;
  */
 public class MessageWrapper implements Message {
 
-	private ProtocolMessage protocolMessage;
-	private OperationType operationType;
-	private EventType eventType;
-
 	private final long sendTime;
 	private final long lastHop;
 	private final long migrationTarget;
 	private final char partition;
-
 	private final Node originNode;
 	private final String messageId;
+	private ProtocolMessage protocolMessage;
+	private OperationType operationType;
+	private EventType eventType;
 
 
 	public MessageWrapper(Message message, EventType eventType, Node node) {

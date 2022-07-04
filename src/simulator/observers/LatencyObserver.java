@@ -16,11 +16,11 @@ import java.io.IOException;
  */
 public class LatencyObserver implements Control {
 
-	public LatencyObserver(String prefix) {
-	}
-
 	private static final String PATH = "./output/latency/";
 	private static final String PAR_EXPERIMENT_NAME = "EXPERIMENT_NAME";
+
+	public LatencyObserver(String prefix) {
+	}
 
 	@Override
 	public boolean execute() {

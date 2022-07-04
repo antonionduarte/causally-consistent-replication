@@ -1,8 +1,8 @@
 package simulator.protocols.broadcast;
 
-import simulator.protocols.messages.Message;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
+import simulator.protocols.messages.Message;
 
 public interface Broadcast extends EDProtocol {
 

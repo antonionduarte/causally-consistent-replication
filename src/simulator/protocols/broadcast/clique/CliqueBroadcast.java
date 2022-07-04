@@ -1,10 +1,10 @@
 package simulator.protocols.broadcast.clique;
 
 import peersim.config.Configuration;
-import simulator.protocols.broadcast.BroadcastProtocol;
-import simulator.protocols.messages.Message;
 import peersim.core.Node;
 import peersim.transport.Transport;
+import simulator.protocols.broadcast.BroadcastProtocol;
+import simulator.protocols.messages.Message;
 
 import java.util.List;
 

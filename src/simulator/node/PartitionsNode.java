@@ -37,6 +37,32 @@ public class PartitionsNode extends GeneralNode {
 		}
 	}
 
+	private static Map<Long, List<Character>> parsePartitions(String path) {
+		// read partitions from the specified file
+		var partitions = new HashMap<Long, List<Character>>();
+		var file = new File(path);
+		try (var scanner = new Scanner(file)) {
+			// parse the file
+			var nodeCounter = 0L;
+
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				String[] partitionsList = line.split(",");
+				List<Character> partitionList = new ArrayList<>(partitionsList.length);
+
+				for (var partition : partitionsList) {
+					partitionList.add(partition.charAt(0));
+				}
+
+				partitions.put(nodeCounter, partitionList);
+				nodeCounter++;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return partitions;
+	}
+
 	@Override
 	public Object clone() {
 		return super.clone();
@@ -63,31 +89,5 @@ public class PartitionsNode extends GeneralNode {
 	 */
 	public List<Character> getPartitions(long nodeId) {
 		return partitions.get(nodeId);
-	}
-
-	private static Map<Long, List<Character>> parsePartitions(String path) {
-		// read partitions from the specified file
-		var partitions = new HashMap<Long, List<Character>>();
-		var file = new File(path);
-		try (var scanner = new Scanner(file)) {
-			// parse the file
-			var nodeCounter = 0L;
-
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				String[] partitionsList = line.split(",");
-				List<Character> partitionList = new ArrayList<>(partitionsList.length);
-
-				for (var partition : partitionsList) {
-					partitionList.add(partition.charAt(0));
-				}
-
-				partitions.put(nodeCounter, partitionList);
-				nodeCounter++;
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return partitions;
 	}
 }

@@ -18,15 +18,12 @@ public class PendingEvents implements EDProtocol {
 	private static final String PAR_EVENT_PROCESSING_TIME = "event_processing_time";
 	private static final String PAR_MAX_PARALLEL_EVENTS = "max_parallel_events";
 
-	private Queue<Message> pendingEvents;
-
+	public static int pid;
 	private final int eventProcessingTime;
 	private final int maxParallelEvents;
-
+	private Queue<Message> pendingEvents;
 	private long currentTimestamp;
 	private int counterProcessedEvents;
-
-	public static int pid;
 
 	public PendingEvents(String prefix) {
 		var protName = (prefix.split("\\."))[1];

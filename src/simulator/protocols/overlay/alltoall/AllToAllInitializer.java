@@ -1,6 +1,5 @@
 package simulator.protocols.overlay.alltoall;
 
-import peersim.config.Configuration;
 import peersim.core.Control;
 import peersim.core.Network;
 import peersim.core.Node;

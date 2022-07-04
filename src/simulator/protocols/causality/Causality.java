@@ -1,10 +1,8 @@
 package simulator.protocols.causality;
 
-import simulator.protocols.messages.Message;
 import peersim.core.Node;
 import peersim.edsim.EDProtocol;
-
-import java.util.Queue;
+import simulator.protocols.messages.Message;
 
 public interface Causality extends EDProtocol {
 

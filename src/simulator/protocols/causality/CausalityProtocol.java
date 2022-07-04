@@ -22,6 +22,7 @@ public abstract class CausalityProtocol implements Causality {
 	private static final String PAR_READ_TIME = "read_time";
 	private static final String PAR_CHECK_ALL = "check_all";
 
+	public static int pid;
 	private final int writeTime;
 	private final int readTime;
 	private final int migrationTime;
@@ -31,9 +32,6 @@ public abstract class CausalityProtocol implements Causality {
 	 * Operation Queue, saves the events that weren't able to be processed due to issues with causality.
 	 */
 	private Queue<Message> pendingOperations;
-
-	public static int pid;
-
 	/**
 	 * Statistic collection variables.
 	 */

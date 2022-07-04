@@ -11,9 +11,8 @@ import java.util.List;
  */
 public class SimpleOverlay extends OverlayProtocol implements Linkable {
 
-	private List<Node> neighbors;
-
 	public static String protName;
+	private List<Node> neighbors;
 
 	public SimpleOverlay(String prefix) {
 		super(prefix);

@@ -19,23 +19,18 @@ import java.util.List;
  */
 public abstract class ApplicationProtocol implements EDProtocol {
 
-	private final int numberClients;
-	private final int weightReads;
-	private final int weightWrites;
-
-	private long idCounter;
-
-	private List<String> receivedMessages;
-
 	private static final String PAR_NUMBER_CLIENTS = "number_clients";
 	private static final String PAR_WEIGHT_WRITES = "weight_writes";
 	private static final String PAR_WEIGHT_READS = "weight_reads";
 
 	public static int pid;
-
-	// Statistic Collection - Probably will be queried in a control that runs periodically
-	private List<Long> messageLatencies;
+	private final int numberClients;
+	private final int weightReads;
+	private final int weightWrites;
+	private long idCounter;
 	private long executedOperations;
+	private List<String> receivedMessages;
+	private List<Long> messageLatencies;
 
 	public ApplicationProtocol(String prefix) {
 		var protName = (prefix.split("\\."))[1];
