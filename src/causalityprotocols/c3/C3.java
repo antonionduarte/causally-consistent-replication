@@ -76,6 +76,10 @@ public class C3 extends CausalityProtocol {
 			return;
 		}
 
+		if (message.getOperationType() == Message.OperationType.MIGRATION) {
+			return;
+		}
+
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
 		var executedState = executedClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
 		// Previous writes are still executing

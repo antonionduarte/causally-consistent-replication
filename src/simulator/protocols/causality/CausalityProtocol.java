@@ -4,6 +4,7 @@ import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Node;
 import peersim.edsim.EDSimulator;
+import peersim.transport.Transport;
 import simulator.node.PartitionsNode;
 import simulator.protocols.PendingEvents;
 import simulator.protocols.application.ApplicationProtocol;
@@ -21,8 +22,11 @@ public abstract class CausalityProtocol implements Causality {
 	private static final String PAR_WRITE_TIME = "write_time";
 	private static final String PAR_READ_TIME = "read_time";
 	private static final String PAR_CHECK_ALL = "check_all";
+	private static final String PAR_TRANSPORT = "transport";
 
 	public static int pid;
+	public static int transportId;
+
 	private final int writeTime;
 	private final int readTime;
 	private final int migrationTime;
@@ -45,6 +49,7 @@ public abstract class CausalityProtocol implements Causality {
 	public CausalityProtocol(String prefix) {
 		var protName = (prefix.split("\\."))[1];
 		pid = Configuration.lookupPid(protName);
+		transportId = Configuration.getPid(prefix + "." + PAR_TRANSPORT);
 		this.checkAll = Configuration.getBoolean(prefix + "." + PAR_CHECK_ALL);
 		this.writeTime = Configuration.getInt(prefix + "." + PAR_WRITE_TIME);
 		this.migrationTime = Configuration.getInt(prefix + "." + PAR_MIGRATION_TIME);
@@ -126,7 +131,9 @@ public abstract class CausalityProtocol implements Causality {
 				}
 				if (message.getOperationType() == Message.OperationType.MIGRATION) {
 					if (message.getMigrationTarget() == node.getID()) {
-						EDSimulator.add(0, event, node, ApplicationProtocol.pid);
+						System.out.println("AAAAA DOES THIS EVER HAPPEN?!?!?");
+						var toSend = new MessageWrapper(message, Message.EventType.RESPONSE, node);
+						EDSimulator.add(0, toSend, node, ApplicationProtocol.pid);
 					}
 				}
 			}
@@ -205,7 +212,8 @@ public abstract class CausalityProtocol implements Causality {
 		var hadTarget = false;
 		for (var neighbour : neighbors) {
 			if (neighbour.getID() == message.getMigrationTarget()) {
-				// TODO: Send to that neighbor in specific only
+				var toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
+				((Transport) node.getProtocol(transportId)).send(node, neighbour, toSend, pid);
 				hadTarget = true;
 			}
 		}

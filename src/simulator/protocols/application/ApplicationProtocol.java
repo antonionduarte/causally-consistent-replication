@@ -82,18 +82,26 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
 
-		if (message.getOperationType() == Message.OperationType.MIGRATION) {
-			var toSend = getRandomPartitionMessage(node, message.getProtocolMessage(), message.getPartition());
-			this.changeResponseMessage(node, toSend);
-			EDSimulator.add(0, toSend, node, PendingEvents.pid);
-		} else {
-			if (!receivedMessages.contains(message.getMessageId())) {
+		if (!receivedMessages.contains(message.getMessageId())) {
+			if (message.getOperationType() == Message.OperationType.MIGRATION) {
+				var toSend = getRandomPartitionMessage(node, message.getProtocolMessage(), message.getPartition());
+
+				System.out.println("Application - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime());
+
+				System.out.println("DEBUG DEBUG DEBUG");
+
+				this.changeResponseMessage(node, toSend);
+				EDSimulator.add(0, toSend, node, PendingEvents.pid);
+			} else {
 				var rtt = (CommonState.getTime() - message.getSendTime());
 				this.messageLatencies.add(rtt);
 				this.receivedMessages.add(message.getMessageId());
 				this.executedOperations++;
 
 				var toSend = getRandomMessage(node);
+
+				System.out.println("Application - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime());
+
 				this.changeResponseMessage(node, toSend);
 				EDSimulator.add(0, toSend, node, PendingEvents.pid);
 			}

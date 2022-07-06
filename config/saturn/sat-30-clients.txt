@@ -22,7 +22,15 @@ protocol.pendingEvents  simulator.protocols.PendingEvents
 }
 
 random.seed             101212132131
-network.size            SIZE
+
+network
+{
+    size    SIZE
+    node    simulator.node.PartitionsNode
+    {
+        partitions_file     config/partitions/partitions.txt
+    }
+}
 
 # ------------------- #
 # ---- Transport ---- #
@@ -54,6 +62,7 @@ protocol.causality      causalityprotocols.saturn.Saturn
     write_time      40          # the amount of time a write takes to execute
     read_time       60          # the amount of time that a read takes to execute
     migration_time  0           # the amount of time that a migration takes to execute
+    transport       urt         # the transport protocol to be used when sending migration messages
 }
 
 # ---------------------------- #
