@@ -62,7 +62,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 */
 	public void startClients(Node node) {
 		for (int i = 0; i < numberClients; i++) {
-			Message message = getRandomMessage(node);
+			var message = getRandomMessage(node);
 			this.changeInitialMessage(node, message);
 			EDSimulator.add(0, message, node, PendingEvents.pid);
 		}
@@ -80,7 +80,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 */
 	@Override
 	public void processEvent(Node node, int pid, Object event) {
-		Message message = (Message) event;
+		var message = (Message) event;
 
 		if (message.getOperationType() == Message.OperationType.MIGRATION) {
 			var toSend = getRandomPartitionMessage(node, message.getProtocolMessage(), message.getPartition());
@@ -88,12 +88,12 @@ public abstract class ApplicationProtocol implements EDProtocol {
 			EDSimulator.add(0, toSend, node, PendingEvents.pid);
 		} else {
 			if (!receivedMessages.contains(message.getMessageId())) {
-				long rtt = (CommonState.getTime() - message.getSendTime());
+				var rtt = (CommonState.getTime() - message.getSendTime());
 				this.messageLatencies.add(rtt);
 				this.receivedMessages.add(message.getMessageId());
 				this.executedOperations++;
 
-				Message toSend = getRandomMessage(node);
+				var toSend = getRandomMessage(node);
 				this.changeResponseMessage(node, toSend);
 				EDSimulator.add(0, toSend, node, PendingEvents.pid);
 			}

@@ -174,7 +174,7 @@ public abstract class CausalityProtocol implements Causality {
 		} else {
 			expectedArrivalTime = 0L;
 		}
-		Message toSend = new MessageWrapper(message, Message.EventType.EXECUTING, node);
+		var toSend = new MessageWrapper(message, Message.EventType.EXECUTING, node);
 		EDSimulator.add(expectedArrivalTime, toSend, node, PendingEvents.pid);
 	}
 
