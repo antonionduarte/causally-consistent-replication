@@ -56,6 +56,10 @@ public class C3 extends CausalityProtocol {
 			wrappedMessage.getLblDeps().putAll(executingClock);
 		}
 
+		if (message.getOperationType() == Message.OperationType.MIGRATION) {
+			return true;
+		}
+
 		Map<Long, Long> messageDeps = wrappedMessage.getLblDeps();
 
 		for (long nodeId : messageDeps.keySet()) {
