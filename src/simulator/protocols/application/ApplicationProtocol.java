@@ -65,6 +65,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 			var message = getRandomMessage(node);
 			this.changeInitialMessage(node, message);
 			EDSimulator.add(0, message, node, PendingEvents.pid);
+			System.out.println("(AL - Init) - Node: " + CommonState.getNode().getID() + " - Time: " + CommonState.getTime() + " - MigT: " + message.getMigrationTarget() + " - Id: " + message.getMessageId());
 		}
 	}
 
@@ -82,13 +83,16 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
 
+		if (message.getMessageId().equalsIgnoreCase("0_0")) {
+			var test = CommonState.getTime();
+			System.out.println("test_break");
+		}
+
 		if (!receivedMessages.contains(message.getMessageId())) {
 			if (message.getOperationType() == Message.OperationType.MIGRATION) {
 				var toSend = getRandomPartitionMessage(node, message.getProtocolMessage(), message.getPartition());
 
-				System.out.println("Application - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime());
-
-				System.out.println("DEBUG DEBUG DEBUG");
+				System.out.println("(AL - 1) - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime() + " Id: " + message.getMessageId());
 
 				this.changeResponseMessage(node, toSend);
 				EDSimulator.add(0, toSend, node, PendingEvents.pid);
@@ -100,7 +104,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 				var toSend = getRandomMessage(node);
 
-				System.out.println("Application - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime());
+				System.out.println("(AL - 2) - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime() + " Id: " + message.getMessageId());
 
 				this.changeResponseMessage(node, toSend);
 				EDSimulator.add(0, toSend, node, PendingEvents.pid);

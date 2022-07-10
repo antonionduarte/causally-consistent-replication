@@ -74,11 +74,18 @@ public abstract class CausalityProtocol implements Causality {
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
 
-		if (CommonState.getTime() % 1000 == 0) {
-			if (node.getID() == 0) {
-				System.out.println("Received Event - Time: " + CommonState.getTime() + " - " +
-						message.getMessageId() + " - Node: " + CommonState.getNode().getID());
-			}
+		//if (CommonState.getTime() % 1000 == 0) {
+		//	if (node.getID() == 0) {
+		//		System.out.println("Received Event - Time: " + CommonState.getTime() + " - " +
+		//				message.getMessageId() + " - Node: " + CommonState.getNode().getID());
+		//	}
+		//}
+
+		System.out.println("(CL): Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: - " + node.getID());
+
+		if (message.getMessageId().equalsIgnoreCase("0_0")) {
+			var test = CommonState.getTime();
+			System.out.println("test_break");
 		}
 
 		this.handleMessage(node, event);
@@ -121,19 +128,20 @@ public abstract class CausalityProtocol implements Causality {
 				}
 			}
 			case EXECUTING -> {
+				// TODO: Migration check in here so it doesn't count towards vis?
 				this.visibilityTimes.put(message.getMessageId(), CommonState.getTime());
 				if (!(message.getOperationType() == Message.OperationType.MIGRATION)) {
 					this.operationFinishedExecution(node, message);
 				}
-				if (message.getOriginNode().getID() == node.getID()) {
-					((Message) event).setEventType(Message.EventType.RESPONSE);
-					EDSimulator.add(0, event, node, PendingEvents.pid);
-				}
 				if (message.getOperationType() == Message.OperationType.MIGRATION) {
 					if (message.getMigrationTarget() == node.getID()) {
-						System.out.println("AAAAA DOES THIS EVER HAPPEN?!?!?");
 						var toSend = new MessageWrapper(message, Message.EventType.RESPONSE, node);
 						EDSimulator.add(0, toSend, node, ApplicationProtocol.pid);
+					}
+				} else {
+					if (message.getOriginNode().getID() == node.getID()) {
+						((Message) event).setEventType(Message.EventType.RESPONSE);
+						EDSimulator.add(0, event, node, PendingEvents.pid);
 					}
 				}
 			}
@@ -210,6 +218,7 @@ public abstract class CausalityProtocol implements Causality {
 	private void propagateMigration(Node node, Message message) {
 		var neighbors = ((OverlayProtocol) node.getProtocol(OverlayProtocol.pid)).getNeighbors();
 		var hadTarget = false;
+		this.sentMessages.add(message.getMessageId());
 		for (var neighbour : neighbors) {
 			if (neighbour.getID() == message.getMigrationTarget()) {
 				var toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
