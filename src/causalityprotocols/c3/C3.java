@@ -52,7 +52,7 @@ public class C3 extends CausalityProtocol {
 
 		if (wrappedMessage == null) {
 			this.writeCounter++;
-			message.setProtocolMessage(new C3Message(new HashMap<>(), writeCounter));
+			message.setProtocolMessage(new C3Message(new HashMap<>(), writeCounter, node));
 			wrappedMessage = (C3Message) message.getProtocolMessage();
 			wrappedMessage.getLblDeps().putAll(executingClock);
 		}
@@ -89,22 +89,22 @@ public class C3 extends CausalityProtocol {
 		}
 
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
-		var executedState = executedClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
+		var executedState = executedClock.computeIfAbsent(c3Message.getOriginNode().getID(), k -> 0L);
 		// Previous writes are still executing
 		if (executedState + 1 != c3Message.getLblId()) {
-			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
-				aheadExecutedOps.get(message.getOriginNode().getID()).add(c3Message.getLblId());
+			if (aheadExecutedOps.containsKey(c3Message.getOriginNode().getID())) {
+				aheadExecutedOps.get(c3Message.getOriginNode().getID()).add(c3Message.getLblId());
 			} else {
 				List<Long> nodeAheadExecutedOps = new LinkedList<>();
 				nodeAheadExecutedOps.add(c3Message.getLblId());
-				aheadExecutedOps.put(message.getOriginNode().getID(), nodeAheadExecutedOps);
+				aheadExecutedOps.put(c3Message.getOriginNode().getID(), nodeAheadExecutedOps);
 			}
 		} else {
-			executedClock.put(message.getOriginNode().getID(), c3Message.getLblId());
-			if (aheadExecutedOps.containsKey(message.getOriginNode().getID())) {
+			executedClock.put(c3Message.getOriginNode().getID(), c3Message.getLblId());
+			if (aheadExecutedOps.containsKey(c3Message.getOriginNode().getID())) {
 				this.checkAheadOps(
-						message.getOriginNode(),
-						aheadExecutedOps.get(message.getOriginNode().getID())
+						c3Message.getOriginNode(),
+						aheadExecutedOps.get(c3Message.getOriginNode().getID())
 				);
 			}
 		}
@@ -122,8 +122,9 @@ public class C3 extends CausalityProtocol {
 			return;
 		}
 
-		long currentClock = this.executingClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
-		this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
+		C3Message c3Message = (C3Message) message.getProtocolMessage();
+		long currentClock = this.executingClock.computeIfAbsent(c3Message.getOriginNode().getID(), k -> 0L);
+		this.executingClock.put(c3Message.getOriginNode().getID(), currentClock + 1);
 
 		System.out.println("(C3) Started Exec - Node: " + node.getID() + " - mess ID: " + message.getMessageId());
 	}
