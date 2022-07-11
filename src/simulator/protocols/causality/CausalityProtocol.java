@@ -74,19 +74,11 @@ public abstract class CausalityProtocol implements Causality {
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
 
-		//if (CommonState.getTime() % 1000 == 0) {
-		//	if (node.getID() == 0) {
-		//		System.out.println("Received Event - Time: " + CommonState.getTime() + " - " +
-		//				message.getMessageId() + " - Node: " + CommonState.getNode().getID());
-		//	}
-		//}
-
-		System.out.println("(CL) - Node: " + node.getID() + " - Queue Size: " + this.pendingOperations.size());
-		System.out.println("(CL): Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: - " + node.getID());
-
-		if (message.getMessageId().equalsIgnoreCase("0_73") && node.getID() == 2) {
-			var test = CommonState.getTime();
-			System.out.println("test_break");
+		if (CommonState.getTime() % 1000 == 0) {
+			if (node.getID() == 0) {
+				System.out.println("Received Event - Time: " + CommonState.getTime() + " - " +
+						message.getMessageId() + " - Node: " + CommonState.getNode().getID());
+			}
 		}
 
 		this.handleMessage(node, event);

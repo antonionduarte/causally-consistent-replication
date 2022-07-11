@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 LATENCY_PATH = "output/latency/"
 THROUGHPUT_PATH = "output/throughput/"
 
-EXPERIMENT_TIME_SATURN = 10
-EXPERIMENT_TIME_C3 = 10
+EXPERIMENT_TIME_SATURN = 100
+EXPERIMENT_TIME_C3 = 100
 
 CHART_RENDER_WITH_TEX = True
 

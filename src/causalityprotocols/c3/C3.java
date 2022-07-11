@@ -69,8 +69,6 @@ public class C3 extends CausalityProtocol {
 				executedClock.put(nodeId, 0L);
 			}
 			if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
-				System.out.println(messageDeps);
-				System.out.println("(C3) - Time: " + CommonState.getTime() + " - " + executedClock + " - " + executingClock + " - Node: " + node.getID() + " - Message: " + message.getMessageId() + "\n");
 				return false;
 			}
 		}
@@ -108,8 +106,6 @@ public class C3 extends CausalityProtocol {
 				);
 			}
 		}
-
-		System.out.println("(C3) Finish Exec - Node: " + node.getID() + " - mess ID: " + message.getMessageId());
 	}
 
 	@Override
@@ -125,8 +121,6 @@ public class C3 extends CausalityProtocol {
 		C3Message c3Message = (C3Message) message.getProtocolMessage();
 		long currentClock = this.executingClock.computeIfAbsent(c3Message.getOriginNode().getID(), k -> 0L);
 		this.executingClock.put(c3Message.getOriginNode().getID(), currentClock + 1);
-
-		System.out.println("(C3) Started Exec - Node: " + node.getID() + " - mess ID: " + message.getMessageId());
 	}
 
 	/**

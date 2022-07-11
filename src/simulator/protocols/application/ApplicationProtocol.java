@@ -83,14 +83,9 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	public void processEvent(Node node, int pid, Object event) {
 		var message = (Message) event;
 
-		if (message.getMessageId().equalsIgnoreCase("0_0")) {
-			var test = CommonState.getTime();
-			System.out.println("test_break");
-		}
-
 		if (!receivedMessages.contains(message.getMessageId())) {
 			if (message.getOperationType() == Message.OperationType.MIGRATION) {
-				var toSend = getRandomPartitionMessage(node, message.getProtocolMessage(), message.getPartition());
+				var toSend = getRandomPartitionMessage(node, message, message.getPartition());
 
 				System.out.println("(AL - 1) - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " - Time: " + CommonState.getTime() + " - Id: " + message.getMessageId());
 
@@ -159,9 +154,8 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	 * @param partition The partition.
 	 * @return A Message with the specified properties.
 	 */
-	private Message getRandomPartitionMessage(Node node, ProtocolMessage protocolMessage, char partition) {
-		var totalWeight = weightWrites + weightReads;
-		var random = CommonState.random.nextLong(totalWeight);
+	private Message getRandomPartitionMessage(Node node, Message message, char partition) {
+		var protocolMessage = (ProtocolMessage) message.getProtocolMessage();
 		var messageBuilder = new MessageBuilder();
 
 		messageBuilder.setOperationType(Message.OperationType.WRITE);
@@ -172,7 +166,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 				.setOriginNode(node)
 				.setProtocolMessage(protocolMessage)
 				.setPartition(partition)
-				.setSendTime(CommonState.getTime())
+				.setSendTime(message.getSendTime())
 				.setLastHop(node.getID())
 				.build();
 	}

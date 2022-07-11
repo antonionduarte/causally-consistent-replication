@@ -28,35 +28,35 @@ if __name__ == "__main__":
     # os.system(COMPILE_COMMAND)
 
     commands = [
-        # 'config/saturn/sat-3-clients.txt',
-        # 'config/saturn/sat-5-clients.txt',
-        # 'config/saturn/sat-10-clients.txt',
-        # 'config/saturn/sat-15-clients.txt',
-        # 'config/saturn/sat-20-clients.txt',
-        # 'config/saturn/sat-25-clients.txt',
-        # 'config/saturn/sat-30-clients.txt',
-        # 'config/saturn/sat-35-clients.txt',
-        # 'config/saturn/sat-50-clients.txt',
-        # 'config/saturn/sat-55-clients.txt',
-        # 'config/saturn/sat-60-clients.txt',
-        # 'config/saturn/sat-65-clients.txt',
-        # 'config/saturn/sat-80-clients.txt',
+        'config/saturn/sat-3-clients.txt',
+        'config/saturn/sat-5-clients.txt',
+        'config/saturn/sat-10-clients.txt',
+        'config/saturn/sat-15-clients.txt',
+        'config/saturn/sat-20-clients.txt',
+        'config/saturn/sat-25-clients.txt',
+        'config/saturn/sat-30-clients.txt',
+        'config/saturn/sat-35-clients.txt',
+        'config/saturn/sat-50-clients.txt',
+        'config/saturn/sat-55-clients.txt',
+        'config/saturn/sat-60-clients.txt',
+        'config/saturn/sat-65-clients.txt',
+        'config/saturn/sat-80-clients.txt',
         # 'config/saturn/sat-100-clients.txt',
 
-        # 'config/c3/c3-3-clients.txt',
-        # 'config/c3/c3-5-clients.txt',
-        # 'config/c3/c3-10-clients.txt',
-        # 'config/c3/c3-15-clients.txt',
+        'config/c3/c3-3-clients.txt',
+        'config/c3/c3-5-clients.txt',
+        'config/c3/c3-10-clients.txt',
+        'config/c3/c3-15-clients.txt',
         'config/c3/c3-20-clients.txt',
-        # 'config/c3/c3-25-clients.txt',
-        # 'config/c3/c3-30-clients.txt',
-        # 'config/c3/c3-35-clients.txt',
-        # 'config/c3/c3-50-clients.txt',
-        # 'config/c3/c3-55-clients.txt',
-        # 'config/c3/c3-60-clients.txt',
-        # 'config/c3/c3-65-clients.txt',
-        # 'config/c3/c3-80-clients.txt',
-        # 'config/c3/c3-100-clients.txt',
+        'config/c3/c3-25-clients.txt',
+        'config/c3/c3-30-clients.txt',
+        'config/c3/c3-35-clients.txt',
+        'config/c3/c3-50-clients.txt',
+        'config/c3/c3-55-clients.txt',
+        'config/c3/c3-60-clients.txt',
+        'config/c3/c3-65-clients.txt',
+        'config/c3/c3-80-clients.txt',
+        #'config/c3/c3-100-clients.txt',
     ]
 
     if TIME != None:
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     os.system(DOCKER_BUILD)
     
-    run_commands(commands, n_parallel=3)      
+    run_commands(commands, n_parallel=30)      
 
     print('\n----------------------------')
     print('Finished Running Experiments')
