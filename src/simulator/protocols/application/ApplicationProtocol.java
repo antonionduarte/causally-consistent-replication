@@ -164,12 +164,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		var random = CommonState.random.nextLong(totalWeight);
 		var messageBuilder = new MessageBuilder();
 
-		if (random <= weightWrites) {
-			messageBuilder.setOperationType(Message.OperationType.WRITE);
-		} else {
-			messageBuilder.setOperationType(Message.OperationType.READ);
-		}
-
+		messageBuilder.setOperationType(Message.OperationType.WRITE);
 		messageBuilder.setMessageId(node.getID() + "_" + idCounter++);
 
 		return messageBuilder

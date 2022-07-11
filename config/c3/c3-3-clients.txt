@@ -28,7 +28,7 @@ network
     size    SIZE
     node    simulator.node.PartitionsNode
     {
-        partitions_file     config/partitions/partitions.txt
+        partitions_file     config/partitions/two-partitions.txt
     }
 }
 

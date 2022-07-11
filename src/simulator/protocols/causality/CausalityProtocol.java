@@ -82,10 +82,9 @@ public abstract class CausalityProtocol implements Causality {
 		//}
 
 		System.out.println("(CL) - Node: " + node.getID() + " - Queue Size: " + this.pendingOperations.size());
-
 		System.out.println("(CL): Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: - " + node.getID());
 
-		if (message.getMessageId().equalsIgnoreCase("0_0")) {
+		if (message.getMessageId().equalsIgnoreCase("0_73") && node.getID() == 2) {
 			var test = CommonState.getTime();
 			System.out.println("test_break");
 		}
@@ -169,7 +168,7 @@ public abstract class CausalityProtocol implements Causality {
 	}
 
 	/**
-	 * Decides the amount of time an operation takes to execute, according to it's type.
+	 * Decides the amount of time an operation takes to execute, according to its type.
 	 * Processes the operation and calls the internal Protocol methods that change the state
 	 * of the protocol upon the execution of an operation.
 	 *
@@ -202,13 +201,11 @@ public abstract class CausalityProtocol implements Causality {
 	 * @param message The message to propagate.
 	 */
 	private void propagateMessage(Node node, Message message) {
-		if (message.getOperationType() == Message.OperationType.WRITE) {
-			var lastHop = message.getLastHop();
-			var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.pid);
-			var toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
-			this.sentMessages.add(message.getMessageId());
-			broadcast.broadcastMessage(node, toSend, lastHop);
-		}
+		var lastHop = message.getLastHop();
+		var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.pid);
+		var toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
+		this.sentMessages.add(message.getMessageId());
+		broadcast.broadcastMessage(node, toSend, lastHop);
 	}
 
 	/**

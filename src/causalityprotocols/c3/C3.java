@@ -1,5 +1,6 @@
 package causalityprotocols.c3;
 
+import peersim.core.CommonState;
 import peersim.core.Node;
 import simulator.protocols.causality.CausalityProtocol;
 import simulator.protocols.messages.Message;
@@ -56,6 +57,7 @@ public class C3 extends CausalityProtocol {
 			wrappedMessage.getLblDeps().putAll(executingClock);
 		}
 
+
 		if (message.getOperationType() == Message.OperationType.MIGRATION) {
 			return true;
 		}
@@ -67,6 +69,8 @@ public class C3 extends CausalityProtocol {
 				executedClock.put(nodeId, 0L);
 			}
 			if (executedClock.get(nodeId) < messageDeps.get(nodeId)) {
+				System.out.println(messageDeps);
+				System.out.println("(C3) - Time: " + CommonState.getTime() + " - " + executedClock + " - " + executingClock + " - Node: " + node.getID() + " - Message: " + message.getMessageId() + "\n");
 				return false;
 			}
 		}
@@ -104,6 +108,8 @@ public class C3 extends CausalityProtocol {
 				);
 			}
 		}
+
+		System.out.println("(C3) Finish Exec - Node: " + node.getID() + " - mess ID: " + message.getMessageId());
 	}
 
 	@Override
@@ -118,6 +124,8 @@ public class C3 extends CausalityProtocol {
 
 		long currentClock = this.executingClock.computeIfAbsent(message.getOriginNode().getID(), k -> 0L);
 		this.executingClock.put(message.getOriginNode().getID(), currentClock + 1);
+
+		System.out.println("(C3) Started Exec - Node: " + node.getID() + " - mess ID: " + message.getMessageId());
 	}
 
 	/**
