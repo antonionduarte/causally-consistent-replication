@@ -65,7 +65,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 			var message = getRandomMessage(node);
 			this.changeInitialMessage(node, message);
 			EDSimulator.add(0, message, node, PendingEvents.pid);
-			System.out.println("(AL - Init) - Node: " + CommonState.getNode().getID() + " - Time: " + CommonState.getTime() + " - MigT: " + message.getMigrationTarget() + " - Id: " + message.getMessageId());
+			System.out.println("(AL - Init) - Node: " + node.getID() + " - Time: " + CommonState.getTime() + " - MigT: " + message.getMigrationTarget() + " - Id: " + message.getMessageId());
 		}
 	}
 
@@ -92,7 +92,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 			if (message.getOperationType() == Message.OperationType.MIGRATION) {
 				var toSend = getRandomPartitionMessage(node, message.getProtocolMessage(), message.getPartition());
 
-				System.out.println("(AL - 1) - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime() + " Id: " + message.getMessageId());
+				System.out.println("(AL - 1) - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " - Time: " + CommonState.getTime() + " - Id: " + message.getMessageId());
 
 				this.changeResponseMessage(node, toSend);
 				EDSimulator.add(0, toSend, node, PendingEvents.pid);
@@ -104,7 +104,7 @@ public abstract class ApplicationProtocol implements EDProtocol {
 
 				var toSend = getRandomMessage(node);
 
-				System.out.println("(AL - 2) - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " Time: " + CommonState.getTime() + " Id: " + message.getMessageId());
+				System.out.println("(AL - 2) - Mig. Targ: " + toSend.getMigrationTarget() + " - Node: " + node.getID() + " - Part: " + toSend.getPartition() + " - Time: " + CommonState.getTime() + " - Id: " + message.getMessageId());
 
 				this.changeResponseMessage(node, toSend);
 				EDSimulator.add(0, toSend, node, PendingEvents.pid);

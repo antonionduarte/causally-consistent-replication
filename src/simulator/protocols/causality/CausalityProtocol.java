@@ -81,6 +81,8 @@ public abstract class CausalityProtocol implements Causality {
 		//	}
 		//}
 
+		System.out.println("(CL) - Node: " + node.getID() + " - Queue Size: " + this.pendingOperations.size());
+
 		System.out.println("(CL): Received Event - Time: " + CommonState.getTime() + " - " + message.getMessageId() + " - Node: - " + node.getID());
 
 		if (message.getMessageId().equalsIgnoreCase("0_0")) {
