@@ -193,11 +193,13 @@ public abstract class CausalityProtocol implements Causality {
 	 * @param message The message to propagate.
 	 */
 	private void propagateMessage(Node node, Message message) {
-		var lastHop = message.getLastHop();
-		var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.pid);
-		var toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
-		this.sentMessages.add(message.getMessageId());
-		broadcast.broadcastMessage(node, toSend, lastHop);
+		if (!(message.getOperationType() == Message.OperationType.READ)) {
+			var lastHop = message.getLastHop();
+			var broadcast = (Broadcast) node.getProtocol(BroadcastProtocol.pid);
+			var toSend = new MessageWrapper(message, Message.EventType.PROPAGATING, node);
+			this.sentMessages.add(message.getMessageId());
+			broadcast.broadcastMessage(node, toSend, lastHop);
+		}
 	}
 
 	/**

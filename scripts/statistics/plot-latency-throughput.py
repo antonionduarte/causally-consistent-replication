@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 LATENCY_PATH = "output/latency/"
 THROUGHPUT_PATH = "output/throughput/"
 
-EXPERIMENT_TIME_SATURN = 100
-EXPERIMENT_TIME_C3 = 100
+EXPERIMENT_TIME_SATURN = 10
+EXPERIMENT_TIME_C3 = 10
 
 CHART_RENDER_WITH_TEX = True
 
@@ -34,7 +34,7 @@ def latency(inputs):
 
         medium_latency = int(experiment_latency / num_results)
 
-        total_latency.append(medium_latency)      
+        total_latency.append(medium_latency / 10)
 
     return total_latency
 
