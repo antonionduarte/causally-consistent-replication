@@ -90,6 +90,11 @@ if __name__ == "__main__":
         "saturn-60-clients.txt",
         "saturn-65-clients.txt",
         "saturn-80-clients.txt",
+        "saturn-100-clients.txt",
+        "saturn-150-clients.txt",
+        "saturn-200-clients.txt",
+        "saturn-250-clients.txt",
+        "saturn-300-clients.txt",
     ]
 
     input_c3 = [
@@ -106,6 +111,11 @@ if __name__ == "__main__":
         "c3-60-clients.txt",
         "c3-65-clients.txt",
         "c3-80-clients.txt",
+        "c3-100-clients.txt",
+        "c3-150-clients.txt",
+        "c3-200-clients.txt",
+        "c3-250-clients.txt",
+        "c3-300-clients.txt",
     ]
 
     if CHART_RENDER_WITH_TEX:

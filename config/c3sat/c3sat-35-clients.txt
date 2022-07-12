@@ -9,7 +9,7 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
-EXPERIMENT_NAME c3-3-clients
+EXPERIMENT_NAME c3sat-35-clients
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
@@ -47,9 +47,9 @@ protocol.urt            simulator.transports.LatencyMatrixTransport
 
 protocol.application    causalityprotocols.c3.C3Application
 {
-    number_clients  3           # the number of clients being simulated per node
-    weight_reads    20          # the percentage/weight of reads being simulated
-    weight_writes   80          # the percentage/weight of writes being simulated
+    number_clients  35       # the number of clients being simulated per node
+    weight_reads    20         # the percentage/weight of reads being simulated
+    weight_writes   80         # the percentage/weight of writes being simulated
 }
 
 # -------------------------- #
@@ -69,7 +69,8 @@ protocol.causality      causalityprotocols.c3.C3
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
 
-protocol.overlay        simulator.protocols.overlay.SimpleOverlay
+# TODO: Substituir pelo Saturn
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # replace path with desired overlay protocol
 
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well
@@ -78,7 +79,7 @@ protocol.overlay        simulator.protocols.overlay.SimpleOverlay
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      simulator.protocols.broadcast.clique.CliqueBroadcast    # replace path with desired broadcast protocol
+protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace path with desired broadcast protocol
 {
     transport           urt
 }
@@ -89,12 +90,17 @@ protocol.broadcast      simulator.protocols.broadcast.clique.CliqueBroadcast    
 # ---- Initializers ---- #
 # ---------------------- #
 
+init.treeInit           WireFromFile
+{
+    k                   20
+    file                config/graphs/tree-graph-0.txt
+    protocol            overlay
+}
+
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
 {
     protocol            application
 }
-
-init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 
 # ---------------------------------- #
 # ----- Controls and Observers ----- #

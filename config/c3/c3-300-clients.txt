@@ -9,7 +9,7 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
-EXPERIMENT_NAME c3-3-clients
+EXPERIMENT_NAME c3-300-clients
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
@@ -47,9 +47,9 @@ protocol.urt            simulator.transports.LatencyMatrixTransport
 
 protocol.application    causalityprotocols.c3.C3Application
 {
-    number_clients  3           # the number of clients being simulated per node
-    weight_reads    20          # the percentage/weight of reads being simulated
-    weight_writes   80          # the percentage/weight of writes being simulated
+    number_clients  300       # the number of clients being simulated per node
+    weight_reads    20         # the percentage/weight of reads being simulated
+    weight_writes   80         # the percentage/weight of writes being simulated
 }
 
 # -------------------------- #
@@ -69,7 +69,7 @@ protocol.causality      causalityprotocols.c3.C3
 # ---- Topology / Overlay ---- #
 # ---------------------------- #
 
-protocol.overlay        simulator.protocols.overlay.SimpleOverlay
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # replace path with desired overlay protocol
 
 # select the topology that you with to use and initialize it,
 # initialize the node inits as well

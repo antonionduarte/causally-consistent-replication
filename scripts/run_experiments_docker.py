@@ -41,7 +41,12 @@ if __name__ == "__main__":
         'config/saturn/sat-60-clients.txt',
         'config/saturn/sat-65-clients.txt',
         'config/saturn/sat-80-clients.txt',
-        # 'config/saturn/sat-100-clients.txt',
+        'config/saturn/sat-100-clients.txt',
+        'config/saturn/sat-150-clients.txt',
+        'config/saturn/sat-200-clients.txt',
+        'config/saturn/sat-250-clients.txt',
+        'config/saturn/sat-300-clients.txt',
+
 
         'config/c3/c3-3-clients.txt',
         'config/c3/c3-5-clients.txt',
@@ -56,7 +61,11 @@ if __name__ == "__main__":
         'config/c3/c3-60-clients.txt',
         'config/c3/c3-65-clients.txt',
         'config/c3/c3-80-clients.txt',
-        #'config/c3/c3-100-clients.txt',
+        'config/c3/c3-100-clients.txt',
+        'config/c3/c3-150-clients.txt',
+        'config/c3/c3-200-clients.txt',
+        'config/c3/c3-250-clients.txt',
+        'config/c3/c3-300-clients.txt',
     ]
 
     if TIME != None:
