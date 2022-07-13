@@ -118,6 +118,27 @@ if __name__ == "__main__":
         "c3-300-clients.txt",
     ]
 
+    input_c3sat = [
+        "c3sat-3-clients.txt",
+        "c3sat-5-clients.txt",
+        "c3sat-10-clients.txt",
+        "c3sat-15-clients.txt",
+        "c3sat-20-clients.txt",
+        "c3sat-25-clients.txt",
+        "c3sat-30-clients.txt",
+        "c3sat-35-clients.txt",
+        "c3sat-50-clients.txt",
+        "c3sat-55-clients.txt",
+        "c3sat-60-clients.txt",
+        "c3sat-65-clients.txt",
+        "c3sat-80-clients.txt",
+        "c3sat-100-clients.txt",
+        "c3sat-150-clients.txt",
+        "c3sat-200-clients.txt",
+        "c3sat-250-clients.txt",
+        "c3sat-300-clients.txt",
+    ]
+
     if CHART_RENDER_WITH_TEX:
         plt.rcParams.update({
             "text.usetex": True,    
@@ -130,8 +151,12 @@ if __name__ == "__main__":
     throughputs_c3 = throughput(input_c3, EXPERIMENT_TIME_C3)
     latencies_c3 = latency(input_c3)
 
+    latencies_c3sat = latency(input_c3sat)
+    throughputs_c3sat = throughput(input_c3sat, EXPERIMENT_TIME_C3)
+
     plt.style.use('seaborn-paper')
     plot_graph(latencies_saturn, throughputs_saturn, 'Saturn')
     plot_graph(latencies_c3, throughputs_c3, 'C3')
+    plot_graph(latencies_c3sat, throughputs_c3sat, 'C3 + Saturn')
     plt.legend()
     plt.savefig('plot-latency-throughput.pdf')

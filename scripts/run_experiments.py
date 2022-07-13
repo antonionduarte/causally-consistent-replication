@@ -46,6 +46,8 @@ if __name__ == "__main__":
         'config/c3/c3-65-clients.txt',
         'config/c3/c3-80-clients.txt',
         #'config/c3/c3-100-clients.txt',
+
+        'config/c3sat/c3sat-35-clients.txt',
     ]
 
     if TIME != None:

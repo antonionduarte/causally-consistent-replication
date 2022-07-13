@@ -66,6 +66,26 @@ if __name__ == "__main__":
         'config/c3/c3-200-clients.txt',
         'config/c3/c3-250-clients.txt',
         'config/c3/c3-300-clients.txt',
+
+        'config/c3sat/c3sat-3-clients.txt',
+        'config/c3sat/c3sat-5-clients.txt',
+        'config/c3sat/c3sat-10-clients.txt',
+        'config/c3sat/c3sat-15-clients.txt',
+        'config/c3sat/c3sat-20-clients.txt',
+        'config/c3sat/c3sat-25-clients.txt',
+        'config/c3sat/c3sat-30-clients.txt',
+        'config/c3sat/c3sat-35-clients.txt',
+        'config/c3sat/c3sat-50-clients.txt',
+        'config/c3sat/c3sat-55-clients.txt',
+        'config/c3sat/c3sat-60-clients.txt',
+        'config/c3sat/c3sat-65-clients.txt',
+        'config/c3sat/c3sat-80-clients.txt',
+        'config/c3sat/c3sat-100-clients.txt',
+        'config/c3sat/c3sat-150-clients.txt',
+        'config/c3sat/c3sat-200-clients.txt',
+        'config/c3sat/c3sat-250-clients.txt',
+        'config/c3sat/c3sat-300-clients.txt',
+
     ]
 
     if TIME != None:
