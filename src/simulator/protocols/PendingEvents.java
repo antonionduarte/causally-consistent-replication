@@ -18,21 +18,18 @@ public class PendingEvents implements EDProtocol {
 	private static final String PAR_EVENT_PROCESSING_TIME = "event_processing_time";
 	private static final String PAR_MAX_PARALLEL_EVENTS = "max_parallel_events";
 
-	private Queue<Message> pendingEvents;
-
+	public static int pid;
 	private final int eventProcessingTime;
 	private final int maxParallelEvents;
-
+	private Queue<Message> pendingEvents;
 	private long currentTimestamp;
 	private int counterProcessedEvents;
-
-	public static int pid;
 
 	public PendingEvents(String prefix) {
 		var protName = (prefix.split("\\."))[1];
 		pid = Configuration.lookupPid(protName);
-		maxParallelEvents = Configuration.getInt(prefix + "." + PAR_MAX_PARALLEL_EVENTS);
-		eventProcessingTime = Configuration.getInt(prefix + "." + PAR_EVENT_PROCESSING_TIME);
+		this.maxParallelEvents = Configuration.getInt(prefix + "." + PAR_MAX_PARALLEL_EVENTS);
+		this.eventProcessingTime = Configuration.getInt(prefix + "." + PAR_EVENT_PROCESSING_TIME);
 	}
 
 	@Override
@@ -81,7 +78,6 @@ public class PendingEvents implements EDProtocol {
 			this.pendingEvents.add(message);
 			this.counterProcessedEvents++;
 
-			var debug = CommonState.getTime();
 			var sendInterval = currentTimestamp - CommonState.getTime();
 			var sendDelay = sendInterval + eventProcessingTime;
 			var nextMessage = new MessageWrapper(Message.EventType.NEXT);

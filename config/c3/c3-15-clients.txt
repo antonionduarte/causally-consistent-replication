@@ -1,4 +1,4 @@
-simulation.endtime 	 	 500
+simulation.endtime 	 	 100000
 
 # network size
 SIZE                    7
@@ -22,7 +22,15 @@ protocol.pendingEvents  simulator.protocols.PendingEvents
 }
 
 random.seed             10
-network.size            SIZE
+
+network
+{
+    size    SIZE
+    node    simulator.node.PartitionsNode
+    {
+        partitions_file     config/partitions/partitions.txt
+    }
+}
 
 # ------------------- #
 # ---- Transport ---- #
@@ -52,7 +60,9 @@ protocol.causality      causalityprotocols.c3.C3
 {
     check_all       true
     write_time      40          # the amount of time a write takes to execute
-    read_time       60         # the amount of time that a read takes to execute
+    read_time       60          # the amount of time that a read takes to execute
+    migration_time  0           # the amount of time that a migration takes to execute
+    transport       urt         # the transport protocol to be used when sending migration messages
 }
 
 # ---------------------------- #
@@ -68,7 +78,7 @@ protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # repl
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # replace path with desired broadcast protocol
+protocol.broadcast      simulator.protocols.broadcast.clique.CliqueBroadcast    # replace path with desired broadcast protocol
 {
     transport           urt
 }

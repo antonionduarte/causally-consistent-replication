@@ -1,6 +1,5 @@
 package causalityprotocols.saturn;
 
-import peersim.core.CommonState;
 import peersim.core.Node;
 import simulator.protocols.application.ApplicationProtocol;
 import simulator.protocols.messages.Message;

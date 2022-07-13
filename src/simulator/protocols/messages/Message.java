@@ -4,19 +4,6 @@ import peersim.core.Node;
 
 public interface Message {
 
-	enum OperationType {
-		WRITE,
-		READ,
-		MIGRATION;
-	}
-
-	enum EventType {
-		PROPAGATING,
-		EXECUTING,
-		RESPONSE,
-		NEXT
-	}
-
 	/**
 	 * @return The id of the message
 	 */
@@ -39,7 +26,6 @@ public interface Message {
 
 	/**
 	 * @return The type of the event, either Propagating, Executing or Migrating.
-	 * TODO: Migrating
 	 */
 	EventType getEventType();
 
@@ -59,6 +45,16 @@ public interface Message {
 	void setOperationType(OperationType operationType);
 
 	/**
+	 * @return The partition that the message is destined to.
+	 */
+	Character getPartition();
+
+	/**
+	 * @return The id of the node to migrate to.
+	 */
+	long getMigrationTarget();
+
+	/**
 	 * The Message class acts as a wrapper for classes specific to Protocols.
 	 *
 	 * @return The wrapped Protocol specific object.
@@ -69,4 +65,17 @@ public interface Message {
 	 * @param protocolMessage Sets the wrapped protocolMessage class.
 	 */
 	void setProtocolMessage(ProtocolMessage protocolMessage);
+
+	enum OperationType {
+		WRITE,
+		READ,
+		MIGRATION
+	}
+
+	enum EventType {
+		PROPAGATING,
+		EXECUTING,
+		RESPONSE,
+		NEXT
+	}
 }

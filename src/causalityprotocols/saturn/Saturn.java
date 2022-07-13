@@ -8,9 +8,6 @@ public class Saturn extends CausalityProtocol {
 
 	private boolean operationExecuting;
 
-	/**
-	 * The constructor for the protocol.
-	 */
 	public Saturn(String prefix) {
 		super(prefix);
 	}
@@ -27,14 +24,9 @@ public class Saturn extends CausalityProtocol {
 		if (message.getOperationType() == Message.OperationType.READ) {
 			return true;
 		}
-
 		if (message.getOriginNode().getID() == node.getID()) {
 			return true;
 		}
-
-		// System.out.println("Checking Causality - " + message.getMessageId() + " - " + operationExecuting + " - Time: " + CommonState.getTime() + " - Node: - " + CommonState.getNode().getID());
-
-		// If there isn't an operation executing, operation can execute.
 		return !operationExecuting;
 	}
 
@@ -42,19 +34,11 @@ public class Saturn extends CausalityProtocol {
 	public void operationFinishedExecution(Node node, Message message) {
 		if (message.getOriginNode().getID() != node.getID())
 			this.operationExecuting = false;
-		//if (message.getOperationType() == Message.OperationType.WRITE) {
-		//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executed - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
-		//System.out.println();
-		//}
 	}
 
 	@Override
 	public void operationStartedExecution(Node node, Message message) {
 		if (message.getOriginNode().getID() != node.getID())
 			this.operationExecuting = true;
-		//if (message.getOperationType() == Message.OperationType.WRITE) {
-		//System.out.println("DEBUG - Time:" + CommonState.getTime() + " - Executing - : " + message.getMessageId() + " - Node:" + CommonState.getNode().getID());
-		//System.out.println();
-		//}
 	}
 }

@@ -11,30 +11,24 @@ public class ReadLatencyMatrix {
 		try {
 			File file = new File(path);
 			Scanner scanner = new Scanner(file);
-
 			int i = 0;
 			while (scanner.hasNextLine()) {
 				String data = scanner.nextLine();
 				var splitData = data.split(",");
-
 				if (matrix == null) {
 					matrix = new long[splitData.length][splitData.length];
 				}
-
 				var j = 0;
 				for (var elem : splitData) {
 					matrix[i][j] = Math.round(Float.parseFloat(elem));
 					j++;
 				}
-
 				i++;
 			}
-
 			scanner.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return matrix;
 	}
 

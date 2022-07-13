@@ -5,8 +5,6 @@ import peersim.core.Protocol;
 
 public abstract class OverlayProtocol implements Overlay, Protocol {
 
-	private static final String PAR_PROT = "protocol";
-
 	public static int pid;
 
 	public OverlayProtocol(String prefix) {

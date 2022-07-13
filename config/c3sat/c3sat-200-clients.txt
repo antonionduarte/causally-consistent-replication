@@ -1,0 +1,123 @@
+simulation.endtime 	 	 100000
+
+# network size
+SIZE                    7
+
+# parameters of periodic execution
+
+CYCLES                  100
+CYCLE                   SIZE * 10000
+EVENT_PROCESSING_TIME   1
+
+EXPERIMENT_NAME c3sat-200-clients
+
+# ------------------------------- #
+# ---- Simulation Parameters ---- #
+# ------------------------------- #
+
+protocol.pendingEvents  simulator.protocols.PendingEvents
+{
+    max_parallel_events         0
+    event_processing_time       0
+}
+
+random.seed             10
+
+network
+{
+    size    SIZE
+    node    simulator.node.PartitionsNode
+    {
+        partitions_file     config/partitions/partitions.txt
+    }
+}
+
+# ------------------- #
+# ---- Transport ---- #
+# ------------------- #
+
+protocol.urt            simulator.transports.LatencyMatrixTransport
+{
+    latency_path        config/latencies/latency-0-mat.txt
+}
+
+# -------------------------------------- #
+# ---- Application / Clients Config ---- #
+# -------------------------------------- #
+
+protocol.application    causalityprotocols.c3.C3Application
+{
+    number_clients  200       # the number of clients being simulated per node
+    weight_reads    20         # the percentage/weight of reads being simulated
+    weight_writes   80         # the percentage/weight of writes being simulated
+}
+
+# -------------------------- #
+# ---- Causality Config ---- #
+# -------------------------- #
+
+protocol.causality      causalityprotocols.c3.C3
+{
+    check_all       true
+    write_time      40          # the amount of time a write takes to execute
+    read_time       60          # the amount of time that a read takes to execute
+    migration_time  0           # the amount of time that a migration takes to execute
+    transport       urt         # the transport protocol to be used when sending migration messages
+}
+
+# ---------------------------- #
+# ---- Topology / Overlay ---- #
+# ---------------------------- #
+
+protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # replace path with desired overlay protocol
+
+# select the topology that you with to use and initialize it,
+# initialize the node inits as well
+
+# ------------------- #
+# ---- Broadcast ---- #
+# ------------------- #
+
+protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace path with desired broadcast protocol
+{
+    transport           urt
+}
+
+# select the broadcast protocol you wish to use, and initialize it
+
+# ---------------------- #
+# ---- Initializers ---- #
+# ---------------------- #
+
+init.treeInit           WireFromFile
+{
+    k                   20
+    file                config/graphs/tree-graph-0.txt
+    protocol            overlay
+}
+
+init.applicationInit    simulator.protocols.application.ApplicationInitializer
+{
+    protocol            application
+}
+
+# ---------------------------------- #
+# ----- Controls and Observers ----- #
+# ---------------------------------- #
+
+include.control         latencyObserver, throughputObserver, visibilityObserver
+
+control.latencyObserver     simulator.observers.LatencyObserver
+{
+    step    simulation.endtime - 1
+}
+
+control.throughputObserver  simulator.observers.ThroughputObserver
+{
+    step    simulation.endtime - 1
+}
+
+control.visibilityObserver  simulator.observers.VisibilityObserver
+{
+    step    simulation.endtime - 1
+}

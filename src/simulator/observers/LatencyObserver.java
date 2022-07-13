@@ -16,11 +16,11 @@ import java.io.IOException;
  */
 public class LatencyObserver implements Control {
 
-	public LatencyObserver(String prefix) {
-	}
-
 	private static final String PATH = "./output/latency/";
 	private static final String PAR_EXPERIMENT_NAME = "EXPERIMENT_NAME";
+
+	public LatencyObserver(String prefix) {
+	}
 
 	@Override
 	public boolean execute() {
@@ -28,7 +28,6 @@ public class LatencyObserver implements Control {
 		var filename = PATH + experimentName + ".txt";
 
 		System.out.println(CommonState.getTime() + ": " + this.getClass().getName() + " extracting client perceived Latencies.");
-
 		File latencyObservation = new File(filename);
 
 		try (FileWriter fileWriter = new FileWriter(filename)) {

@@ -2,13 +2,13 @@ import matplotlib.pyplot as plt
 import itertools
 
 VISIBILITY_PATH = "output/visibility/"
-
+CHART_RENDER_WITH_TEX = True
 NUMBER_NODES = 7
 
 EXPERIMENT_TIME_SATURN = 30
 EXPERIMENT_TIME_C3 = 30
 
-TIME_INTERVAL = 5
+TIME_INTERVAL = 1000
 
 """ 
 Returns the lowest value of a list
@@ -100,48 +100,26 @@ def plot_graph(x, y, color, str_label):
     line = plt.plot(x, y, color + 'o-', label=str_label)
 
 if __name__ == "__main__":
-    input_saturn = [
-        "saturn-3-clients.txt",
-        "saturn-5-clients.txt",
-        "saturn-10-clients.txt",
-        "saturn-15-clients.txt",
-        "saturn-20-clients.txt",
-        "saturn-25-clients.txt",
-        "saturn-30-clients.txt",
-        "saturn-35-clients.txt",
-        "saturn-50-clients.txt",
-        "saturn-55-clients.txt",
-        "saturn-60-clients.txt",
-        "saturn-65-clients.txt",
-        "saturn-80-clients.txt",
-    ]
-
-    input_c3 = [
-        "c3-3-clients.txt",
-        "c3-5-clients.txt",
-        "c3-10-clients.txt",
-        "c3-15-clients.txt",
-        "c3-20-clients.txt",
-        "c3-25-clients.txt",
-        "c3-30-clients.txt",
-        "c3-35-clients.txt",
-        "c3-50-clients.txt",
-        "c3-55-clients.txt",
-        "c3-60-clients.txt",
-        "c3-65-clients.txt",
-        "c3-80-clients.txt",
-    ]
-
     x_visibility_c3, y_visibility_c3 = visibility("c3-35-clients.txt")
     x_visibility_sat, y_visibility_sat = visibility("saturn-35-clients.txt")
+    x_visibility_c3sat, y_visibility_c3sat = visibility("c3sat-35-clients.txt")
+
+    if CHART_RENDER_WITH_TEX:
+        plt.rcParams.update({
+            "text.usetex": True,    
+            "font.family": "serif",
+        })
 
     # print(x_visibility_c3)
     # print(y_visibility_c3)
     # print(x_visibility_c3)
     # print(y_visibility_c3)
+
+    plt.style.use('seaborn-paper')
 
     plot_graph(x_visibility_c3, y_visibility_c3, 'r', 'C3')
     plot_graph(x_visibility_sat, y_visibility_sat, 'b', 'Saturn')
+    plot_graph(x_visibility_c3sat, y_visibility_c3sat, 'c', 'C3 + Saturn')
     
     plt.legend()
 

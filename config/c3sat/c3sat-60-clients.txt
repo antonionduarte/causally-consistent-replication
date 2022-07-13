@@ -1,5 +1,6 @@
-# network size
+simulation.endtime 	 	 100000
 
+# network size
 SIZE                    7
 
 # parameters of periodic execution
@@ -8,7 +9,7 @@ CYCLES                  100
 CYCLE                   SIZE * 10000
 EVENT_PROCESSING_TIME   1
 
-EXPERIMENT_NAME c3-500-clients
+EXPERIMENT_NAME c3sat-60-clients
 
 # ------------------------------- #
 # ---- Simulation Parameters ---- #
@@ -21,9 +22,15 @@ protocol.pendingEvents  simulator.protocols.PendingEvents
 }
 
 random.seed             10
-network.size            SIZE
 
-simulation.endtime      5000
+network
+{
+    size    SIZE
+    node    simulator.node.PartitionsNode
+    {
+        partitions_file     config/partitions/partitions.txt
+    }
+}
 
 # ------------------- #
 # ---- Transport ---- #
@@ -40,7 +47,7 @@ protocol.urt            simulator.transports.LatencyMatrixTransport
 
 protocol.application    causalityprotocols.c3.C3Application
 {
-    number_clients  500       # the number of clients being simulated per node
+    number_clients  60       # the number of clients being simulated per node
     weight_reads    20         # the percentage/weight of reads being simulated
     weight_writes   80         # the percentage/weight of writes being simulated
 }
@@ -53,7 +60,9 @@ protocol.causality      causalityprotocols.c3.C3
 {
     check_all       true
     write_time      40          # the amount of time a write takes to execute
-    read_time       60         # the amount of time that a read takes to execute
+    read_time       60          # the amount of time that a read takes to execute
+    migration_time  0           # the amount of time that a migration takes to execute
+    transport       urt         # the transport protocol to be used when sending migration messages
 }
 
 # ---------------------------- #
@@ -69,7 +78,7 @@ protocol.overlay        simulator.protocols.overlay.SimpleOverlay         # repl
 # ---- Broadcast ---- #
 # ------------------- #
 
-protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # replace path with desired broadcast protocol
+protocol.broadcast      causalityprotocols.saturn.SaturnBroadcast    # replace path with desired broadcast protocol
 {
     transport           urt
 }
@@ -80,12 +89,17 @@ protocol.broadcast      simulator.protocols.broadcast.click.ClickBroadcast    # 
 # ---- Initializers ---- #
 # ---------------------- #
 
+init.treeInit           WireFromFile
+{
+    k                   20
+    file                config/graphs/tree-graph-0.txt
+    protocol            overlay
+}
+
 init.applicationInit    simulator.protocols.application.ApplicationInitializer
 {
     protocol            application
 }
-
-init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
 
 # ---------------------------------- #
 # ----- Controls and Observers ----- #
@@ -95,12 +109,12 @@ include.control         latencyObserver, throughputObserver, visibilityObserver
 
 control.latencyObserver     simulator.observers.LatencyObserver
 {
-    step    4999
+    step    simulation.endtime - 1
 }
 
 control.throughputObserver  simulator.observers.ThroughputObserver
 {
-    step    4999
+    step    simulation.endtime - 1
 }
 
 control.visibilityObserver  simulator.observers.VisibilityObserver

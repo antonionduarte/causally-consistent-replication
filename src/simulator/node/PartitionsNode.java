@@ -12,11 +12,8 @@ public class PartitionsNode extends GeneralNode {
 
 	private static final String PAR_PARTITIONS_PATH = "partitions_file";
 
-	/**
-	 * Map from nodeID -> List of Character,
-	 * where each Character represents a Partition.
-	 */
 	private final Map<Long, List<Character>> partitions;
+	private final List<Character> distinctPartitions;
 
 	/**
 	 * Used to construct the prototype node. This class currently does not
@@ -27,10 +24,43 @@ public class PartitionsNode extends GeneralNode {
 	 */
 	public PartitionsNode(String prefix) {
 		super(prefix);
-		this.partitions = new HashMap<>();
 		var path = Configuration.getString(prefix + "." + PAR_PARTITIONS_PATH);
+		this.partitions = parsePartitions(path);
+		this.distinctPartitions = new ArrayList<>();
+
+		for (var partitionList : partitions.values()) {
+			for (var partition : partitionList) {
+				if (!distinctPartitions.contains(partition)) {
+					this.distinctPartitions.add(partition);
+				}
+			}
+		}
+	}
+
+	private static Map<Long, List<Character>> parsePartitions(String path) {
+		// read partitions from the specified file
+		var partitions = new HashMap<Long, List<Character>>();
 		var file = new File(path);
-		this.parsePartitions(file);
+		try (var scanner = new Scanner(file)) {
+			// parse the file
+			var nodeCounter = 0L;
+
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				String[] partitionsList = line.split(",");
+				List<Character> partitionList = new ArrayList<>(partitionsList.length);
+
+				for (var partition : partitionsList) {
+					partitionList.add(partition.charAt(0));
+				}
+
+				partitions.put(nodeCounter, partitionList);
+				nodeCounter++;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return partitions;
 	}
 
 	@Override
@@ -38,35 +68,26 @@ public class PartitionsNode extends GeneralNode {
 		return super.clone();
 	}
 
-	public Map<Long, List<Character>> getPartitions() {
+	public List<Character> getDistinctPartitions() {
+		return distinctPartitions;
+	}
+
+	public Map<Long, List<Character>> getAllPartitions() {
 		return partitions;
 	}
 
-	public List<Character> getNodePartitions(long nodeId) {
-		return partitions.get(nodeId);
+	/**
+	 * @return The partition list of the current node.
+	 */
+	public List<Character> getPartitions() {
+		return partitions.get(this.getID());
 	}
 
-	private void parsePartitions(File file) {
-		// read partitions from the specified file
-		try (var scanner = new Scanner(file)) {
-			// parse the file
-			var nodeCounter = 0L;
-
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				String[] partitions = line.split(",");
-				List<Character> partitionList = new ArrayList<>(partitions.length);
-
-				for (var partition : partitions) {
-					partitionList.add(partition.charAt(0));
-				}
-
-				this.partitions.put(nodeCounter, partitionList);
-
-				nodeCounter++;
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	/**
+	 * @param nodeId The id of the node to get the partition list of.
+	 * @return The partition list of the node identified by nodeId.
+	 */
+	public List<Character> getPartitions(long nodeId) {
+		return partitions.get(nodeId);
 	}
 }
