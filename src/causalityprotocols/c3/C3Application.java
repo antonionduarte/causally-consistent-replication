@@ -17,6 +17,11 @@ public class C3Application extends ApplicationProtocol {
 	}
 
 	@Override
+	public void uponReceiveMessage(Node node, Message message) {
+		// do nothing
+	}
+
+	@Override
 	public void changeInitialMessage(Node node, Message message) {
 		// do nothing
 	}
