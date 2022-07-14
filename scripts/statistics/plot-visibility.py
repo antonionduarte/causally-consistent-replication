@@ -93,11 +93,11 @@ def visibility(experiment):
     return x, y
 
 def plot_graph(x, y, color, str_label):
-    plt.title('Saturn vs C3')
+    plt.title('Visibility Time')
     plt.xlabel('Time (ms)')
     plt.ylabel('Message visibility time (ms)')
     
-    line = plt.plot(x, y, color + 'o-', label=str_label)
+    line = plt.plot(x, y, 'o-', label=str_label, linestyle="dashdot", ms="4")
 
 if __name__ == "__main__":
     x_visibility_c3, y_visibility_c3 = visibility("c3-35-clients.txt")
@@ -106,8 +106,7 @@ if __name__ == "__main__":
 
     if CHART_RENDER_WITH_TEX:
         plt.rcParams.update({
-            "text.usetex": True,    
-            "font.family": "serif",
+            "text.usetex": True,
         })
 
     # print(x_visibility_c3)
@@ -123,4 +122,5 @@ if __name__ == "__main__":
     
     plt.legend()
 
+    plt.tight_layout()
     plt.savefig('plot-visibility.pdf')

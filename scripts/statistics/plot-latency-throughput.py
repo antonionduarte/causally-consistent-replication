@@ -68,12 +68,12 @@ def throughput(inputs, time):
 
 
 def plot_graph(latencies, throughputs, str_label):
-    plt.title('Saturn vs C3')
+    plt.title('Latency / Throughput')
     plt.xlabel('Throughput (Op/s)')
     plt.ylabel('Perceived Latency (ms)')
     
     # plt.plot(throughputs, latencies, linestyle="dashed")
-    plt.plot(throughputs, latencies, 'o-', label=str_label)
+    plt.plot(throughputs, latencies, 'o-', label=str_label, linestyle="dashdot", ms="4")
 
 if __name__ == "__main__":
     input_saturn = [
@@ -159,4 +159,5 @@ if __name__ == "__main__":
     plot_graph(latencies_c3, throughputs_c3, 'C3')
     plot_graph(latencies_c3sat, throughputs_c3sat, 'C3 + Saturn')
     plt.legend()
+    plt.tight_layout()
     plt.savefig('plot-latency-throughput.pdf')
