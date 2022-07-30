@@ -6,6 +6,7 @@ Simulator to build and test causal consistency algorithms.
   - [X] Configuration - Reading values from config file
   - [X] Operations being sent in a closed loop
   - [X] Distinction between read/write operations
+  - [ ] Individual Clients
   - [ ] Access specific keys to prepare for partial replication
 - [X] **Configuration** - Create an easy-to-read sample config file
 - [X] **Collecting Metrics**
@@ -23,11 +24,11 @@ Simulator to build and test causal consistency algorithms.
     - [X] Changes to account for difference between reads/writes
     - [X] Base protocolMessage container class getSize() for Transport etc...
     - [X] New layer to add message processing time support instead of being done through the Heap
-    - [ ] **Partial Replication** support
+    - [X] **Partial Replication** support
       - [X] Each node includes the list of Partitions of every node.
       - [X] Operation propagation according to Partitions
       - [X] Reads / Writes accessing correct partition
-      - [ ] Migrations
+      - [X] Migrations
 - [X] **Operation propagation** through the system
   - [X] AllToAll Broadcast and Overlay Init - 1 Click
   - [X] Saturn Tree Propagation
@@ -37,7 +38,7 @@ Simulator to build and test causal consistency algorithms.
 - [X] **Saturn**
 - [ ] **Cure or Gentlerain**
 
-# Running the Simulator:
+# Running and Compiling the Simulator:
 **Compile:** ```mvn compile assembly:single```
 
 **Run:** ```java -cp target/peersim.jar peersim.Simulator config/config.txt```
