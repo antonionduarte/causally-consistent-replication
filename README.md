@@ -1,4 +1,4 @@
-# Distributed Data Replication Simulator 
+# Distributed Replication Simulator 
 Simulator to build and test causal consistency algorithms.
 
 # TODO - Simulator:
