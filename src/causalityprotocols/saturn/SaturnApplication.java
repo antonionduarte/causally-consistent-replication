@@ -16,6 +16,11 @@ public class SaturnApplication extends ApplicationProtocol {
 	}
 
 	@Override
+	public void uponReceiveMessage(Node node, Message message) {
+		// do nothing
+	}
+
+	@Override
 	public void changeInitialMessage(Node node, Message message) {
 		message.setProtocolMessage(new SaturnMessage(
 				node.getID(),

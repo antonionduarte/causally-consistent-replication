@@ -84,6 +84,8 @@ public abstract class ApplicationProtocol implements EDProtocol {
 		var message = (Message) event;
 
 		if (!receivedMessages.contains(message.getMessageId())) {
+			this.uponReceiveMessage(node, message);
+
 			if (message.getOperationType() == Message.OperationType.MIGRATION) {
 				var toSend = getRandomPartitionMessage(node, message, message.getPartition());
 
@@ -217,6 +219,15 @@ public abstract class ApplicationProtocol implements EDProtocol {
 	public List<Long> getMessageLatencies() {
 		return this.messageLatencies;
 	}
+
+	/**
+	 * Implement this function in Application class if you want the receipt of a message to have
+	 * an effect on the Application Layer.
+	 *
+	 * @param node The local node.
+	 * @param message The message.
+	 */
+	public abstract void uponReceiveMessage(Node node, Message message);
 
 	/**
 	 * Implement this function in your Application class if you want the Initial wrapped
