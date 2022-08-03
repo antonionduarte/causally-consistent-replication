@@ -94,7 +94,7 @@ init.applicationInit    simulator.protocols.application.ApplicationInitializer
     protocol            application
 }
 
-init.overlayInit        simulator.protocols.overlay.alltoall.AllToAllInitializer
+init.overlayInit        simulator.protocols.overlay.clique.CliqueInitializer
 
 # ---------------------------------- #
 # ----- Controls and Observers ----- #

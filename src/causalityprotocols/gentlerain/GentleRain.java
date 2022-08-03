@@ -46,6 +46,7 @@ public class GentleRain extends CausalityProtocol implements CDProtocol {
 		clone.localStableTime = new HashMap<>();
 		clone.globalStableTime = 0L;
 		clone.versionChain = new HashMap<>();
+		return clone;
 	}
 
 	@Override

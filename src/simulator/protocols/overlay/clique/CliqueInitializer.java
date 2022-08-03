@@ -1,4 +1,4 @@
-package simulator.protocols.overlay.alltoall;
+package simulator.protocols.overlay.clique;
 
 import peersim.core.Control;
 import peersim.core.Network;
@@ -9,9 +9,9 @@ import simulator.protocols.overlay.SimpleOverlay;
 /**
  * Initializes the All-to-All overlay, by assigning making each node everyone's neighbour.
  */
-public class AllToAllInitializer implements Control {
+public class CliqueInitializer implements Control {
 
-	public AllToAllInitializer(String prefix) {
+	public CliqueInitializer(String prefix) {
 	}
 
 	@Override
