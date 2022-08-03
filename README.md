@@ -1,4 +1,4 @@
-# Causally Consistent Replication
+# Distributed Data Replication Simulator 
 Simulator to build and test causal consistency algorithms.
 
 # TODO - Simulator:
