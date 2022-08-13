@@ -1,5 +1,6 @@
 # Distributed Replication Simulator 
 Simulator to build and test causal consistency algorithms.
+Still very much a *WIP*.
 
 # TODO - Simulator:
 - [ ] **Client simulation**
